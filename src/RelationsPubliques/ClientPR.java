@@ -12,6 +12,7 @@ import Utilitaires.Utilitaires;
 public class ClientPR extends Thread{
 	private DatagramChannel channel;
 	private ByteBuffer buffToSend;
+	private String stringSent;
 	private int remoteIndex;
 	private int sleepTime;
 	private ServerPR serveurPR;
@@ -30,11 +31,13 @@ public class ClientPR extends Thread{
 
 	public void run () {
 		Message message;
+		stringSent = Utilitaires.bufferToString(buffToSend);
 
 		while (true) {
 			try {
 				// Envoie coucou
 				channel.send(buffToSend, getRemote());
+				
 			
 				buffToSend.flip();
 

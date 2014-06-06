@@ -16,7 +16,7 @@ public class ServerPR extends Thread{
 	private InetSocketAddress sender;
 	private ClientPR clientPR;
 
-	private ConcurrentHashMap<Message, Long> expectedMessages;
+	private ConcurrentHashMap<ExpectedMessage, Long> expectedMessages;
 
 
 	public ServerPR (int serverPRPort, ClientPR clientPR) throws IOException{
@@ -44,8 +44,8 @@ public class ServerPR extends Thread{
 		}
 	}
 
-	public void expectMessage (Message message) {
-		expectedMessages.put(message, message.expirationDate);
+	public void expectMessage (ExpectedMessage message) {
+		expectedMessages.put(message, message.timeOut);
 	}
 
 	public void traiter (String message, InetSocketAddress sender) throws Exception {
@@ -56,7 +56,7 @@ public class ServerPR extends Thread{
 			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), Global.CLIENTPRPORT), Long.MAX_VALUE));
 		}
 		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
-			if (expectedMessages.contains(new Message (message, sender, 0)));
+			if (expectedMessages.contains(new ExpectedMessage (message, sender, 0)));
 		}
 	}
 }
