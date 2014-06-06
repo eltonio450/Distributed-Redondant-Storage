@@ -1,6 +1,6 @@
 package Stockage;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -13,17 +13,21 @@ public class Donnees {
   private HashSet<Machine> neighbours ;
   private LinkedList<Machine> myHosts ;
   private HashMap<Long,Paquet> myData ;
-  private LinkedList<Paquet> myOwnData ;
+  private LinkedList<ArrayList<Paquet>> myOwnData ;
   
-  Donnees() {
+  Donnees(LinkedList<ArrayList<Paquet>> mesPaquets) {
     allServeur = new LinkedList<Machine>() ;
     interestServeur = new HashSet<Machine>() ;
     neighbours = new HashSet<Machine>() ;
     myData = new HashMap<Long,Paquet>() ;
-    myOwnData = new LinkedList<Paquet>() ;
+    myOwnData = mesPaquets ;
   }
   
-  public void actualise()
+  public void actualiseAllServeur(LinkedList<Machine> l){
+    allServeur = l ;
+  }
   
-  
+  public void actualiseNeighbours(HashSet<Machine> voisins){
+    neighbours = voisins;
+  }
 }
