@@ -9,7 +9,7 @@ public class Utilitaires {
 	 * @return FLIPPED buffer
 	 */
 	public static ByteBuffer stringToBuffer(String s) {
-		ByteBuffer buff = ByteBuffer.allocateDirect(s.length()*100);
+		ByteBuffer buff = ByteBuffer.allocateDirect(s.length()*4);
 		for (char c : s.toCharArray()) {
 			buff.putChar(c);
 		}
@@ -19,7 +19,7 @@ public class Utilitaires {
 	
 	/**
 	 * 
-	 * @param b buffer to convert
+	 * @param b buffer to convert (already flipped !)
 	 * @return resulting string
 	 * Le buffer est flippé
 	 */
