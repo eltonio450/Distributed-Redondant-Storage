@@ -29,7 +29,8 @@ public class Paquet {
     otherHosts = l ;
   }
   
-  public static LinkedList<ArrayList<Paquet>> fileToPaquets(String path){  
+
+  public static LinkedList<ArrayList<Paquet>> fileToPaquets(String path){  //TODO
     //doit découper un fichier en liste de groupes de (4+1) paquets
     // doit initialiser les champs : id, power et proprio
     return null ;

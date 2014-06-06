@@ -6,15 +6,16 @@ import java.util.LinkedList;
 
 public class Stockage {
 
-  public static LinkedList<Machine> getAllServeurs(Machine m){
+  public static LinkedList<Machine> getAllServeurs(Machine m){ //TODO
     return null ;
   }
   
-  public static HashSet<Machine> chooseNeighbours(){
+  public static HashSet<Machine> chooseNeighbours(){ //TODO
     return null ;
   }
   
-  public static ArrayList<Machine> chooseMachines(int n){   //doit renvoyer n machines at random
+  public static ArrayList<Machine> chooseMachines(int n){   //TODO
+    //doit renvoyer n machines at random
     return null ;
   }
   
