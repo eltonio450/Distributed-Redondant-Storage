@@ -19,4 +19,8 @@ public class Message {
 		this.body = body;
 		this.expirationDate = expirationDate;
 	}
+	
+	public boolean equals (Object o) {
+		return ((Message)o).body.equals(body);
+	}
 }
