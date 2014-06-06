@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Utilitaires.Utilitaires;
 
@@ -13,6 +15,8 @@ public class ClientPR extends Thread{
 	private int remoteIndex;
 	private int serverPRPort;
 	private int sleepTime;
+	
+	private ConcurrentLinkedQueue<Message> toSend;
 	
 	
 	public ClientPR (int clientPRPort, int serverPRPort, int sleepTime, String messageToSend) throws IOException{
@@ -24,11 +28,21 @@ public class ClientPR extends Thread{
 		this.sleepTime = sleepTime;
 	}
 	
-	public void run () {		
+	public void run () {
+		Message message;
+		
 		while (!this.isInterrupted()) {
 			try {
+				// Envoie coucou
 				channel.send(buffToSend, getRemote());
 				buffToSend.flip();
+				
+				// Envoie ce qu'on lui a demandé d'envoyer
+				while (!toSend.isEmpty()) {
+					message = toSend.poll();
+					if (message.expirationDate < System.currentTimeMillis())
+						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
+				}
 				
 				Thread.sleep(sleepTime);
 				
@@ -40,6 +54,10 @@ public class ClientPR extends Thread{
 				return;
 			}
 		}
+	}
+	
+	public synchronized void sendMessage (Message message) {
+		toSend.add(message);
 	}
 	
 	private InetSocketAddress getRemote () {
