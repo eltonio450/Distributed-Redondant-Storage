@@ -12,4 +12,9 @@ public class Global {
 	public static int SERVERPRPORT = 5051;
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
+	public static String FIRSTIP = "";
+	
+	//RP de debug
+	
+	public static boolean DEBUG = false;
 }

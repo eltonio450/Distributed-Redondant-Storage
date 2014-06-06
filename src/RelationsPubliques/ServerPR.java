@@ -9,6 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import Utilitaires.Utilitaires;
 
+/*TODO : 
+ * Vérifier les messages
+ */
+
 public class ServerPR extends Thread{
 	private DatagramChannel channel;
 	private ByteBuffer receivedMessage;
@@ -34,6 +38,8 @@ public class ServerPR extends Thread{
 				try {
 					traiter (Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {}
+				
+				checkExpectedMessages();
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -47,16 +53,25 @@ public class ServerPR extends Thread{
 		expectedMessages.put(message, message.timeOut);
 	}
 
-	public void traiter (String message, InetSocketAddress sender) throws Exception {
+	private void traiter (String message, InetSocketAddress sender) throws Exception {
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 		
 		if (token.equals(Global.PREFIXE_BONJOUR)) {
+			// On dit au client de répondre au serveur de l'hôte distant
 			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
+			// On met à jour l'attente de bonjour du client
+			expectedMessages.remove(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, 0));
+			expectedMessages.put(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT), System.currentTimeMillis()+Global.TIMEOUT);
 		}
 		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
+			// On a eu une réponse au bonjour
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 		}
 		sc.close();
+	}
+	
+	private void checkExpectedMessages() {
+		
 	}
 }

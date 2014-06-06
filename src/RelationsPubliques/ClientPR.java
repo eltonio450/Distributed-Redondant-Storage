@@ -34,7 +34,9 @@ public class ClientPR extends Thread{
 			try {
 				// Envoie coucou
 				remote = getRemote();
+				// On envoie bonjour au serveur de l'hôte distant
 				channel.send(buffToSend, remote);
+				// On dit au serveur d'attendre une réponse du client de l'hôte distant
 				serveurPR.expectMessage(new ExpectedMessage(Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 
 				buffToSend.flip();
