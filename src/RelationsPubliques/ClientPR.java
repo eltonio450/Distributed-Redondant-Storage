@@ -11,7 +11,6 @@ import Utilitaires.Utilitaires;
 public class ClientPR extends Thread{
 	private DatagramChannel channel;
 	private ByteBuffer buffToSend;
-	private String stringSent;
 	private int remoteIndex;
 	private ServerPR serveurPR;
 
@@ -24,11 +23,11 @@ public class ClientPR extends Thread{
 		this.buffToSend = Utilitaires.stringToBuffer(Global.PREFIXE_BONJOUR);
 		this.remoteIndex = 0;
 		this.serveurPR = serveurPR;
+		this.remoteIndex = 0;
 	}
 
 	public void run () {
 		Message message;
-		stringSent = Global.PREFIXE_BONJOUR;
 		InetSocketAddress remote;
 
 		while (true) {
@@ -36,15 +35,14 @@ public class ClientPR extends Thread{
 				// Envoie coucou
 				remote = getRemote();
 				channel.send(buffToSend, remote);
-				serveurPR.expectMessage(new ExpectedMessage(stringSent, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
-			
+				serveurPR.expectMessage(new ExpectedMessage(Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+
 				buffToSend.flip();
 
 				// Envoie ce qu'on lui a demandé d'envoyer
 				for (int i=0; !toSend.isEmpty() && i<100; i++) {
 					message = toSend.poll();
-					if (message.expirationDate < System.currentTimeMillis())
-						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
+					channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
 				}
 
 				if (toSend.isEmpty()) {
@@ -67,6 +65,7 @@ public class ClientPR extends Thread{
 	}
 
 	private InetSocketAddress getRemote () {
+		remoteIndex ++;
 		return null;
 	}
 }

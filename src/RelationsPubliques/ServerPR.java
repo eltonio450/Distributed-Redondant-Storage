@@ -2,7 +2,6 @@ package RelationsPubliques;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.Scanner;
@@ -53,10 +52,11 @@ public class ServerPR extends Thread{
 		String token = sc.next();
 		
 		if (token.equals(Global.PREFIXE_BONJOUR)) {
-			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), Global.CLIENTPRPORT), Long.MAX_VALUE));
+			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 		}
 		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
-			
+			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 		}
+		sc.close();
 	}
 }
