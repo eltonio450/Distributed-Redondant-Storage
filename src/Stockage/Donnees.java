@@ -1,4 +1,4 @@
-package modal;
+package Stockage;
 
 
 import java.util.HashMap;
@@ -22,6 +22,8 @@ public class Donnees {
     myData = new HashMap<Long,Paquet>() ;
     myOwnData = new LinkedList<Paquet>() ;
   }
+  
+  public void actualise()
   
   
 }

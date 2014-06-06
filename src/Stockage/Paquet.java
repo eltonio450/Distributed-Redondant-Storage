@@ -1,4 +1,4 @@
-package modal;
+package Stockage;
 
 import java.util.LinkedList;
 
