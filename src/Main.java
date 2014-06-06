@@ -9,6 +9,8 @@ public class Main {
 
 		
 		
+		Main.main(arguments);
+		
 		try{
 			portTexte = args[0];
 		} catch(Exception e) {portTexte = "5040";}
