@@ -53,8 +53,8 @@ public class Main{
 			//Etape 3: Récupération et traitement des résultat
 			//InputStream in = new FileInputStream(cmd.getOptionValue("i"));
 			//Par défaut écrit la sortie sur la sortie standard
-			if(cmd.hasOption("d")){
-				Global.CLIENTPRPORT = Integer.parseInt((cmd.getOptionValue("d")));
+			if(cmd.hasOption("p")){
+				Global.CLIENTPRPORT = Integer.parseInt((cmd.getOptionValue("p")));
 				Global.SERVERPRPORT = Global.CLIENTPRPORT++;
 			}
 				
