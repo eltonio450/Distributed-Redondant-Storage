@@ -6,17 +6,19 @@ import java.util.LinkedList;
 
 public class Stockage {
 
-  public static LinkedList<Machine> getAllServeurs(Machine m){
+  public static LinkedList<Machine> getAllServeurs(Machine m){ //TODO
     return null ;
   }
   
-  public static HashSet<Machine> chooseNeighbours(){
+  public static HashSet<Machine> chooseNeighbours(){ //TODO
     return null ;
   }
   
-  public static ArrayList<Machine> chooseMachines(int n){   //doit renvoyer n machines at random
+  public static ArrayList<Machine> chooseMachines(int n){   //TODO
+    //doit renvoyer n machines at random
     return null ;
   }
+  
   
   public static Donnees initConnection(Machine m,String mesDonnees){  
     //se connecte à une Machine m connue, initialise un objet données avec les champs allServeur et voisins. Ses propres données sont stockées dans myOwnData
@@ -31,13 +33,13 @@ public class Stockage {
   }
   
   public static void initPartage(Donnees data){
-    while(data.firstOwnData() != null){
-      ArrayList hosts = chooseMachines(5) ;
-      envoieData(data,hosts) ;
+    ArrayList<Paquet> lp = data.firstOwnData() ;
+    while(lp != null){
+      ArrayList<Machine> hosts = chooseMachines(5) ;
+      SendPaquet.envoieData(data,lp,hosts) ;
+      lp = data.firstOwnData() ;
     }
   }
   
-  public static void envoieData(Donnees data, ArrayList hosts){
-    
-  }
+
 }

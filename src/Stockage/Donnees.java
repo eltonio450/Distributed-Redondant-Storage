@@ -23,6 +23,14 @@ public class Donnees {
     myOwnData = mesPaquets ;
   }
   
+  public void receptionPaquet(Machine m, Paquet p){
+    addInterestServeur(m) ;
+    myData.put(p.id, p) ;
+    for(Machine n : p.otherHosts){
+      SendPaquet.prevenirHostChanged(m,p.id) ;
+    }
+  }
+  
   public void actualiseAllServeur(LinkedList<Machine> l){
     allServeur = l ;
   }
@@ -33,5 +41,13 @@ public class Donnees {
   
   public ArrayList<Paquet> firstOwnData(){
     return myOwnData.peek() ;
+  }
+  
+  public void addInterestServeur(Machine m){
+    interestServeur.add(m) ;
+  }
+  
+  public void addHost(Machine m){
+    myHosts.add(m) ;
   }
 }
