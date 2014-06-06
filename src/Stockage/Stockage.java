@@ -18,6 +18,10 @@ public class Stockage {
     return null ;
   }
   
+  public static Paquet putAndGet(Machine m, Paquet p){
+    return null
+  }
+  
   public static Donnees initConnection(Machine m,String mesDonnees){  
     //se connecte à une Machine m connue, initialise un objet données avec les champs allServeur et voisins. Ses propres données sont stockées dans myOwnData
     
