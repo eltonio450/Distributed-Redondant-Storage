@@ -12,4 +12,14 @@ public class ExpectedMessage {
 		this.sender = sender;
 		this.timeOut= timeOut;
 	}
+	
+	@ Override
+	public boolean equals (Object o) {
+		return ((ExpectedMessage)o).body.equals(body) && ((ExpectedMessage)o).sender.equals(sender);
+	}
+	
+	@ Override
+	public int hashCode () {
+		return body.hashCode() ^ sender.hashCode();
+	}
 }

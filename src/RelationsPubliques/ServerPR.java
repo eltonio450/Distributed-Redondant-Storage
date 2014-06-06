@@ -19,9 +19,9 @@ public class ServerPR extends Thread{
 	private ConcurrentHashMap<ExpectedMessage, Long> expectedMessages;
 
 
-	public ServerPR (int serverPRPort, ClientPR clientPR) throws IOException{
+	public ServerPR (ClientPR clientPR) throws IOException{
 		this.channel = DatagramChannel.open();
-		this.channel.bind(new InetSocketAddress("localhost", serverPRPort));
+		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.clientPR = clientPR;
 	}
@@ -56,7 +56,7 @@ public class ServerPR extends Thread{
 			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), Global.CLIENTPRPORT), Long.MAX_VALUE));
 		}
 		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
-			if (expectedMessages.contains(new ExpectedMessage (message, sender, 0)));
+			
 		}
 	}
 }
