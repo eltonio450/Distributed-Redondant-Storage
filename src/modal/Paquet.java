@@ -2,9 +2,6 @@ package modal;
 
 import java.util.LinkedList;
 
-import projetModal.Machine;
-import projetModal.Paquet;
-
 public class Paquet {
 
   long id ;
