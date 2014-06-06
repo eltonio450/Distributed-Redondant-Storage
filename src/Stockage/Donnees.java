@@ -30,4 +30,8 @@ public class Donnees {
   public void actualiseNeighbours(HashSet<Machine> voisins){
     neighbours = voisins;
   }
+  
+  public ArrayList<Paquet> firstOwnData(){
+    return myOwnData.peek() ;
+  }
 }

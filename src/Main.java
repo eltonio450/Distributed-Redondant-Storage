@@ -1,4 +1,4 @@
-
+//package Main;
 
 
 public class Main {
@@ -8,6 +8,8 @@ public class Main {
 		String portTexte;
 
 		
+		
+		//Main.main(arguments);
 		
 		try{
 			portTexte = args[0];
