@@ -1,4 +1,4 @@
-package modal;
+package Stockage;
 
 public class Machine {
 

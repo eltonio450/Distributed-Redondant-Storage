@@ -1,5 +1,6 @@
-package modal;
+package Stockage;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Paquet {
@@ -16,7 +17,7 @@ public class Paquet {
     owner = proprio ;
   }
   
-  public LinkedList<LinkedList<Paquet>> fileToPaquets(String path){  //doit découper un fichier en liste de groupes de (4+1) paquets
+  public static LinkedList<ArrayList<Paquet>> fileToPaquets(String path){  //doit découper un fichier en liste de groupes de (4+1) paquets
     return null ;
   }
   
