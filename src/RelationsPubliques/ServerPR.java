@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 import Utilitaires.Utilitaires;
 
-/*TODO : 
- * Vérifier les messages
- */
 
 public class ServerPR extends Thread{
 	private DatagramChannel channel;
@@ -19,7 +18,9 @@ public class ServerPR extends Thread{
 	private InetSocketAddress sender;
 	private ClientPR clientPR;
 
-	private ConcurrentHashMap<ExpectedMessage, Long> expectedMessages;
+	private LinkedList<ExpectedMessage> expectedMessages;
+	private LinkedList<InetSocketAddress> dead;
+	private ReentrantLock expectedMessagesLock;	// Nécessaire pour pouvoir itérer sur expected messages
 
 
 	public ServerPR (ClientPR clientPR) throws IOException{
@@ -27,6 +28,9 @@ public class ServerPR extends Thread{
 		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.clientPR = clientPR;
+		this.expectedMessagesLock = new ReentrantLock();
+		this.expectedMessages = new LinkedList<ExpectedMessage>();
+		this.dead = new LinkedList<InetSocketAddress> ();
 	}
 
 	public void run () {
@@ -50,7 +54,9 @@ public class ServerPR extends Thread{
 	}
 
 	public void expectMessage (ExpectedMessage message) {
-		expectedMessages.put(message, message.timeOut);
+		expectedMessagesLock.lock();
+			expectedMessages.add(message);
+		expectedMessagesLock.unlock();
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
@@ -62,7 +68,7 @@ public class ServerPR extends Thread{
 			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
 			expectedMessages.remove(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, 0));
-			expectedMessages.put(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT), System.currentTimeMillis()+Global.TIMEOUT);
+			expectedMessages.add(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT));
 		}
 		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
 			// On a eu une réponse au bonjour
@@ -72,6 +78,23 @@ public class ServerPR extends Thread{
 	}
 	
 	private void checkExpectedMessages() {
+		long t = System.currentTimeMillis();
+		expectedMessagesLock.lock();
+		for (ExpectedMessage m : expectedMessages) {
+			if (m.timeOut < t) {
+				dead.add(m.sender);
+			}
+		}
+		expectedMessagesLock.unlock();
 		
+		while (!dead.isEmpty()) {
+			// Vérifier mort
+			// Diffuser mort
+		}
+	}
+	
+	private void broadcastDeath(InetSocketAddress machine) {
+		// On dit à tout le monde que machine est morte
+		// A faire faire à un autre thread probablement
 	}
 }
