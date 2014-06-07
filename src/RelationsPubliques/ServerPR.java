@@ -92,9 +92,4 @@ public class ServerPR extends Thread{
 			// Diffuser mort
 		}
 	}
-	
-	private void broadcastDeath(InetSocketAddress machine) {
-		// On dit à tout le monde que machine est morte
-		// A faire faire à un autre thread probablement
-	}
 }
