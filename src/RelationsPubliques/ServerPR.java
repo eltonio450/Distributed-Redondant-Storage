@@ -11,6 +11,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Utilitaires;
 
+/**
+ * 
+ * @author Simon
+ * Serveur qui envoie des messages UDP
+ * Pas nécessairement la meilleure idée du monde
+ *
+ */
 
 public class ServerPR extends Thread{
 	private DatagramChannel channel;
