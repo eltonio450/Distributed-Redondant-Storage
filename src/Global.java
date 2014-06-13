@@ -1,4 +1,4 @@
-package RelationsPubliques;
+//package RelationsPubliques;
 
 /**
  * 
@@ -14,6 +14,7 @@ public class Global {
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
 	public static String FIRSTIP = "";
+	public static int NOMBRESOUSPAQUETS = 5;
 	
 	//RP de debug
 	
