@@ -3,8 +3,10 @@ package TCPConnections;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
 public class GeneralPurposeRequestAnalyzer extends Thread {
@@ -12,14 +14,14 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 	LinkedList<Requester> aAjouter;
 	LinkedList<Requester> aEnlever;
 	ReentrantLock lock;
-	
+
 	public void run () {
 		aTraiter = new LinkedList<Requester> ();
 		aAjouter = new LinkedList<Requester> ();
 		aEnlever = new LinkedList<Requester> ();
 		lock = new ReentrantLock ();
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
-		
+
 		while (true) {
 			for (Requester r : aTraiter) {
 				try {
@@ -30,12 +32,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
 				try {
-					traiter(r.recu);
+					traiter(r);
 				} catch (Exception e) {
-					
+
 				}
 			}
-			
+
 			lock.lock();
 			aTraiter.addAll(aAjouter);
 			aTraiter.clear();
@@ -45,7 +47,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 		}
 	}
-	
+
 	public void addRequester(Requester requester) {
 		lock.lock();
 		try {
@@ -57,8 +59,22 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		aAjouter.add(requester);
 		lock.unlock();
 	}
-	
-	private void traiter (String messages) {
-		
+
+	private void traiter (Requester r) {
+		Scanner s = new Scanner (r.recu);
+		String token = s.next();
+		try {
+			if (token.equals(Global.EXCHANGE)) {
+				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
+				r.socket.configureBlocking(true);
+				// Créer un exchanger
+			}
+			else if (token.equals(Global.MONITOR)){
+				// Suite
+			}
+		} catch (IOException e) {
+			aEnlever.add(r);
+			return;
+		}
 	}
 }

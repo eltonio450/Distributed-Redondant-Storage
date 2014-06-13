@@ -7,9 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
-import RelationsPubliques.Global;
 import Stockage.Machine;
 import Stockage.Paquet;
+import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
 public class taskClientExchange implements Runnable {

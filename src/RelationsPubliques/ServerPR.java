@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Stockage.Machine;
 import GestionnaireMort.DeathUtilities;
+import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
 /**
