@@ -20,24 +20,23 @@ public class Stockage {
 	}
 
 
-	public static Donnees initConnection(Machine m,String mesDonnees){  
+	public static void initConnection(Machine m,String mesDonnees){  
 		//se connecte � une Machine m connue, initialise un objet donn�es avec les champs allServeur et voisins. Ses propres donn�es sont stock�es dans myOwnData
-
 		//on connait une machine - on veut stocker les donnees dans le fichier de chemin mesDonnees
+	  // TODO : ouvrir une socket
 		LinkedList<Machine> serveurs = getAllServeurs(m) ;
 		LinkedList<ArrayList<Paquet>> mesPaquets = Paquet.fileToPaquets(mesDonnees) ;
-		Donnees data = new Donnees(mesPaquets) ;
-		data.actualiseAllServeur(serveurs) ;
-		data.actualiseNeighbours(chooseNeighbours()) ;
-		return data ;
+		Donnees.initializeData(mesPaquets);
+		Donnees.actualiseAllServeur(serveurs) ;
+		Donnees.actualiseNeighbours(chooseNeighbours()) ;
 	}
 
-	public static void initPartage(Donnees data){
-		ArrayList<Paquet> lp = data.firstOwnData() ;
+	public static void initPartage(){
+		ArrayList<Paquet> lp = Donnees.firstOwnData() ;
 		while(lp != null){
 			ArrayList<Machine> hosts = chooseMachines(5) ;
-			SendPaquet.envoieData(data,lp,hosts) ;
-			lp = data.firstOwnData() ;
+			SendPaquet.envoieData(lp,hosts) ;
+			lp = Donnees.firstOwnData() ;
 		}
 	}
 }
