@@ -8,7 +8,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
-
+import Stockage.Machine;
+import GestionnaireMort.DeathUtilities;
 import Utilitaires.Utilitaires;
 
 /**
@@ -95,8 +96,7 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.unlock();
 		
 		while (!dead.isEmpty()) {
-			// Vérifier mort
-			// Diffuser mort
+			DeathUtilities.examineDeath(new Machine(dead.removeFirst()));
 		}
 	}
 }
