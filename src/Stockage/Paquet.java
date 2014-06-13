@@ -1,7 +1,15 @@
 package Stockage;
 
+
+import RelationsPubliques.*;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -43,23 +51,33 @@ public class Paquet {
   }
   
   
-  public BufferedReader getOnDisk(){
+
+  public FileInputStream bufferLecture(){
 	  try {
-		return new BufferedReader(new FileReader(pathOnDisk));
-	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+
+		return new FileInputStream(pathOnDisk);
+	} catch (Exception e) {
+		System.out.println("Problème dans la lecture du fichier.");
+
 	}
 	  return null;
   }
   
-  public BufferedReader putOnDisk(){
+public FileOutputStream bufferEcriture(){
+
 	  try {
-		return new BufferedReader(new FileReader(pathOnDisk));
-	}
-	  catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+
+		  File file = new File(pathOnDisk);
+		  if(file.exists())
+			  file.delete();
+		  file.createNewFile();
+		return new FileOutputStream(file);
+		
+		
+	} catch (Exception e) {
+		System.out.println("Problème dans l'écriture du fichier.");
+
+		
 	}
 	  return null;
   }
