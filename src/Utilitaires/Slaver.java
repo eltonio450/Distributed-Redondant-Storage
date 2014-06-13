@@ -20,7 +20,7 @@ public class Slaver {
 		}
 	}
 	
-	static final void giveTask (Runnable r, int estimatedLoad) {
+	public static final void giveTask (Runnable r, int estimatedLoad) {
 		int minLoad = Integer.MAX_VALUE;
 		SlaveThread best = null;
 		for (SlaveThread s : slaves) {
