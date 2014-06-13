@@ -1,5 +1,5 @@
 package TCPConnections;
 
-public class ServeurTCP {
-
+public class ServeurTCP extends Thread {
+	
 }
