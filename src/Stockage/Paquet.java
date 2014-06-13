@@ -12,10 +12,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+
+
+
+
 
 public class Paquet {
 
@@ -27,9 +36,8 @@ public class Paquet {
   boolean enLecture;
   
   String pathOnDisk;
-  File fichier;
-  FileInputStream input;
-  FileOutputStream output;
+  FileChannel fichier;
+
   
   ArrayList<Machine> otherHosts ;
   
@@ -41,19 +49,15 @@ public class Paquet {
     power = p ;
     owner = proprio ;
     pathOnDisk="../data";
+
     
-    fichier = new File(pathOnDisk);
-	  if(fichier.exists())
-		  fichier.delete();
+    	try {
+			fichier = FileChannel.open(new Path("bla"), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    try {
-    	fichier.createNewFile();
-    	output = new FileOutputStream(fichier);
-		input = new FileInputStream(fichier);
-	} catch (Exception e) {
-		System.out.println("Problème dans la lecture du fichier.");
-
-	}
     
   }
   
@@ -82,17 +86,15 @@ public class Paquet {
 
   public void envoyerPaquet(SocketChannel s) throws IOException{
     //we assume connection has already started
-    ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH) ;
-    while(nextByteBuffer(buffer)){
-      s.write(buffer) ;
-    }
+    //ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH) ;
+
   }
   
   public static Paquet recoitPaquet(SocketChannel s) throws IOException{
     return null ;
   }
 	
-  public boolean nextByteBuffer(ByteBuffer aRemplir){
+  /*public boolean nextByteBuffer(ByteBuffer aRemplir){
 	  
 	  int n = aRemplir.capacity();
 	  int i = 0;
@@ -114,7 +116,7 @@ public class Paquet {
 	  }
 	  aRemplir.flip();
 	  return true;
-  }
+  }*/
   
   
 }
