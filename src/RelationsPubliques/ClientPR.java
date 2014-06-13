@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import Utilitaires.Utilitaires;
 
 public class ClientPR extends Thread{
+	
 	private DatagramChannel channel;
 	private ByteBuffer buffBonjour;
 	private ByteBuffer buffDebout;

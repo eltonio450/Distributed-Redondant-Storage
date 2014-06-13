@@ -1,3 +1,4 @@
+
 package Stockage;
 
 import java.util.ArrayList;
@@ -31,11 +32,11 @@ public class Donnees {
 		addInterestServeur(m) ;
 		Donnees.myData.put(p.id, p) ;
 		for(Machine n : p.otherHosts){
-			SendPaquet.prevenirHostChanged(m,p.id) ;
+			SendPaquet.prevenirHostChanged(p.id) ;
 		}
 	}
 	public static Boolean verifieMort(Machine m){
-    //envoie un message ï¿½ m pour vï¿½rifier qu'il est bien mort
+    //envoie un message à m pour vérifier qu'il est bien mort
     return null ;
   }
   
@@ -51,7 +52,7 @@ public class Donnees {
         for(Machine n : p.otherHosts){
           if(m==n) {
             //check avec p.power si on doit intervenir ou non
-            //ï¿½ventuellement, rï¿½tablir le paquet
+            //éventuellement, rétablir le paquet
           }
         }
       }
@@ -100,7 +101,8 @@ public class Donnees {
 		myHostsLock.unlock();
 	}
 	
-	public static void putData(Paquet p){
-	  // TODO : prevenirHostChanged
+	public static Paquet getHostedPaquet(Long Id){
+	  return myData.get(Id) ;
 	}
 }
+
