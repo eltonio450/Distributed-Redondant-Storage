@@ -10,11 +10,13 @@ package GestionnaireMort;
  */
 
 public class DeathUtilities {
+	/**
+	 * Se connecte en TCP au serveur
+	 * 
+	 * @param m : machine dont il faut vérifier la mort
+	 * @return vrai ou faux
+	 */
 	public static boolean examineDeath (Stockage.Machine m) {
 		return true;
-	}
-	
-	public static void broadcastDeath(Stockage.Machine m) {
-		
 	}
 }
