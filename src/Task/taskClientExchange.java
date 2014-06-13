@@ -1,12 +1,12 @@
 package Task;
 import java.io.IOException;
-
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
 import Utilitaires.Global;
+import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
 import Utilitaires.Utilitaires;
@@ -16,12 +16,12 @@ public class taskClientExchange implements Runnable {
   Machine correspondant ;
   Paquet aEnvoyer ;
   
-  taskClientExchange(Machine m, Paquet p){
+  public taskClientExchange(Machine m, Paquet p){
     correspondant = m ;
     aEnvoyer = p ;
   }
   
-  public SocketChannel initEtEnvoiePaquet() throws IOException { 
+  public void initEtEnvoiePaquet() throws IOException { 
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     InetSocketAddress local = new InetSocketAddress(0); 
     clientSocket.bind(local); 
@@ -43,11 +43,13 @@ public class taskClientExchange implements Runnable {
       buffer.flip() ;
       clientSocket.write(buffer) ;
       Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-      
+      String otherIpAdresse = clientSocket.socket().getInetAddress().toString() ;
+      int otherPort = clientSocket.socket().getPort() ;
+      Machine other = new Machine(otherIpAdresse,otherPort) ;
+      Donnees.receptionPaquet(other, receivedPaquet);
     }
     else {
       //TODO : renvoyer une erreur - la machine ne veut pas recevoir de
-      return null ;
     }
     
    }
@@ -55,7 +57,7 @@ public class taskClientExchange implements Runnable {
     
   public void run() {
     try{
-      SocketChannel socket = initEtEnvoiePaquet() ;
+      initEtEnvoiePaquet() ;
       
     }
     catch(IOException e){
