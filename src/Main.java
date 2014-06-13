@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import RelationsPubliques.*;
+import Utilitaires.Global;
 
 import cli.java.org.apache.commons.cli.CommandLine;
 import cli.java.org.apache.commons.cli.CommandLineParser;

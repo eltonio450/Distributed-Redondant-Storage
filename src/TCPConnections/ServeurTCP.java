@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-import RelationsPubliques.Global;
+import Utilitaires.Global;
 
 public class ServeurTCP extends Thread {
 	public GeneralPurposeRequestAnalyzer GPRA;
@@ -17,7 +17,7 @@ public class ServeurTCP extends Thread {
 			serverSocket.bind(local);
 			while (true) {
 				SocketChannel client = serverSocket.accept();
-				GPRA.addRequester(client);
+				GPRA.addRequester(new Requester(client));
 			}
 		} catch (IOException e) {
 			return;

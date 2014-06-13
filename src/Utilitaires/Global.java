@@ -1,4 +1,4 @@
-package RelationsPubliques;
+package Utilitaires;
 
 /**
  * 
@@ -7,9 +7,12 @@ package RelationsPubliques;
  */
 
 public class Global {
-  // Relations publiques
+  // TCP Connections
   public static String EXCHANGE = "exchange" ;
   public static String REPONSE_EXCHANGE = "ok-exchange" ;
+  public static String MONITOR = "monitor";
+  
+  // Relations Publiques
   public static String PREFIXE_BONJOUR = "WESH";
   public static String PREFIXE_REPONSE_BONJOUR = "YO";
   public static String SELF_WAKE_UP = "DEBOUT";
