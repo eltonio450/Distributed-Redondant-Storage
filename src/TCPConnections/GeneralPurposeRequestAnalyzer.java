@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
+import Utilitaires.*;
 
 public class GeneralPurposeRequestAnalyzer extends Thread {
 	LinkedList<Requester> aTraiter;
@@ -67,9 +67,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			if (token.equals(Global.EXCHANGE)) {
 				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
 				r.socket.configureBlocking(true);
-				// Créer un exchanger
-				//taskServeurExchange(r.socket)
-			}
+				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
+							}
 			else if (token.equals(Global.MONITOR)){
 				// Suite
 			}
