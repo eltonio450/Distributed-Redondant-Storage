@@ -1,15 +1,14 @@
 package Task;
-
-
 import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
+import Utilitaires.Global;
 import Stockage.Machine;
 import Stockage.Paquet;
-import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
 public class taskClientExchange implements Runnable {
@@ -22,7 +21,7 @@ public class taskClientExchange implements Runnable {
     aEnvoyer = p ;
   }
   
-  public void exchange() throws IOException { 
+  public SocketChannel initEtEnvoiePaquet() throws IOException { 
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     InetSocketAddress local = new InetSocketAddress(0); 
     clientSocket.bind(local); 
@@ -45,9 +44,11 @@ public class taskClientExchange implements Runnable {
       buffer = Utilitaires.stringToBuffer(Global.END_COMMUNICATION) ;
       buffer.flip() ;
       clientSocket.write(buffer) ;
+      return clientSocket;
     }
     else {
-      //TODO : renvoyer une erreur - la machine ne veut pas recevoir de 
+      //TODO : renvoyer une erreur - la machine ne veut pas recevoir de
+      return null ;
     }
     
    }
@@ -55,7 +56,8 @@ public class taskClientExchange implements Runnable {
     
   public void run() {
     try{
-      exchange() ;
+      SocketChannel socket = initEtEnvoiePaquet() ;
+      
     }
     catch(IOException e){
       // TODO : traiter l'erreur - recommencer l'envoie ?
