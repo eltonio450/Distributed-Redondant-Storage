@@ -54,8 +54,7 @@ public class Paquet {
 	}
 	  return null;
   }
-<<<<<<< HEAD
-=======
+
   
   public BufferedWriter bufferEcriture(){
 	  try {
@@ -66,7 +65,5 @@ public class Paquet {
 	  return null;
   }
   
-  
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
- 
+
 }
