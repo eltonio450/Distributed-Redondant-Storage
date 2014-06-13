@@ -12,14 +12,14 @@ public class SendPaquet {
     for (int j = 0 ; j< n ; j++){
       Paquet p = listPaquets.get(j) ;
       p.putOtherHosts(hosts);
-      Paquet q = putAndGet(hosts.get(j),p) ;
+      putAndGet(hosts.get(j),p) ;
       Donnees.addHost(hosts.get(j)) ;
     }
   }
   
-  public static Paquet putAndGet(Machine m, Paquet p){ //TODO
+  public static void putAndGet(Machine m, Paquet p){ //TODO
+    // cette méthode actualise le champ myData de Donnees
     //Envoie UN paquet à m et reçoit UN paquet en échange
-    return null ;
   }
   
   public static void prevenirHostChanged(Machine m , long Id){  //TODO

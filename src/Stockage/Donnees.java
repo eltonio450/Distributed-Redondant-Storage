@@ -99,4 +99,8 @@ public class Donnees {
 		myHosts.add(m) ;
 		myHostsLock.unlock();
 	}
+	
+	public static void putData(Paquet p){
+	  // TODO : prevenirHostChanged
+	}
 }

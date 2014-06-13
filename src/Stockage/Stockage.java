@@ -22,8 +22,8 @@ public class Stockage {
 
 	public static void initConnection(Machine m,String mesDonnees){  
 		//se connecte � une Machine m connue, initialise un objet donn�es avec les champs allServeur et voisins. Ses propres donn�es sont stock�es dans myOwnData
-
 		//on connait une machine - on veut stocker les donnees dans le fichier de chemin mesDonnees
+	  // TODO : ouvrir une socket
 		LinkedList<Machine> serveurs = getAllServeurs(m) ;
 		LinkedList<ArrayList<Paquet>> mesPaquets = Paquet.fileToPaquets(mesDonnees) ;
 		Donnees.initializeData(mesPaquets);
