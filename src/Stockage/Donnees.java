@@ -31,10 +31,9 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		Donnees.myData.put(p.id, p) ;
-		for(Machine n : p.otherHosts){
-			SendPaquet.prevenirHostChanged(p.id) ;
-		}
+		SendPaquet.prevenirHostChanged(p.id) ;
 	}
+	
 	public static Boolean verifieMort(Machine m){
     //envoie un message � m pour v�rifier qu'il est bien mort
     return null ;
@@ -70,9 +69,9 @@ public class Donnees {
 		allServeur.remove(m);
 		allServeurLock.unlock();
 		
-		// TODO : Gérer la perte d'un voisin etc. 
+		// TODO : Gerer la perte d'un voisin etc. 
 		// PB. : il faut se reprendre un voisin quand on en perd un
-		// 		 il faut gérer la récupération si c'est un interestServeur
+		// 		 il faut gerer la recuperation si c'est un interestServeur
 		//		 etc.
 	}
 
