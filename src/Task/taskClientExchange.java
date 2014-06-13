@@ -37,14 +37,13 @@ public class taskClientExchange implements Runnable {
     String s = Utilitaires.buffToString(buffer) ;
     
     if (s.equals(Global.REPONSE_EXCHANGE)){
-      //while(){
-        // TODO : découper le paquet en plusieurs buffer
-      //}
+      aEnvoyer.envoyerPaquet(clientSocket);
       buffer.clear();
       buffer = Utilitaires.stringToBuffer(Global.END_COMMUNICATION) ;
       buffer.flip() ;
       clientSocket.write(buffer) ;
-      return clientSocket;
+      Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
+      
     }
     else {
       //TODO : renvoyer une erreur - la machine ne veut pas recevoir de

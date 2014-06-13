@@ -88,7 +88,7 @@ public class Paquet {
     }
   }
   
-  public Paquet recoitPaquet(SocketChannel s) throws IOException{
+  public static Paquet recoitPaquet(SocketChannel s) throws IOException{
     return null ;
   }
 	
