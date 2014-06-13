@@ -18,13 +18,22 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		
 		while (true) {
 			for (SocketChannel s : aTraiter) {
-				//Blablabla
+				// Traitement
 			}
+			
+			lock.lock();
 			aTraiter.addAll(aAjouter);
+			aTraiter.clear();
+			lock.unlock();
+			for (SocketChannel s : aEnlever) {
+				aTraiter.remove(s);
+			}
 		}
 	}
 	
 	public void addRequester(SocketChannel requester) {
+		lock.lock();
 		aAjouter.add(requester);
+		lock.unlock();
 	}
 }
