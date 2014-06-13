@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
+import RelationsPubliques.Global;
 import Stockage.Machine;
 import Stockage.Paquet;
 import Utilitaires.Utilitaires;
@@ -28,13 +29,13 @@ public class taskClientExchange implements Runnable {
     InetSocketAddress remote = new InetSocketAddress(correspondant.ipAdresse, correspondant.port); 
     clientSocket.connect(remote); 
     
-    ByteBuffer buffer = Utilitaires.stringToBuffer("EXCHANGE") ;
+    ByteBuffer buffer = Utilitaires.stringToBuffer(Global.EXCHANGE) ;
     buffer.flip() ;
     clientSocket.write(buffer) ;
     clientSocket.read(buffer) ;
     String s = Utilitaires.buffToString(buffer) ;
     
-    if (s.equals("OKEXCHANGE")){
+    if (s.equals(Global.REPONSE_EXCHANGE)){
       
     }
     else {
