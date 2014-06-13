@@ -12,11 +12,8 @@ public class Paquet {
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
-  
   String pathOnDisk;
-  
   ArrayList<Machine> otherHosts ;
-  
   Machine owner ;
   
   Paquet(long Id, int p , Machine proprio) {
@@ -40,7 +37,7 @@ public class Paquet {
   
 
   public static LinkedList<ArrayList<Paquet>> fileToPaquets(String path){  //TODO
-    //doit d�couper un fichier en liste de groupes de (4+1) paquets
+    //doit decouper un fichier en liste de groupes de (4+1) paquets
     // doit initialiser les champs : id, power et proprio
     return null ;
   }
@@ -55,7 +52,5 @@ public class Paquet {
 	}
 	  return null;
   }
-  
-  
  
 }
