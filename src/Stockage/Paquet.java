@@ -51,29 +51,19 @@ public class Paquet {
   }
   
   
-<<<<<<< HEAD
+
   public FileInputStream bufferLecture(){
-=======
-  public BufferedReader getOnDisk(){
->>>>>>> branch 'master' of https://github.com/eltonio450/modal
 	  try {
-<<<<<<< HEAD
+
 		return new FileInputStream(pathOnDisk);
 	} catch (Exception e) {
 		System.out.println("Problème dans la lecture du fichier.");
-//=======
-		return new BufferedReader(new FileReader(pathOnDisk));
-	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-//>>>>>>> branch 'master' of https://github.com/eltonio450/modal
+
 	}
 	  return null;
   }
   
 public FileOutputStream bufferEcriture(){
-
-  public BufferedReader putOnDisk(){
 
 	  try {
 
@@ -87,12 +77,7 @@ public FileOutputStream bufferEcriture(){
 	} catch (Exception e) {
 		System.out.println("Problème dans l'écriture du fichier.");
 
-		return new BufferedReader(new FileReader(pathOnDisk));
-	}
-	  catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-
+		
 	}
 	  return null;
   }
