@@ -17,7 +17,7 @@ public class ServeurTCP extends Thread {
 			serverSocket.bind(local);
 			while (true) {
 				SocketChannel client = serverSocket.accept();
-				GPRA.addRequester(client);
+				GPRA.addRequester(new Requester(client));
 			}
 		} catch (IOException e) {
 			return;
