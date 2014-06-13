@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+import RelationsPubliques.Global;
+
 public class ServeurTCP extends Thread {
 	public GeneralPurposeRequestAnalyzer GPRA;
 	

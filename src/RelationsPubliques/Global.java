@@ -1,4 +1,4 @@
-//package RelationsPubliques;
+package RelationsPubliques;
 
 /**
  * 
@@ -7,6 +7,7 @@
  */
 
 public class Global {
+	// Relations publiques
 	public static String PREFIXE_BONJOUR = "WESH";
 	public static String PREFIXE_REPONSE_BONJOUR = "YO";
 	public static String SELF_WAKE_UP = "DEBOUT";
@@ -17,7 +18,9 @@ public class Global {
 	public static String FIRSTIP = "";
 	public static int NOMBRESOUSPAQUETS = 5;
 	
-	//RP de debug
+	// TCP Connections
+	public static int TCP_SERVEUR_PORT = 6060;
 	
+	//RP de debug
 	public static boolean DEBUG = false;
 }
