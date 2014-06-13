@@ -22,7 +22,7 @@ public class taskClientExchange implements Runnable {
     aEnvoyer = p ;
   }
   
-  public void initConnection() throws IOException { 
+  public void exchange() throws IOException { 
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     InetSocketAddress local = new InetSocketAddress(0); 
     clientSocket.bind(local); 
@@ -32,20 +32,34 @@ public class taskClientExchange implements Runnable {
     ByteBuffer buffer = Utilitaires.stringToBuffer(Global.EXCHANGE) ;
     buffer.flip() ;
     clientSocket.write(buffer) ;
+    buffer.clear() ;
     clientSocket.read(buffer) ;
+    buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
     
     if (s.equals(Global.REPONSE_EXCHANGE)){
-      
+      //while(){
+        // TODO : découper le paquet en plusieurs buffer
+      //}
+      buffer.clear();
+      buffer = Utilitaires.stringToBuffer(Global.END_COMMUNICATION) ;
+      buffer.flip() ;
+      clientSocket.write(buffer) ;
     }
     else {
       //TODO : renvoyer une erreur - la machine ne veut pas recevoir de 
     }
-    }
-    } 
+    
+   }
+   } 
     
   public void run() {
-    
+    try{
+      exchange() ;
+    }
+    catch(IOException e){
+      // TODO : traiter l'erreur - recommencer l'envoie ?
+    }
   }
 
   

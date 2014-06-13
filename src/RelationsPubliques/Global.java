@@ -8,6 +8,7 @@ package RelationsPubliques;
 
 public class Global {
   // Relations publiques
+  public static String END_COMMUNICATION = "fin-communication" ;
   public static String EXCHANGE = "exchange" ;
   public static String REPONSE_EXCHANGE = "ok-exchange" ;
   public static String PREFIXE_BONJOUR = "WESH";
