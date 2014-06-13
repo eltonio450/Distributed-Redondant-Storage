@@ -2,6 +2,7 @@ package Stockage;
 
 
 import RelationsPubliques.*;
+import Utilitaires.Global;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -43,10 +45,7 @@ public class Paquet {
     fichier = new File(pathOnDisk);
 	  if(fichier.exists())
 		  fichier.delete();
-	  
 
-	  
-    
     try {
     	fichier.createNewFile();
     	output = new FileOutputStream(fichier);
@@ -81,7 +80,17 @@ public class Paquet {
   
 
 
-
+  public void envoyerPaquet(SocketChannel s) throws IOException{
+    //we assume connection has already started
+    ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH) ;
+    while(nextByteBuffer(buffer)){
+      s.write(buffer) ;
+    }
+  }
+  
+  public static Paquet recoitPaquet(SocketChannel s) throws IOException{
+    return null ;
+  }
 	
   public boolean nextByteBuffer(ByteBuffer aRemplir){
 	  
@@ -104,8 +113,8 @@ public class Paquet {
 		  i++;
 	  }
 	  aRemplir.flip();
-
-	  
 	  return true;
   }
+  
+  
 }
