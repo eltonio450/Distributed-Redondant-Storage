@@ -22,7 +22,16 @@ public class SendPaquet {
     //Envoie UN paquet à m et reçoit UN paquet en échange
   }
   
-  public static void prevenirHostChanged(Machine m , long Id){  //TODO
+  public static void prevenirHostChanged(long Id){  //TODO
     //préviens une machine que cette machine remplace m pour le paquet d'id Id
+    Paquet p = Donnees.getHostedPaquet(Id) ;
+    int placeToModify = p.power ;
+    for (int i =0 ; i< 5 ; i++) {
+      if (i!=placeToModify){
+        Machine m = p.otherHosts.get(i) ;
+        //envoieMsg(m,placeToModify) pour changement d'host
+      }
+    }
+    //envoieMsg
   }
 }

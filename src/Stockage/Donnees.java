@@ -31,7 +31,7 @@ public class Donnees {
 		addInterestServeur(m) ;
 		Donnees.myData.put(p.id, p) ;
 		for(Machine n : p.otherHosts){
-			SendPaquet.prevenirHostChanged(m,p.id) ;
+			SendPaquet.prevenirHostChanged(p.id) ;
 		}
 	}
 	public static Boolean verifieMort(Machine m){
@@ -100,7 +100,7 @@ public class Donnees {
 		myHostsLock.unlock();
 	}
 	
-	public static void putData(Paquet p){
-	  // TODO : prevenirHostChanged
+	public static Paquet getHostedPaquet(Long Id){
+	  return myData.get(Id) ;
 	}
 }
