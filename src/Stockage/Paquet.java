@@ -1,11 +1,8 @@
 package Stockage;
 
-import RelationsPubliques.*;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -30,8 +27,8 @@ public class Paquet {
   }
   
   public void putOtherHosts(ArrayList<Machine> liste){
-    int n = Global.NOMBRESOUSPAQUETS ;
-    ArrayList<Machine> l = new ArrayList<Machine>(n) ;
+    int n = liste.size() ;
+    ArrayList<Machine> l = new ArrayList<Machine>(5) ;
     for (int j=0; j< n; j++){
       l.add(liste.get(j)) ;
     }
@@ -46,24 +43,25 @@ public class Paquet {
   }
   
   
-  public BufferedReader bufferLecture(){
+  public BufferedReader getOnDisk(){
 	  try {
 		return new BufferedReader(new FileReader(pathOnDisk));
-	} catch (Exception e) {
-		System.out.println("Problème dans la lecture du fichier.");
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
 	  return null;
   }
-
   
-  public BufferedWriter bufferEcriture(){
+  public BufferedReader putOnDisk(){
 	  try {
-		return new BufferedWriter(new FileWriter(pathOnDisk));
-	} catch (Exception e) {
-		System.out.println("Problème dans l'écriture du fichier.");
+		return new BufferedReader(new FileReader(pathOnDisk));
+	}
+	  catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
 	  return null;
   }
   
-
 }

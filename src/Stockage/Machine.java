@@ -4,16 +4,16 @@ import java.net.InetSocketAddress;
 
 public class Machine {
 
-	String IpAdresse ;
-	int port;
+	public String ipAdresse ;
+	public int port;
 
 	public Machine(String addr, int port){
-		IpAdresse = addr ;
+		ipAdresse = addr ;
 		this.port = port;
 	}
 
 	public Machine(InetSocketAddress m) {
-		this.IpAdresse = m.getHostName();
+		this.ipAdresse = m.getHostName();
 		this.port = m.getPort();
 	}
 }
