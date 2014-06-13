@@ -26,7 +26,7 @@ public class Main{
 		//System.out.println("Hello World !");
 
 		
-
+		
 		//Etape 1: Définition des options
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");
@@ -94,8 +94,9 @@ public class Main{
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+		
 
-
+		System.out.println();
 		//variables de diagnostic
 
 

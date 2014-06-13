@@ -52,5 +52,20 @@ public class Paquet {
 	}
 	  return null;
   }
+<<<<<<< HEAD
+=======
+  
+  public BufferedReader putOnDisk(){
+	  try {
+		return new BufferedReader(new FileReader(pathOnDisk));
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  return null;
+  }
+  
+  
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
  
 }

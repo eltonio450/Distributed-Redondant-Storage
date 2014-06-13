@@ -5,6 +5,7 @@
  * @author Simon
  * Chaque appli choisit son port MAIS SERVERPRPORT = CLIENTPRPORT + 1
  */
+
 public class Global {
 	public static String PREFIXE_BONJOUR = "WESH";
 	public static String PREFIXE_REPONSE_BONJOUR = "YO";
