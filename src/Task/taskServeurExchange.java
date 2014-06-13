@@ -11,7 +11,7 @@ public class taskServeurExchange implements Runnable {
 
   SocketChannel socket ;
   
-  taskServeurExchange(SocketChannel s) {
+  public taskServeurExchange(SocketChannel s) {
     socket = s ;
   }
   

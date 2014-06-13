@@ -29,6 +29,7 @@ public class Global {
   
   // GestionnaireMort
   public static String VERIFY_DEATH = "CAVA?";
+  public static int DEATH_TIMEOUT = 10000;
   
   //RP de debug
   public static boolean DEBUG = false;
