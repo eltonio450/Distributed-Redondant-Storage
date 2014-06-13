@@ -7,10 +7,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -20,14 +21,41 @@ public class Paquet {
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
+  
+  boolean enLecture;
+  
   String pathOnDisk;
+  File fichier;
+  FileInputStream input;
+  FileOutputStream output;
+  
   ArrayList<Machine> otherHosts ;
+  
+  
   Machine owner ;
   
   Paquet(long Id, int p , Machine proprio) {
     id = Id ;
     power = p ;
     owner = proprio ;
+    pathOnDisk="../data";
+    
+    fichier = new File(pathOnDisk);
+	  if(fichier.exists())
+		  fichier.delete();
+	  
+
+	  
+    
+    try {
+    	fichier.createNewFile();
+    	output = new FileOutputStream(fichier);
+		input = new FileInputStream(fichier);
+	} catch (Exception e) {
+		System.out.println("Problème dans la lecture du fichier.");
+
+	}
+    
   }
   
   public void putPower(int p){
@@ -52,34 +80,32 @@ public class Paquet {
   
   
 
-  public FileInputStream bufferLecture(){
-	  try {
 
-		return new FileInputStream(pathOnDisk);
-	} catch (Exception e) {
-		System.out.println("Problème dans la lecture du fichier.");
 
-	}
-	  return null;
+	
+  public boolean nextByteBuffer(ByteBuffer aRemplir){
+	  
+	  int n = aRemplir.capacity();
+	  int i = 0;
+	  
+	  aRemplir.clear();
+	  
+	  byte car = 'a';
+	  while(i<n && car != -1)
+	  {
+		  try {
+			car = (byte) input.read();
+		} catch (IOException e) {
+			System.out.println("Cela n'arrivera jamais...");
+			e.printStackTrace();
+		}
+		  if(car == -1)
+			  return false;
+		  i++;
+	  }
+	  aRemplir.flip();
+
+	  
+	  return true;
   }
-  
-public FileOutputStream bufferEcriture(){
-
-	  try {
-
-		  File file = new File(pathOnDisk);
-		  if(file.exists())
-			  file.delete();
-		  file.createNewFile();
-		return new FileOutputStream(file);
-		
-		
-	} catch (Exception e) {
-		System.out.println("Problème dans l'écriture du fichier.");
-
-		
-	}
-	  return null;
-  }
-  
 }
