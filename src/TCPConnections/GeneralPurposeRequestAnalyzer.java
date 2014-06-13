@@ -67,17 +67,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			if (token.equals(Global.EXCHANGE)) {
 				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
 				r.socket.configureBlocking(true);
-
 				// Créer un exchanger
 				//taskServeurExchange(r.socket)
 			}
-/*			else if (token.equals(Global.MONITOR)){
-				if (Global.DEBUG) {
-					Monitor m = new Monitor(r.socket);
-					m.start();
-				}
+			else if (token.equals(Global.MONITOR)){
+				// Suite
 			}
-*/
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;
