@@ -1,3 +1,4 @@
+
 package Stockage;
 
 import java.util.ArrayList;
@@ -104,3 +105,4 @@ public class Donnees {
 	  return myData.get(Id) ;
 	}
 }
+

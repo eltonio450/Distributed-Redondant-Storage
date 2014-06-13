@@ -17,11 +17,7 @@ public class ServerDebug extends Thread {
 		args[5]=Integer.valueOf(port).toString();
 		
 	}
-	
-	
-	
-	
-	
+
 	public void run(String[] args){
 		Main.main(args);		
 	}
