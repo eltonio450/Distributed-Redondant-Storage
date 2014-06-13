@@ -18,7 +18,7 @@ public class SendPaquet {
   }
   
   public static void putAndGet(Machine m, Paquet p){ //TODO
-    // cette méthode actualise le champ myData de Donnees
+    //cette méthode actualise le champ myData de Donnees
     //Envoie UN paquet à m et reçoit UN paquet en échange
   }
   
@@ -32,8 +32,8 @@ public class SendPaquet {
         //envoieMsg(m,placeToModify) pour changement d'host
       }
     }
-    //envoieMsg
   }
+  
 }
 
 
