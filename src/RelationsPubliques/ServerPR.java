@@ -9,9 +9,8 @@ import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Stockage.Machine;
-import GestionnaireMort.DeathUtilities;
-import Utilitaires.Global;
-import Utilitaires.Utilitaires;
+import GestionnaireMort.deathVerifier;
+import Utilitaires.*;
 
 /**
  * 
@@ -97,7 +96,7 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.unlock();
 		
 		while (!dead.isEmpty()) {
-			DeathUtilities.examineDeath(new Machine(dead.removeFirst()));
+			Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10);
 		}
 	}
 }

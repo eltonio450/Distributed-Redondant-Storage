@@ -13,6 +13,8 @@ public class Global {
   public static String MONITOR = "monitor";
   public static String END_COMMUNICATION = "fin-communication" ;
   public static int BUFFER_LENGTH = 1000 ;
+  public static int TCP_SERVEUR_PORT = 6060;
+
   
   // Relations Publiques
   public static String PREFIXE_BONJOUR = "WESH";
@@ -25,8 +27,8 @@ public class Global {
   public static String FIRSTIP = "";
   public static int NOMBRESOUSPAQUETS = 5;
   
-  // TCP Connections
-  public static int TCP_SERVEUR_PORT = 6060;
+  // GestionnaireMort
+  public static String VERIFY_DEATH = "CAVA?";
   
   //RP de debug
   public static boolean DEBUG = false;
