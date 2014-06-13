@@ -45,6 +45,29 @@ public class Donnees {
 			SendPaquet.prevenirHostChanged(m,p.id) ;
 		}
 	}
+	public static Boolean verifieMort(Machine m){
+    //envoie un message à m pour vérifier qu'il est bien mort
+    return null ;
+  }
+  
+  public void traiteUnMort(Machine m){
+    if(myHosts.contains(m)){
+      if(verifieMort(m)){
+        myHosts.remove(m) ;
+      }
+    }
+    if (interestServeur.contains(m) && verifieMort(m)){
+      interestServeur.remove(m) ;
+      for (Paquet p : myData) {
+        for(Machine n : p.otherHosts){
+          if(m==n) {
+            //check avec p.poxer si on doit intervenir ou non
+            //éventuellement, rétablir le paquet
+          }
+        }
+      }
+    }
+  }
 
 	public void actualiseAllServeur(LinkedList<Machine> l){
 		allServeurLock.lock();
