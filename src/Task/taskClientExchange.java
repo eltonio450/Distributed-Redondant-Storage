@@ -39,7 +39,7 @@ public class taskClientExchange implements Runnable {
     
     if (s.equals(Global.REPONSE_EXCHANGE)){
       //while(){
-        // TODO : découper le paquet en plusieurs buffer
+        // TODO : dï¿½couper le paquet en plusieurs buffer
       //}
       buffer.clear();
       buffer = Utilitaires.stringToBuffer(Global.END_COMMUNICATION) ;
