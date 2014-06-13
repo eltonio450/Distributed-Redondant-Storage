@@ -1,6 +1,7 @@
 package RelationsPubliques;
 
 import java.net.InetSocketAddress;
+import RelationsPubliques.*;
 
 public class Message {
 	String body;
@@ -18,6 +19,8 @@ public class Message {
 		this.dest = dest;
 		this.body = body;
 		this.expirationDate = expirationDate;
+		
+		//Gestion du débuggage. 
 	}
 	
 	public boolean equals (Object o) {
