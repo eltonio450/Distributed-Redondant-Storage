@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class SendPaquet {
 
   public static void envoieData(Donnees d,ArrayList<Paquet> listPaquets, ArrayList<Machine> hosts){
-    //envoie un groupe de paquets à un groupe d'hosts
-    //stock les paquets reçus en échange dans d
+    //envoie un groupe de paquets ï¿½ un groupe d'hosts
+    //stock les paquets reï¿½us en ï¿½change dans d
     int n = listPaquets.size() ; //should equal 5
     assert n == hosts.size() ;
     for (int j = 0 ; j< n ; j++){
@@ -18,11 +18,13 @@ public class SendPaquet {
   }
   
   public static Paquet putAndGet(Machine m, Paquet p){ //TODO
-    //Envoie UN paquet à m et reçoit UN paquet en échange
+    //Envoie UN paquet ï¿½ m et reï¿½oit UN paquet en ï¿½change
     return null ;
   }
   
   public static void prevenirHostChanged(Machine m , long Id){  //TODO
-    //préviens une machine que cette machine remplace m pour le paquet d'id Id
+    //prï¿½viens une machine que cette machine remplace m pour le paquet d'id Id
   }
+  
+ 
 }
