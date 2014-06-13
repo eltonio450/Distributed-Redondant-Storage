@@ -1,15 +1,16 @@
 package Stockage;
 
+
 import RelationsPubliques.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -34,8 +35,8 @@ public class Paquet {
   }
   
   public void putOtherHosts(ArrayList<Machine> liste){
-    int n = Global.NOMBRESOUSPAQUETS ;
-    ArrayList<Machine> l = new ArrayList<Machine>(n) ;
+    int n = liste.size() ;
+    ArrayList<Machine> l = new ArrayList<Machine>(5) ;
     for (int j=0; j< n; j++){
       l.add(liste.get(j)) ;
     }
@@ -50,18 +51,32 @@ public class Paquet {
   }
   
   
+<<<<<<< HEAD
   public FileInputStream bufferLecture(){
+=======
+  public BufferedReader getOnDisk(){
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal
 	  try {
+<<<<<<< HEAD
 		return new FileInputStream(pathOnDisk);
 	} catch (Exception e) {
 		System.out.println("Problème dans la lecture du fichier.");
+//=======
+		return new BufferedReader(new FileReader(pathOnDisk));
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+//>>>>>>> branch 'master' of https://github.com/eltonio450/modal
 	}
 	  return null;
   }
-
   
-  public FileOutputStream bufferEcriture(){
+public FileOutputStream bufferEcriture(){
+
+  public BufferedReader putOnDisk(){
+
 	  try {
+
 		  File file = new File(pathOnDisk);
 		  if(file.exists())
 			  file.delete();
@@ -71,9 +86,15 @@ public class Paquet {
 		
 	} catch (Exception e) {
 		System.out.println("Problème dans l'écriture du fichier.");
+
+		return new BufferedReader(new FileReader(pathOnDisk));
+	}
+	  catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+
 	}
 	  return null;
   }
   
-
 }
