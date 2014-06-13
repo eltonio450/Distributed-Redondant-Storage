@@ -10,7 +10,7 @@ package GestionnaireMort;
  */
 
 public class DeathUtilities {
-	public static boolean verifyDeath (Stockage.Machine m) {
+	public static boolean examineDeath (Stockage.Machine m) {
 		return true;
 	}
 	
