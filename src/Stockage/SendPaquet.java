@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SendPaquet {
 
-  public static void envoieData(Donnees d,ArrayList<Paquet> listPaquets, ArrayList<Machine> hosts){
+  public static void envoieData(ArrayList<Paquet> listPaquets, ArrayList<Machine> hosts){
     //envoie un groupe de paquets à un groupe d'hosts
     //stock les paquets reçus en échange dans d
     int n = listPaquets.size() ; //should equal 5
@@ -13,7 +13,7 @@ public class SendPaquet {
       Paquet p = listPaquets.get(j) ;
       p.putOtherHosts(hosts);
       Paquet q = putAndGet(hosts.get(j),p) ;
-      d.addHost(hosts.get(j)) ;
+      Donnees.addHost(hosts.get(j)) ;
     }
   }
   

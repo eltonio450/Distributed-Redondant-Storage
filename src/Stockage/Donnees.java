@@ -9,38 +9,27 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Donnees {
 
-	private LinkedList<Machine> allServeur ;
-	private HashSet<Machine> interestServeur ;
-	private HashSet<Machine> neighbours ;
-	private LinkedList<Machine> myHosts ;
-	private HashMap<Long,Paquet> myData ;
-	private LinkedList<ArrayList<Paquet>> myOwnData ;
+	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
+	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
+	static private HashSet<Machine> neighbours = new HashSet<Machine>();
+	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
+	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
+	static private LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
 
-	private ReentrantLock allServeurLock ;
-	private ReentrantLock interestServeurLock;
-	private ReentrantLock neighboursLock;
-	private ReentrantLock myHostsLock;
-	private ReentrantLock myDataLock;
-	private ReentrantLock myOwnDataLock;
+	static private ReentrantLock allServeurLock = new ReentrantLock ();
+	static private ReentrantLock interestServeurLock= new ReentrantLock ();
+	static private ReentrantLock neighboursLock= new ReentrantLock ();
+	static private ReentrantLock myHostsLock= new ReentrantLock ();
+	static private ReentrantLock myDataLock= new ReentrantLock ();
+	static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
-	Donnees(LinkedList<ArrayList<Paquet>> mesPaquets) {
-		allServeur = new LinkedList<Machine>() ;
-		interestServeur = new HashSet<Machine>() ;
-		neighbours = new HashSet<Machine>() ;
-		myData = new HashMap<Long,Paquet>() ;
-		myOwnData = mesPaquets ;
-
-		allServeurLock = new ReentrantLock ();
-		interestServeurLock = new ReentrantLock ();
-		neighboursLock = new ReentrantLock ();
-		myHostsLock = new ReentrantLock ();
-		myDataLock = new ReentrantLock ();
-		myOwnDataLock = new ReentrantLock ();
+	public static void initializeData(LinkedList<ArrayList<Paquet>> mesPaquets){
+	  myOwnData = mesPaquets ;
 	}
 
-	public void receptionPaquet(Machine m, Paquet p){
+	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
-		myData.put(p.id, p) ;
+		Donnees.myData.put(p.id, p) ;
 		for(Machine n : p.otherHosts){
 			SendPaquet.prevenirHostChanged(m,p.id) ;
 		}
@@ -50,7 +39,7 @@ public class Donnees {
     return null ;
   }
   
-  public void traiteUnMort(Machine m){
+  public static void traiteUnMort(Machine m){
     if(myHosts.contains(m)){
       if(verifieMort(m)){
         myHosts.remove(m) ;
@@ -58,10 +47,10 @@ public class Donnees {
     }
     if (interestServeur.contains(m) && verifieMort(m)){
       interestServeur.remove(m) ;
-      for (Paquet p : myData) {
+      for (Paquet p : myData.values()) {
         for(Machine n : p.otherHosts){
           if(m==n) {
-            //check avec p.poxer si on doit intervenir ou non
+            //check avec p.power si on doit intervenir ou non
             //éventuellement, rétablir le paquet
           }
         }
@@ -69,13 +58,13 @@ public class Donnees {
     }
   }
 
-	public void actualiseAllServeur(LinkedList<Machine> l){
+	public static void actualiseAllServeur(LinkedList<Machine> l){
 		allServeurLock.lock();
 		allServeur = l ;
 		allServeurLock.unlock();
 	}
 
-	public void removeServer (Machine m) {
+	public static void removeServer (Machine m) {
 		allServeurLock.lock();
 		allServeur.remove(m);
 		allServeurLock.unlock();
@@ -86,26 +75,26 @@ public class Donnees {
 		//		 etc.
 	}
 
-	public void actualiseNeighbours(HashSet<Machine> voisins){
+	public static void actualiseNeighbours(HashSet<Machine> voisins){
 		neighboursLock.lock();
 		neighbours = voisins;
 		neighboursLock.unlock();
 	}
 
-	public ArrayList<Paquet> firstOwnData(){
+	public static ArrayList<Paquet> firstOwnData(){
 		myOwnDataLock.lock();
 		ArrayList<Paquet> retour = myOwnData.peek() ;
 		myOwnDataLock.unlock();
 		return retour;
 	}
 
-	public void addInterestServeur(Machine m){
+	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
 		interestServeur.add(m) ;
 		interestServeurLock.unlock();
 	}
 
-	public void addHost(Machine m){
+	public static void addHost(Machine m){
 		myHostsLock.lock();
 		myHosts.add(m) ;
 		myHostsLock.unlock();
