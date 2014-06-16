@@ -43,10 +43,8 @@ public class taskClientExchange implements Runnable {
       buffer.flip() ;
       clientSocket.write(buffer) ;
       Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-      String otherIpAdresse = clientSocket.socket().getInetAddress().toString() ;
-      int otherPort = clientSocket.socket().getPort() ;
-      Machine other = new Machine(otherIpAdresse,otherPort) ;
-      Donnees.receptionPaquet(other, receivedPaquet);
+      Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
+      Donnees.receptionPaquet(otherMachine, receivedPaquet);
     }
     else {
       //TODO : renvoyer une erreur - la machine ne veut pas recevoir de

@@ -1,6 +1,7 @@
 package Stockage;
 
 import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
 
 public class Machine {
 
@@ -16,4 +17,11 @@ public class Machine {
 		this.ipAdresse = m.getHostName();
 		this.port = m.getPort();
 	}
+	
+	public static Machine otherMachineFromSocket(SocketChannel s){
+	  String ip = s.socket().getInetAddress().toString() ;
+	  int p = s.socket().getPort();
+	  return new Machine(ip,p) ;
+	}
+	
 }
