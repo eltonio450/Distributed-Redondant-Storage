@@ -11,7 +11,7 @@ public class Global {
   public static String EXCHANGE = "exchange" ;
   public static String REPONSE_EXCHANGE = "ok-exchange" ;
   public static String MONITOR = "monitor";
-  public static String END_COMMUNICATION = "fin-communication" ;
+  public static String END_ENVOI = "fin-1er-envoi" ;
   public static int BUFFER_LENGTH = 1000 ;
   public static int TCP_SERVEUR_PORT = 6060;
 

@@ -32,16 +32,10 @@ public class Paquet {
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
-  
   boolean enLecture;
-  
   String pathOnDisk;
   FileChannel fichier;
-
-  
   ArrayList<Machine> otherHosts ;
-  
-  
   Machine owner ;
   
   Paquet(long Id, int p , Machine proprio) {
@@ -49,8 +43,6 @@ public class Paquet {
     power = p ;
     owner = proprio ;
     pathOnDisk="../data";
-
-    
     	try {
 			fichier = FileChannel.open(new Path("bla"), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {

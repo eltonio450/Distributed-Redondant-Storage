@@ -34,6 +34,12 @@ public class Donnees {
 		SendPaquet.prevenirHostChanged(p.id) ;
 	}
 	
+  public static Paquet selectPaquetToSend() {
+    //for the task taskServeurExchange : should choose a random package to exchange for a first connection
+    //TODO : is it a reasonable choice ?
+    return (Paquet) myData.values().toArray()[0] ;
+  }	
+  
 	public static Boolean verifieMort(Machine m){
     //envoie un message à m pour vérifier qu'il est bien mort
     return null ;
@@ -103,5 +109,6 @@ public class Donnees {
 	public static Paquet getHostedPaquet(Long Id){
 	  return myData.get(Id) ;
 	}
+
 }
 

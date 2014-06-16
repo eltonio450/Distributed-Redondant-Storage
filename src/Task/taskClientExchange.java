@@ -39,7 +39,7 @@ public class taskClientExchange implements Runnable {
     if (s.equals(Global.REPONSE_EXCHANGE)){
       aEnvoyer.envoyerPaquet(clientSocket);
       buffer.clear();
-      buffer = Utilitaires.stringToBuffer(Global.END_COMMUNICATION) ;
+      buffer = Utilitaires.stringToBuffer(Global.END_ENVOI) ;
       buffer.flip() ;
       clientSocket.write(buffer) ;
       Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
