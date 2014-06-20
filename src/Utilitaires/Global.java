@@ -8,6 +8,7 @@ package Utilitaires;
 
 public class Global {
 	// TCP Connections
+  public static String HOST_CHANGED = "host-changed" ;
 	public static String EXCHANGE = "exchange" ;
 	public static String REPONSE_EXCHANGE = "ok-exchange" ;
 	public static String MONITOR = "monitor";

@@ -44,6 +44,16 @@ public class Donnees {
     return null ;
   }
   
+  
+  public static void changeHostForPaquet(long Id, int place, Machine newHost){
+    myDataLock.lock();
+    try{
+      myData.get(Id).otherHosts.set(place, newHost) ;
+    }
+    finally{
+      myDataLock.unlock();
+    }
+  }
   public static void traiteUnMort(Machine m){
     if(myHosts.contains(m)){
       if(verifieMort(m)){
@@ -111,7 +121,13 @@ public class Donnees {
 	}
 	
 	public static Paquet getHostedPaquet(Long Id){
-	  return myData.get(Id) ;
+	  myDataLock.lock();
+	  try{
+	    return myData.get(Id) ;
+	  }
+	  finally {
+	    myDataLock.unlock();
+	  }
 	}
 	
 	public static void putNewPaquet(Paquet p) {

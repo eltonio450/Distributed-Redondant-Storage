@@ -43,6 +43,7 @@ public class Paquet {
     power = p ;
     owner = proprio ;
     pathOnDisk=Global.PATHTODATA ;
+    otherHosts = new ArrayList<Machine> (5) ;
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
@@ -62,11 +63,9 @@ public class Paquet {
   
   public void putOtherHosts(ArrayList<Machine> liste){
     int n = liste.size() ;
-    ArrayList<Machine> l = new ArrayList<Machine>(5) ;
     for (int j=0; j< n; j++){
-      l.add(liste.get(j)) ;
+      otherHosts.add(liste.get(j)) ;
     }
-    otherHosts = l ;
   }
   
 
@@ -78,7 +77,7 @@ public class Paquet {
 
   public void envoyerPaquet(SocketChannel s) throws IOException{
     //we assume connection has already started
-    ByteBuffer buffer = Utilitaires.createBufferForPaquetInformation(id,power,owner);  //already flipped
+    ByteBuffer buffer = createBufferForPaquetInformation();  //already flipped
     s.write(buffer) ;
     isUsed.lock();
     try {
@@ -87,6 +86,15 @@ public class Paquet {
     finally {
       isUsed.unlock();
     }
+  }
+  
+  public ByteBuffer createBufferForPaquetInformation() {
+    //create a buffer and flip it at the end
+    
+    ByteBuffer res = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
+    //TODO : implement in a smart way : il faut mettre id du paquet, sa power, owner.ipAdresse,owner.port et otherHosts !!
+    //à voir avec Paquet.createPaquetFromBuffer
+    return res ;
   }
   
   public static Paquet createPaquetFromBuffer(ByteBuffer b){
