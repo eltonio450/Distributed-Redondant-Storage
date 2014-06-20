@@ -13,7 +13,7 @@ public class ServeurTCP extends Thread {
 	public void run () {
 		try {
 			ServerSocketChannel serverSocket = ServerSocketChannel.open();
-			InetSocketAddress local = new InetSocketAddress(Global.TCP_SERVEUR_PORT);
+			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT);
 			serverSocket.bind(local);
 			while (true) {
 				SocketChannel client = serverSocket.accept();

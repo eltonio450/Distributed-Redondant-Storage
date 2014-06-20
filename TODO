@@ -1,13 +1,13 @@
 • Gestionnaire morts :
 		Vérifier mort (tcp)
-		Transmettre mort (tcp ?)
+		Transmettre mort (tcp)
 		
 • Gestionnaire allumage :
 		Regarder si on a une sauvegarde
-		Chercher liste des serveurs (Runnable TCP)
-		Chiffrer mes données
+		Sinon chercher liste des serveurs (Runnable TCP)
+		Choisir des machines
 		Echanger les blocs
-		
+				
 • Gestionnaire récupération de mes données :
 		Si ma liste est à jour, demander (TCP : récupérer données)
 		Sinon, demander à tout le monde où sont mes fichiers (UDP sur tous les ports)
