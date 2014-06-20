@@ -20,7 +20,7 @@ public class taskClientExchange implements Runnable {
     aEnvoyer = p ;
   }
   
-  public void initEtEnvoiePaquet() throws IOException { 
+  public boolean initEtEnvoiePaquet() { //return true if succeeded
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     
     //init connection
@@ -55,21 +55,21 @@ public class taskClientExchange implements Runnable {
       //TODO :
       //aEnvoyer.deleteData() ;
       
+      return true ;
     }
     else {
-      //TODO : renvoyer une erreur - la machine ne veut pas recevoir de
+      return false ;
     }
-    
-   }
+    }
+    catch(IOException e){
+      return false ;
+    }
    } 
     
   public void run() {
-    try{
-      initEtEnvoiePaquet() ;
-      
-    }
-    catch(IOException e){
-      // TODO : traiter l'erreur - recommencer l'envoie ?
+    boolean success = false ;
+    while(!success){
+      success = initEtEnvoiePaquet() ;
     }
   }
 

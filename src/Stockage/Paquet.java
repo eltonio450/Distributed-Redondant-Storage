@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -90,22 +91,37 @@ public class Paquet {
   
   public ByteBuffer createBufferForPaquetInformation() {
     //create a buffer and flip it at the end
-    
-    ByteBuffer res = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
-    //TODO : implement in a smart way : il faut mettre id du paquet, sa power, owner.ipAdresse,owner.port et otherHosts !!
-    //à voir avec Paquet.createPaquetFromBuffer
-    return res ;
+  
+    String s = id + " " + power + " " + owner.ipAdresse + " " + owner.port ;
+    for (int i = 0 ; i < 5 ; i++){
+      Machine m = otherHosts.get(i) ;
+      s = s + " " + m.ipAdresse + " " + m.port ;
+    }
+    ByteBuffer buffer = Utilitaires.stringToBuffer(s) ;
+    return buffer;
   }
   
   public static Paquet createPaquetFromBuffer(ByteBuffer b){
     //buffer is flipped
-    long id = 0;
-    int power = 0 ;
-    String IpAdresse = "" ;
-    int port = 0 ;
-    //TODO : à voir avec Utilitaires
+    String s = Utilitaires.buffToString(b);
+    Scanner scan = new Scanner(s) ; 
+    
+    long id = scan.nextLong() ;
+    int power  = scan.nextInt() ;
+    String IpAdresse = scan.next() ;
+    int port = scan.nextInt() ;
     Machine owner = new Machine(IpAdresse,port) ;
-    return new Paquet(id,power,owner) ;
+    
+    ArrayList<Machine> hosts = new ArrayList<Machine>(5) ;
+    for(int i = 0 ; i<5;i++){
+      String ip = scan.next() ;
+      int p = scan.nextInt() ;
+      hosts.set(i, new Machine(ip,p)) ;
+    }
+    
+    Paquet paq = new Paquet(id,power,owner) ;
+    paq.putOtherHosts(hosts);
+    return paq ;
   }
   
   public static Paquet recoitPaquet(SocketChannel s) throws IOException{
