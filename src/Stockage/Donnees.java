@@ -12,14 +12,12 @@ public class Donnees {
 
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
-	static private HashSet<Machine> neighbours = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
 	static private LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
 
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
-	static private ReentrantLock neighboursLock= new ReentrantLock ();
 	static private ReentrantLock myHostsLock= new ReentrantLock ();
 	static private ReentrantLock myDataLock= new ReentrantLock ();
 	static private ReentrantLock myOwnDataLock= new ReentrantLock ();
@@ -42,7 +40,7 @@ public class Donnees {
   
 	// TODO : implement this and put it in an other place
   public static Boolean verifieMort(Machine m){
-    //envoie un message à m pour vérifier qu'il est bien mort
+    //envoie un message ï¿½ m pour vï¿½rifier qu'il est bien mort
     return null ;
   }
   
@@ -58,11 +56,22 @@ public class Donnees {
         for(Machine n : p.otherHosts){
           if(m==n) {
             //check avec p.power si on doit intervenir ou non
-            //éventuellement, rétablir le paquet
+            //ï¿½ventuellement, rï¿½tablir le paquet
           }
         }
       }
     }
+  }
+  
+  public static LinkedList<Machine> getAllServeurs () {
+	  allServeurLock.lock();
+	  try {
+		  LinkedList<Machine> buff = new LinkedList<Machine> ();
+		  buff.addAll(allServeur);
+		  return buff;
+	  } finally {
+		  allServeurLock.unlock();
+	  }
   }
 
 	public static void actualiseAllServeur(LinkedList<Machine> l){
@@ -80,12 +89,6 @@ public class Donnees {
 		// PB. : il faut se reprendre un voisin quand on en perd un
 		// 		 il faut gerer la recuperation si c'est un interestServeur
 		//		 etc.
-	}
-
-	public static void actualiseNeighbours(HashSet<Machine> voisins){
-		neighboursLock.lock();
-		neighbours = voisins;
-		neighboursLock.unlock();
 	}
 
 	public static ArrayList<Paquet> firstOwnData(){
@@ -116,6 +119,5 @@ public class Donnees {
 	  myData.put(p.id, p) ;
 	  myDataLock.unlock();
 	}
-
 }
 
