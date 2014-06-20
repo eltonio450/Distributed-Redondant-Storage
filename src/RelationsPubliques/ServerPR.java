@@ -24,18 +24,16 @@ public class ServerPR extends Thread{
 	private DatagramChannel channel;
 	private ByteBuffer receivedMessage;
 	private InetSocketAddress sender;
-	private ClientPR clientPR;
 
 	private LinkedList<ExpectedMessage> expectedMessages;
 	private LinkedList<InetSocketAddress> dead;
 	private ReentrantLock expectedMessagesLock;	// Nécessaire pour pouvoir itérer sur expected messages
 
 
-	public ServerPR (ClientPR clientPR) throws IOException{
+	public ServerPR () throws IOException{
 		this.channel = DatagramChannel.open();
 		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
-		this.clientPR = clientPR;
 		this.expectedMessagesLock = new ReentrantLock();
 		this.expectedMessages = new LinkedList<ExpectedMessage>();
 		this.dead = new LinkedList<InetSocketAddress> ();
@@ -73,7 +71,7 @@ public class ServerPR extends Thread{
 		
 		if (token.equals(Global.PREFIXE_BONJOUR)) {
 			// On dit au client de répondre au serveur de l'hôte distant
-			clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
+			Global.clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
 			expectedMessages.remove(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, 0));
 			expectedMessages.add(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT));
