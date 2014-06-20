@@ -14,6 +14,9 @@ public class Global {
 	public static String MONITOR = "monitor";
 	public static String END_ENVOI = "fin-1er-envoi" ;
 	public static int BUFFER_LENGTH = 1000 ;
+	public static String NEXT_BUFFER = "NEXT";
+	public static String BEGIN = "BEGIN";
+	public static String GET_LIST = "GET_LIST";
 
 
 	// Relations Publiques
