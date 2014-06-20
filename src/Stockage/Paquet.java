@@ -3,6 +3,7 @@ package Stockage;
 
 import RelationsPubliques.*;
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,16 +22,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-
-
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Paquet {
 
   long id ;
-  
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
   boolean enLecture;
@@ -38,6 +36,7 @@ public class Paquet {
   FileChannel fichier;
   ArrayList<Machine> otherHosts ;
   Machine owner ;
+  Lock isUsed = new ReentrantLock();
   
   Paquet(long Id, int p , Machine proprio) {
     id = Id ;
@@ -53,15 +52,16 @@ public class Paquet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-    
   }
+  
+  
   
   
   
   public void putPower(int p){
     power = p ;
   }
+  
   
   
   public void putOtherHosts(ArrayList<Machine> liste){
@@ -85,12 +85,44 @@ public class Paquet {
 
   public void envoyerPaquet(SocketChannel s) throws IOException{
     //we assume connection has already started
-    //ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH) ;
-
+    ByteBuffer buffer = Utilitaires.createBufferForPaquetInformation(id,power,owner);  //already flipped
+    s.write(buffer) ;
+    isUsed.lock();
+    try {
+      long length = fichier.size() ;
+      fichier.transferTo(0, length, s) ;
+    }
+    finally {
+      isUsed.unlock();
+    }
+  }
+  
+  public static Paquet createPaquetFromBuffer(ByteBuffer b){
+    //buffer is flipped
+    long id = 0;
+    int power = 0 ;
+    String IpAdresse = "" ;
+    int port = 0 ;
+    //TODO : � voir avec Utilitaires
+    Machine owner = new Machine(IpAdresse,port) ;
+    return new Paquet(id,power,owner) ;
   }
   
   public static Paquet recoitPaquet(SocketChannel s) throws IOException{
-    return null ;
+  //we assume connection has already started
+    ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
+    buffer.clear() ;
+    s.read(buffer) ;
+    buffer.flip() ;
+    Paquet p = createPaquetFromBuffer(buffer) ;
+    p.isUsed.lock() ;
+    try {
+     fichier.transferFrom(0,Global.MAXIMUM_SIZE,s) ;
+    }
+    finally {
+      p.isUsed.unlock() ;
+    }
+    return p ;
   }
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){
