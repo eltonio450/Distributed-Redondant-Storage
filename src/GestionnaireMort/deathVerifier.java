@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.LinkedList;
 
+import Stockage.Donnees;
 import Utilitaires.*;
 
 public class deathVerifier implements Runnable {
@@ -40,6 +42,9 @@ public class deathVerifier implements Runnable {
 	}
 	
 	public static void broadcastDeath(Stockage.Machine m) {
-		ClientPR.add();
+		LinkedList<Stockage.Machine> buff = Donnees.getAllServeurs();
+		for (Stockage.Machine dest : buff) {
+			
+		}
 	}
 }

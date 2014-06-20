@@ -42,7 +42,7 @@ public class Donnees {
   
 	// TODO : implement this and put it in an other place
   public static Boolean verifieMort(Machine m){
-    //envoie un message à m pour vérifier qu'il est bien mort
+    //envoie un message ï¿½ m pour vï¿½rifier qu'il est bien mort
     return null ;
   }
   
@@ -58,11 +58,22 @@ public class Donnees {
         for(Machine n : p.otherHosts){
           if(m==n) {
             //check avec p.power si on doit intervenir ou non
-            //éventuellement, rétablir le paquet
+            //ï¿½ventuellement, rï¿½tablir le paquet
           }
         }
       }
     }
+  }
+  
+  public static LinkedList<Machine> getAllServeurs () {
+	  allServeurLock.lock();
+	  try {
+		  LinkedList<Machine> buff = new LinkedList<Machine> ();
+		  buff.addAll(allServeur);
+		  return buff;
+	  } finally {
+		  allServeurLock.unlock();
+	  }
   }
 
 	public static void actualiseAllServeur(LinkedList<Machine> l){
