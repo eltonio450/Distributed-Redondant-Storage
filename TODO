@@ -3,13 +3,14 @@
 • Restauration de paquets
 
 • Récupération des données
+		Si ma liste est à jour, demander (TCP : récupérer données)
+		Sinon, demander à tout le monde où sont mes fichiers (UDP sur tous les ports)
+
+• Gestion ré-allumage
 		
 • Gestionnaire allumage :
 		(Regarder si on a une sauvegarde)
+		Aller chercher les blocs
 		Choisir des machines
 		Echanger les blocs
-				
-• Gestionnaire récupération de mes données :
-		Si ma liste est à jour, demander (TCP : récupérer données)
-		Sinon, demander à tout le monde où sont mes fichiers (UDP sur tous les ports)
 		
