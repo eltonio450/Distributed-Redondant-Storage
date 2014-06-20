@@ -14,6 +14,9 @@ public class Global {
 	public static String MONITOR = "monitor";
 	public static String END_ENVOI = "fin-1er-envoi" ;
 	public static int BUFFER_LENGTH = 1000 ;
+	public static String NEXT_BUFFER = "NEXT";
+	public static String BEGIN = "BEGIN";
+	public static String GET_LIST = "GET_LIST";
 
 
 	// Relations Publiques
@@ -44,7 +47,7 @@ public class Global {
 	
 	
 	//NOM est un identifiant unique lorsque le serveur est executé en mode debug (donc avec plusieurs serveurs sur le meme PC)
-	public static int NOM;
+	public static String NOM;
 	
 	
 	//pathToMyData dépend du mode : si le mode debug est activé, un dossier prefixe avec l'id du programme est créé. Sinon elle est juste dans myOwnData/ 

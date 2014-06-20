@@ -86,6 +86,15 @@ public class Donnees {
 		  allServeurLock.unlock();
 	  }
   }
+  
+  public static void putServer (String ip, int port) {
+	  allServeurLock.lock();
+	  try {
+		  allServeur.add(new Machine(ip, port));
+	  } finally {
+		  allServeurLock.unlock();
+	  }
+  }
 
 	public static void actualiseAllServeur(LinkedList<Machine> l){
 		allServeurLock.lock();

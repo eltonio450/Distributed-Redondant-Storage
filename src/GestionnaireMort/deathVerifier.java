@@ -19,7 +19,7 @@ public class deathVerifier implements Runnable {
 	public void run () {
 		Boolean mort = verifyDeath(m);
 		if (mort) {
-			broadcastDeath(m);
+			//broadcastDeath(m);
 		}
 	}
 	
@@ -39,12 +39,5 @@ public class deathVerifier implements Runnable {
 			// Il est bel et bien mort (ou je suis déconnecté et il faut relancer l'appli)
 		}
 		return mort;
-	}
-	
-	public static void broadcastDeath(Stockage.Machine m) {
-		LinkedList<Stockage.Machine> buff = Donnees.getAllServeurs();
-		for (Stockage.Machine dest : buff) {
-			
-		}
 	}
 }
