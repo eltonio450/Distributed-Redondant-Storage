@@ -30,7 +30,7 @@ public class Donnees {
 
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
-		Donnees.myData.put(p.id, p) ;
+		putNewPaquet(p) ;
 		SendPaquet.prevenirHostChanged(p.id) ;
 	}
 	
@@ -40,7 +40,8 @@ public class Donnees {
     return (Paquet) myData.values().toArray()[0] ;
   }	
   
-	public static Boolean verifieMort(Machine m){
+	// TODO : implement this and put it in an other place
+  public static Boolean verifieMort(Machine m){
     //envoie un message à m pour vérifier qu'il est bien mort
     return null ;
   }
@@ -108,6 +109,12 @@ public class Donnees {
 	
 	public static Paquet getHostedPaquet(Long Id){
 	  return myData.get(Id) ;
+	}
+	
+	public static void putNewPaquet(Paquet p) {
+	  myDataLock.lock();
+	  myData.put(p.id, p) ;
+	  myDataLock.unlock();
 	}
 
 }
