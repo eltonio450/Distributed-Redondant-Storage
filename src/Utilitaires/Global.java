@@ -39,8 +39,14 @@ public class Global {
 	public static int FIRST_PORT;
 	public static String MY_IP;
 	public static String FIRST_IP;
-	public static String PATH;
+	
+	
+	
 
+	public static String nom = MY_IP + " " + Integer.valueOf(CLIENTPRPORT).toString();
+	
+	public static String pathToMyData = nom+"/myOwnData/";
+	public static String pathToData = nom+"/data/";
 	// Threads Serveurs
 	public static RelationsPubliques.ServerPR serverPR;
 	public static  RelationsPubliques.ClientPR clientPR;
