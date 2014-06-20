@@ -38,15 +38,17 @@ public class Global {
 	public static int SERVERPRPORT; // ClientPRPort +1
 	public static int TCP_PORT; // ClientPRPort +2
 	public static int FIRST_PORT;
-	public static String MY_IP;
+	public static String MY_IP = "127.0.0.1";
 	public static String FIRST_IP;
 	
 	
 	
-
-	public static String NOM = MY_IP + " " + Integer.valueOf(CLIENTPRPORT).toString();
+	//NOM est un identifiant unique lorsque le serveur est executé en mode debug (donc avec plusieurs serveurs sur le meme PC)
+	public static int NOM;
 	
-	public static String PATHTOMYDATA = NOM+"/myOwnData/";
+	
+	//pathToMyData dépend du mode : si le mode debug est activé, un dossier prefixe avec l'id du programme est créé. Sinon elle est juste dans myOwnData/ 
+	public static String PATHTOMYDATA = NOM+"/myOwnData/fichier.txt";
 	public static String PATHTODATA = NOM+"/data/";
 	// Threads Serveurs
 	public static RelationsPubliques.ServerPR serverPR;

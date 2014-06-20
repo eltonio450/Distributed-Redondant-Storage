@@ -28,7 +28,8 @@ public class IniServer {
 				.create("P"));
 		options.addOption(OptionBuilder
 				.withArgName("debug")
-				.withDescription("active le mode debuggage")
+				.hasArg()
+				.withDescription("Active le mode debuggage. Doit etre suivi d'un identifiant unique sur la machine")
 				.create("d"));
 		options.addOption(OptionBuilder
 				.withArgName("port")
@@ -55,7 +56,10 @@ public class IniServer {
 			if(cmd.hasOption("P"))
 				Global.FIRST_PORT = Integer.parseInt(cmd.getOptionValue("P"));
 			if(cmd.hasOption("d"))
+			{
+				Global.NOM = cmd.getOptionValue("d");
 				Global.DEBUG = true;
+			}
 			if(cmd.hasOption("h")){
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp( "Server" , options );
