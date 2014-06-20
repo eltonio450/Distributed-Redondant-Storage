@@ -18,6 +18,10 @@ public class Machine {
 		this.port = m.getPort();
 	}
 	
+	public String toString(){
+		return ipAdresse + "-" + port;
+	}
+	
 	public static Machine otherMachineFromSocket(SocketChannel s){
 	  String ip = s.socket().getInetAddress().toString() ;
 	  int p = s.socket().getPort();

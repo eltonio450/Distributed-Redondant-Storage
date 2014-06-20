@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.cli;
+package cli.java.org.apache.commons.cli;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

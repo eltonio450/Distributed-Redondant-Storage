@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.cli;
+package cli.java.org.apache.commons.cli;
 
 /**
  * Exception thrown during parsing signalling an unrecognized

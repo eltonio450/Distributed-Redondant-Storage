@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.cli;
+package cli.java.org.apache.commons.cli;
 
 /**
  * Thrown when an option requiring an argument

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.commons.cli;
+package cli.java.org.apache.commons.cli;
 
 /**
  * A class that implements the <code>CommandLineParser</code> interface

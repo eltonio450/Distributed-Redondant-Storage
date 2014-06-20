@@ -16,6 +16,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -42,10 +43,13 @@ public class Paquet {
     id = Id ;
     power = p ;
     owner = proprio ;
-    pathOnDisk="../data";
+    pathOnDisk=owner.toString()+"/data/"+ id;
     	try {
-			fichier = FileChannel.open(new Path("bla"), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

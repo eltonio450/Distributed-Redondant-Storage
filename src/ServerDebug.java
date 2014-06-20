@@ -8,7 +8,7 @@ public class ServerDebug extends Thread {
 	
 	public ServerDebug(int id, int port)
 	{
-		args = new String[5];
+		args = new String[6];
 		args[0]="";
 		args[1]="";
 		args[2]="-d";
@@ -18,7 +18,8 @@ public class ServerDebug extends Thread {
 		
 	}
 
-	public void run(String[] args){
+	public void run(){
+		System.out.println("Lancement du serveur " + identifiantDebug);
 		Main.main(args);		
 	}
 }
