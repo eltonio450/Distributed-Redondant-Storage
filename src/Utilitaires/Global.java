@@ -26,7 +26,7 @@ public class Global {
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;
-	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
+	public static long PAQUET_SIZE = 500000000000L ;  //TODO : set a reasonable size
 
 	// GestionnaireMort
 	public static String VERIFY_DEATH = "YOUDEADBRO?";

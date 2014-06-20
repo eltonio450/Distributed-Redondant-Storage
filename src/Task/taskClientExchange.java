@@ -8,21 +8,21 @@ import Utilitaires.Global;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
+import Stockage.Stockage;
 import Utilitaires.Utilitaires;
 
 public class taskClientExchange implements Runnable {
 
-  Machine correspondant ;
   Paquet aEnvoyer ;
   
-  public taskClientExchange(Machine m, Paquet p){
-    correspondant = m ;
+  public taskClientExchange(Paquet p){
     aEnvoyer = p ;
   }
   
   public boolean initEtEnvoiePaquet() { //return true if succeeded
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     
+    Machine correspondant = Stockage.chooseMachine() ;
     //init connection
     InetSocketAddress local = new InetSocketAddress(0); 
     clientSocket.bind(local); 
@@ -41,10 +41,6 @@ public class taskClientExchange implements Runnable {
     if (s.equals(Global.REPONSE_EXCHANGE)){
       //exchange can begin : send its package
       aEnvoyer.envoyerPaquet(clientSocket);
-      buffer.clear();
-      buffer = Utilitaires.stringToBuffer(Global.END_ENVOI) ;
-      buffer.flip() ;
-      clientSocket.write(buffer) ;
       
       //now receive the package in exchange
       Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;

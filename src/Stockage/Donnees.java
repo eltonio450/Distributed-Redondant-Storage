@@ -31,7 +31,7 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.id) ;
+		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une tâche et là donner à un slave
 	}
 	
   public static Paquet selectPaquetToSend() {

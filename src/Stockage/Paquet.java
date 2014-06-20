@@ -82,7 +82,7 @@ public class Paquet {
     s.write(buffer) ;
     isUsed.lock();
     try {
-      fichier.transferTo(0, Global.MAXIMUM_SIZE, s) ;
+      fichier.transferTo(0, Global.PAQUET_SIZE, s) ;
     }
     finally {
       isUsed.unlock();
@@ -133,7 +133,7 @@ public class Paquet {
     Paquet p = createPaquetFromBuffer(buffer) ;
     p.isUsed.lock() ;
     try {
-     p.fichier.transferFrom(s,0,Global.MAXIMUM_SIZE) ;
+     p.fichier.transferFrom(s,0,Global.PAQUET_SIZE) ;
     }
     finally {
       p.isUsed.unlock() ;
