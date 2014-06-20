@@ -72,6 +72,9 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Global.MONITOR)){
 				// Suite
 			}
+			else if (token.equals(Global.VERIFY_DEATH)) {
+				r.socket.write(Global.)
+			}
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;

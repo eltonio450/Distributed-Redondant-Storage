@@ -28,7 +28,8 @@ public class Global {
   public static int NOMBRESOUSPAQUETS = 5;
   
   // GestionnaireMort
-  public static String VERIFY_DEATH = "CAVA?";
+  public static String VERIFY_DEATH = "YOUDEADBRO?";
+  public static String NOT_DEAD = "NOPE";
   public static int DEATH_TIMEOUT = 10000;
   
   //RP de debug
