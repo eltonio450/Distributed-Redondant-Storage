@@ -19,7 +19,7 @@ public class deathVerifier implements Runnable {
 	public void run () {
 		Boolean mort = verifyDeath(m);
 		if (mort) {
-			//broadcastDeath(m);
+			//TODO broadcastDeath(m);
 		}
 	}
 	
@@ -36,7 +36,7 @@ public class deathVerifier implements Runnable {
 			if (clientSocket.read(ByteBuffer.allocateDirect(1000)) > 0)
 				mort = false;
 		} catch (IOException e) {
-			// Il est bel et bien mort (ou je suis déconnecté et il faut relancer l'appli)
+			// Il est bel et bien mort (ou je suis déconnecté et il faut relancer l'appli) 
 		}
 		return mort;
 	}
