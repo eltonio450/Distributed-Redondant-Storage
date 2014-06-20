@@ -14,6 +14,8 @@ public class Donnees {
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
+	
+	//ArrayList<Paquet> est le tableau de 5 paquets.
 	static private LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
 
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
