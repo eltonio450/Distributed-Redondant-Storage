@@ -20,7 +20,12 @@ public class IniServer {
 				.withArgName("serveur")
 				.hasArg()
 				.withDescription("ip du serveur 0")
-				.create("s"));
+				.create("I"));
+		options.addOption(OptionBuilder
+				.withArgName("port du serveur")
+				.hasArg()
+				.withDescription("port du serveur 0")
+				.create("P"));
 		options.addOption(OptionBuilder
 				.withArgName("debug")
 				.withDescription("active le mode debuggage")
@@ -42,10 +47,13 @@ public class IniServer {
 			if(cmd.hasOption("p")){
 				Global.CLIENTPRPORT = Integer.parseInt((cmd.getOptionValue("p")));
 				Global.SERVERPRPORT = Global.CLIENTPRPORT+1;
+				Global.TCP_PORT = Global.SERVERPRPORT+1;
 			}
 				
-			if(cmd.hasOption("s"))
-				Global.FIRSTIP = cmd.getOptionValue("s");
+			if(cmd.hasOption("I"))
+				Global.FIRST_IP = cmd.getOptionValue("I");
+			if(cmd.hasOption("P"))
+				Global.FIRST_PORT = Integer.parseInt(cmd.getOptionValue("P"));
 			if(cmd.hasOption("d"))
 				Global.DEBUG = true;
 			if(cmd.hasOption("h")){
