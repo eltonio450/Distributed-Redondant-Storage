@@ -1,5 +1,7 @@
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniDonnees;
+import StartUpRoutine.IniTCP;
+import StartUpRoutine.IniUDP;
 
 
 public class Main{
@@ -10,10 +12,7 @@ public class Main{
 		IniServer.iniServer(args);
 		IniDonnees.iniDonnees();
 		IniUDP.iniUDP();
-		
-		
-		//Etape 1: Définition des options
-		
+		IniTCP.iniTCP();
 	}
 
 }
