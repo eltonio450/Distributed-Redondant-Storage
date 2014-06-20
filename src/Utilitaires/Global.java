@@ -45,8 +45,8 @@ public class Global {
 
 	public static String NOM = MY_IP + " " + Integer.valueOf(CLIENTPRPORT).toString();
 	
-	public static String PATHTOMYDATA = nom+"/myOwnData/";
-	public static String PATHTODATA = nom+"/data/";
+	public static String PATHTOMYDATA = NOM+"/myOwnData/";
+	public static String PATHTODATA = NOM+"/data/";
 	// Threads Serveurs
 	public static RelationsPubliques.ServerPR serverPR;
 	public static  RelationsPubliques.ClientPR clientPR;
