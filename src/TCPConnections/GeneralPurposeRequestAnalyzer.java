@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Stockage.Donnees;
 import Stockage.Machine;
 import Utilitaires.*;
 
@@ -79,9 +80,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Global.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
 			  //TODO : interpréter pour récupérer
-			  long Id ;
-			  int placeToModify ;
-			  Machine m = Machine.otherMachineFromSocket(r.socket) ; //the new host
+			  long Id =0;
+			  int place =0;
+			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
+			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
 		} catch (IOException e) {
 			aEnlever.add(r);
