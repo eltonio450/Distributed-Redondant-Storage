@@ -57,9 +57,12 @@ public class Paquet {
     
   }
   
+  
+  
   public void putPower(int p){
     power = p ;
   }
+  
   
   public void putOtherHosts(ArrayList<Machine> liste){
     int n = liste.size() ;
