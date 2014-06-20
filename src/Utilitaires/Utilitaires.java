@@ -2,6 +2,8 @@ package Utilitaires;
 
 import java.nio.ByteBuffer;
 
+import Stockage.Machine;
+
 public class Utilitaires {
 	/**
 	 * 
@@ -30,4 +32,15 @@ public class Utilitaires {
 		b.flip();
 		return s;
 	}
+	
+	public static ByteBuffer createBufferForPaquetInformation(long id, int power, Machine owner) {
+	  //create a buffer and flip it at the end
+	  
+	  ByteBuffer res = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
+	  //TODO : implement in a smart way : il faut mettre id du paquet, sa power, owner.ipAdresse et owner.port
+	  //à voir avec Paquet.createPaquetFromBuffer
+	  return res ;
+	}
+	
+	
 }
