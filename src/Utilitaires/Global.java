@@ -13,18 +13,14 @@ public class Global {
   public static String MONITOR = "monitor";
   public static String END_ENVOI = "fin-1er-envoi" ;
   public static int BUFFER_LENGTH = 1000 ;
-  public static int TCP_SERVEUR_PORT = 6060;
 
   
   // Relations Publiques
   public static String PREFIXE_BONJOUR = "WESH";
   public static String PREFIXE_REPONSE_BONJOUR = "YO";
   public static String SELF_WAKE_UP = "DEBOUT";
-  public static int CLIENTPRPORT = 5050;
-  public static int SERVERPRPORT = 5051;
   public static long TIMEOUT = 60000;
   public static long SLEEPTIME = 10000;
-  public static String FIRSTIP = "";
   public static int NOMBRESOUSPAQUETS = 5;
   
   // GestionnaireMort
@@ -34,4 +30,14 @@ public class Global {
   
   //RP de debug
   public static boolean DEBUG = false;
+  
+  // CONFIGURATION AU LANCEMENT
+  public static int CLIENTPRPORT;
+  public static int SERVERPRPORT; // ClientPRPort +1
+  public static int TCP_PORT; // ClientPRPort +2
+  public static int FIRST_PORT;
+  public static String MY_IP;
+  public static String FIRST_IP;
+  public static String PATH;
+  
 }

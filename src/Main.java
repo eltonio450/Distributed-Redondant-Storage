@@ -27,7 +27,7 @@ public class Main{
 	public static void main(String[] args)  {
 		
 		IniServer.iniServer(args);
-		IniDonnee
+		IniDonnees.iniDonnees();
 
 		
 		

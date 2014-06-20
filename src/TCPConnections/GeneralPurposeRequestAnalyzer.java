@@ -73,7 +73,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				// Suite
 			}
 			else if (token.equals(Global.VERIFY_DEATH)) {
-				r.socket.write(Global.)
+			//	r.socket.write(Global.)
 			}
 		} catch (IOException e) {
 			aEnlever.add(r);
