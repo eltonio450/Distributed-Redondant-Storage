@@ -55,13 +55,9 @@ public class Paquet {
   }
   
   
-  
-  
-  
   public void putPower(int p){
     power = p ;
   }
-  
   
   
   public void putOtherHosts(ArrayList<Machine> liste){
@@ -79,9 +75,6 @@ public class Paquet {
     // doit initialiser les champs : id, power et proprio
     return null ;
   }
-  
-  
-
 
   public void envoyerPaquet(SocketChannel s) throws IOException{
     //we assume connection has already started
@@ -89,8 +82,7 @@ public class Paquet {
     s.write(buffer) ;
     isUsed.lock();
     try {
-      long length = fichier.size() ;
-      fichier.transferTo(0, length, s) ;
+      fichier.transferTo(0, Global.MAXIMUM_SIZE, s) ;
     }
     finally {
       isUsed.unlock();
@@ -117,12 +109,22 @@ public class Paquet {
     Paquet p = createPaquetFromBuffer(buffer) ;
     p.isUsed.lock() ;
     try {
-     fichier.transferFrom(0,Global.MAXIMUM_SIZE,s) ;
+     p.fichier.transferFrom(s,0,Global.MAXIMUM_SIZE) ;
     }
     finally {
       p.isUsed.unlock() ;
     }
     return p ;
+  }
+  
+  public void deleteData() {
+    isUsed.lock();
+    try{
+      
+    }
+    finally{
+      
+    }
   }
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){
