@@ -42,7 +42,7 @@ public class Paquet {
     id = Id ;
     power = p ;
     owner = proprio ;
-    pathOnDisk=Global.pathToData();
+    pathOnDisk=Global.PATHTODATA ;
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
