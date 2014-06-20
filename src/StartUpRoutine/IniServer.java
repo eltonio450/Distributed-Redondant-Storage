@@ -1,4 +1,5 @@
-import Stockage.Machine;
+package StartUpRoutine;
+
 import Utilitaires.Global;
 import cli.java.org.apache.commons.cli.CommandLine;
 import cli.java.org.apache.commons.cli.CommandLineParser;
@@ -11,14 +12,8 @@ import cli.java.org.apache.commons.cli.Options;
 import cli.java.org.apache.commons.cli.ParseException;
 import cli.java.org.apache.commons.cli.PosixParser;
 
-
-public class Server extends Thread{
-
-	String[] args;
-	Machine localhost;
-	
-	public Server(String[] args)
-	{
+public class IniServer {
+	public static void iniServer (String [] args) {
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");
 		options.addOption(OptionBuilder
@@ -47,7 +42,6 @@ public class Server extends Thread{
 			if(cmd.hasOption("p")){
 				Global.CLIENTPRPORT = Integer.parseInt((cmd.getOptionValue("p")));
 				Global.SERVERPRPORT = Global.CLIENTPRPORT+1;
-				localhost.port = Global.CLIENTPRPORT;
 			}
 				
 			if(cmd.hasOption("s"))
@@ -86,27 +80,5 @@ public class Server extends Thread{
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-
-		localhost.ipAdresse = "10";
-
-	}
-	
-	public void run(){
-		
-		//variables de diagnostic
-
-
-
-
-
-		//Main.main(arguments);
-
-		//try{
-		//portTexte = args[0];
-		//} catch(Exception e) {portTexte = "5040";}
-
-		//int port = Integer.parseInt(portTexte);
-
-		//System.out.println("Port de fonctionnement : " + port);
 	}
 }

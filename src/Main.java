@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import RelationsPubliques.*;
+import StartUpRoutine.IniServer;
 import Utilitaires.Global;
 
 import cli.java.org.apache.commons.cli.CommandLine;
@@ -25,8 +26,8 @@ public class Main{
 
 	public static void main(String[] args)  {
 		
-		Server s = new Server(args);
-		s.start();
+		IniServer.iniServer(args);
+		IniDonnee
 
 		
 		

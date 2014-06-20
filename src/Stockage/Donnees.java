@@ -12,14 +12,12 @@ public class Donnees {
 
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
-	static private HashSet<Machine> neighbours = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
 	static private LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
 
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
-	static private ReentrantLock neighboursLock= new ReentrantLock ();
 	static private ReentrantLock myHostsLock= new ReentrantLock ();
 	static private ReentrantLock myDataLock= new ReentrantLock ();
 	static private ReentrantLock myOwnDataLock= new ReentrantLock ();
@@ -93,12 +91,6 @@ public class Donnees {
 		//		 etc.
 	}
 
-	public static void actualiseNeighbours(HashSet<Machine> voisins){
-		neighboursLock.lock();
-		neighbours = voisins;
-		neighboursLock.unlock();
-	}
-
 	public static ArrayList<Paquet> firstOwnData(){
 		myOwnDataLock.lock();
 		ArrayList<Paquet> retour = myOwnData.peek() ;
@@ -127,6 +119,5 @@ public class Donnees {
 	  myData.put(p.id, p) ;
 	  myDataLock.unlock();
 	}
-
 }
 
