@@ -42,7 +42,7 @@ public class Paquet {
     id = Id ;
     power = p ;
     owner = proprio ;
-    pathOnDisk=owner.toString()+"/data/"+ id;
+    pathOnDisk=Global.pathToData();
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
@@ -120,10 +120,11 @@ public class Paquet {
   public void deleteData() {
     isUsed.lock();
     try{
-      
+      File f = new File(pathOnDisk) ;
+      f.delete() ;
     }
     finally{
-      
+     isUsed.unlock(); 
     }
   }
 	
