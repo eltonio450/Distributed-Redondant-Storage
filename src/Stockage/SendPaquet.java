@@ -73,6 +73,7 @@ public class SendPaquet {
     //Envoie UN paquet à m et reçoit UN paquet en échange
   }
   
+  
   public static void prevenirHostChanged(long Id){
     //préviens une machine que cette machine remplace m pour le paquet d'id Id
     Paquet p = Donnees.getHostedPaquet(Id) ;

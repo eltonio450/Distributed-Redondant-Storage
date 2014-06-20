@@ -56,6 +56,7 @@ public class Donnees {
       myDataLock.unlock();
     }
   }
+  
   public static void traiteUnMort(Machine m){
     if(myHosts.contains(m)){
       if(verifieMort(m)){
