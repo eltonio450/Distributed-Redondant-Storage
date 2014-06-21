@@ -36,7 +36,7 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.id) ;
+		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une tâche et là donner à un slave
 	}
 	
   public static Paquet selectPaquetToSend() {
@@ -49,6 +49,17 @@ public class Donnees {
   public static Boolean verifieMort(Machine m){
     //envoie un message ï¿½ m pour vï¿½rifier qu'il est bien mort
     return null ;
+  }
+  
+  
+  public static void changeHostForPaquet(long Id, int place, Machine newHost){
+    myDataLock.lock();
+    try{
+      myData.get(Id).otherHosts.set(place, newHost) ;
+    }
+    finally{
+      myDataLock.unlock();
+    }
   }
   
   public static void traiteUnMort(Machine m){
@@ -76,6 +87,15 @@ public class Donnees {
 		  LinkedList<Machine> buff = new LinkedList<Machine> ();
 		  buff.addAll(allServeur);
 		  return buff;
+	  } finally {
+		  allServeurLock.unlock();
+	  }
+  }
+  
+  public static void putServer (String ip, int port) {
+	  allServeurLock.lock();
+	  try {
+		  allServeur.add(new Machine(ip, port));
 	  } finally {
 		  allServeurLock.unlock();
 	  }
@@ -118,7 +138,13 @@ public class Donnees {
 	}
 	
 	public static Paquet getHostedPaquet(Long Id){
-	  return myData.get(Id) ;
+	  myDataLock.lock();
+	  try{
+	    return myData.get(Id) ;
+	  }
+	  finally {
+	    myDataLock.unlock();
+	  }
 	}
 	
 	public static void putNewPaquet(Paquet p) {

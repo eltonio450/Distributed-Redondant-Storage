@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import Stockage.Donnees;
 import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
@@ -73,6 +74,7 @@ public class ClientPR extends Thread{
 
 	private InetSocketAddress getRemote () {
 		remoteIndex ++;
-		return null;
+		return null; // Tricky :/
+		//TODO
 	}
 }

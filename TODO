@@ -1,15 +1,16 @@
-• Gestionnaire morts :
-		Vérifier mort (tcp)
-		Transmettre mort (tcp)
-		
-• Gestionnaire allumage :
-		Regarder si on a une sauvegarde
-		Sinon chercher liste des serveurs (Runnable TCP)
-		Choisir des machines
-		Echanger les blocs
-				
-• Gestionnaire récupération de mes données :
+• Système de diffusion
+
+• Restauration de paquets
+
+• Récupération des données
 		Si ma liste est à jour, demander (TCP : récupérer données)
 		Sinon, demander à tout le monde où sont mes fichiers (UDP sur tous les ports)
+
+• Gestion ré-allumage
 		
-• Interface ligne de commande pour envoyer fichiers (sous forme d'archive) / récupérer fichier
+• Gestionnaire allumage :
+		(Regarder si on a une sauvegarde)
+		Aller chercher les blocs
+		Choisir des machines
+		Echanger les blocs
+		

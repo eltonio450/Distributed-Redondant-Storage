@@ -2,11 +2,13 @@ package TCPConnections;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
-import Utilitaires.Global;
+import Stockage.Donnees;
+import Stockage.Machine;
 import Utilitaires.*;
 
 public class GeneralPurposeRequestAnalyzer extends Thread {
@@ -75,6 +77,14 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Global.VERIFY_DEATH)) {
 			//	r.socket.write(Global.)
 			}
+			else if (token.equals(Global.HOST_CHANGED)) {
+			  r.socket.configureBlocking(true);
+			  //TODO : interpréter pour récupérer
+			  long Id =0;
+			  int place =0;
+			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
+			  Donnees.changeHostForPaquet(Id, place, newHost);
+	      }
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;

@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -54,7 +55,10 @@ public class Paquet {
 	id = Id ;
     power = p ;
     owner = proprio ;
-    
+
+    pathOnDisk=Global.PATHTODATA ;
+    otherHosts = new ArrayList<Machine> (5) ;
+
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
@@ -77,11 +81,9 @@ public class Paquet {
   
   public void putOtherHosts(ArrayList<Machine> liste){
     int n = liste.size() ;
-    ArrayList<Machine> l = new ArrayList<Machine>(5) ;
     for (int j=0; j< n; j++){
-      l.add(liste.get(j)) ;
+      otherHosts.add(liste.get(j)) ;
     }
-    otherHosts = l ;
   }
   
 
@@ -93,26 +95,58 @@ public class Paquet {
 
   public void envoyerPaquet(SocketChannel s) throws IOException{
     //we assume connection has already started
-    ByteBuffer buffer = Utilitaires.createBufferForPaquetInformation(id,power,owner);  //already flipped
+    ByteBuffer buffer = createBufferForPaquetInformation();  //already flipped
     s.write(buffer) ;
     isUsed.lock();
     try {
-      fichier.transferTo(0, Global.MAXIMUM_SIZE, s) ;
+      fichier.transferTo(0, Global.PAQUET_SIZE, s) ;
     }
     finally {
       isUsed.unlock();
     }
   }
   
+  public ByteBuffer createBufferForPaquetInformation() {
+    //create a buffer and flip it at the end
+  
+    String s = id + " " + power + " " + owner.ipAdresse + " " + owner.port ;
+    for (int i = 0 ; i < 5 ; i++){
+      Machine m = otherHosts.get(i) ;
+      s = s + " " + m.ipAdresse + " " + m.port ;
+    }
+    ByteBuffer buffer = Utilitaires.stringToBuffer(s) ;
+    return buffer;
+  }
+  
   public static Paquet createPaquetFromBuffer(ByteBuffer b){
     //buffer is flipped
+<<<<<<< HEAD
     long id = 0;
     int power = 0 ;
     String IpAdresse = "" ;
     int port = 0 ;
     //TODO : � voir avec Utilitaires
+=======
+    String s = Utilitaires.buffToString(b);
+    Scanner scan = new Scanner(s) ; 
+    
+    long id = scan.nextLong() ;
+    int power  = scan.nextInt() ;
+    String IpAdresse = scan.next() ;
+    int port = scan.nextInt() ;
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal
     Machine owner = new Machine(IpAdresse,port) ;
-    return new Paquet(id,power,owner) ;
+    
+    ArrayList<Machine> hosts = new ArrayList<Machine>(5) ;
+    for(int i = 0 ; i<5;i++){
+      String ip = scan.next() ;
+      int p = scan.nextInt() ;
+      hosts.set(i, new Machine(ip,p)) ;
+    }
+    
+    Paquet paq = new Paquet(id,power,owner) ;
+    paq.putOtherHosts(hosts);
+    return paq ;
   }
   
   public static Paquet recoitPaquet(SocketChannel s) throws IOException{
@@ -124,7 +158,7 @@ public class Paquet {
     Paquet p = createPaquetFromBuffer(buffer) ;
     p.isUsed.lock() ;
     try {
-     p.fichier.transferFrom(s,0,Global.MAXIMUM_SIZE) ;
+     p.fichier.transferFrom(s,0,Global.PAQUET_SIZE) ;
     }
     finally {
       p.isUsed.unlock() ;

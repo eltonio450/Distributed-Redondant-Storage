@@ -10,11 +10,15 @@ import Stockage.Machine;
 
 public class Global {
 	// TCP Connections
+  public static String HOST_CHANGED = "host-changed" ;
 	public static String EXCHANGE = "exchange" ;
 	public static String REPONSE_EXCHANGE = "ok-exchange" ;
 	public static String MONITOR = "monitor";
 	public static String END_ENVOI = "fin-1er-envoi" ;
 	public static int BUFFER_LENGTH = 1000 ;
+	public static String NEXT_BUFFER = "NEXT";
+	public static String BEGIN = "BEGIN";
+	public static String GET_LIST = "GET_LIST";
 
 
 	// Relations Publiques
@@ -25,8 +29,8 @@ public class Global {
 	public static long SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
-	public static long PAQUETSIZE = 40; //taille d'un sous paquet en bytes.
-	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
+		public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
+	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
 
 	// GestionnaireMort
 	public static String VERIFY_DEATH = "YOUDEADBRO?";
@@ -52,7 +56,7 @@ public class Global {
 	
 	
 	//NOM est un identifiant unique lorsque le serveur est executé en mode debug (donc avec plusieurs serveurs sur le meme PC)
-	public static int NOM;
+	public static String NOM;
 	
 	
 	//pathToMyData dépend du mode : si le mode debug est activé, un dossier prefixe avec l'id du programme est créé. Sinon elle est juste dans myOwnData/ 
