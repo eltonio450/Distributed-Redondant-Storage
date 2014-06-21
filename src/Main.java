@@ -10,8 +10,12 @@ public class Main{
 	public static void main(String[] args)  {
 		System.out.println("Modal launched...");
 		IniServer.iniServer(args);
+		
 		System.out.println("Arguments parsed...");
+		
+		
 		IniDonnees.iniDonnees();
+		
 		System.out.println("Data initialized...");
 		IniUDP.iniUDP();
 		System.out.println("UDP server ready...");

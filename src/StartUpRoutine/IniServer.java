@@ -1,5 +1,6 @@
 package StartUpRoutine;
 
+import Stockage.Machine;
 import Utilitaires.Global;
 import cli.java.org.apache.commons.cli.CommandLine;
 import cli.java.org.apache.commons.cli.CommandLineParser;
@@ -50,14 +51,14 @@ public class IniServer {
 				Global.SERVERPRPORT = Global.CLIENTPRPORT+1;
 				Global.TCP_PORT = Global.SERVERPRPORT+1;
 			}
-				
+
 			if(cmd.hasOption("I"))
 				Global.FIRST_IP = cmd.getOptionValue("I");
 			if(cmd.hasOption("P"))
 				Global.FIRST_PORT = Integer.parseInt(cmd.getOptionValue("P"));
 			if(cmd.hasOption("d"))
 			{
-				Global.NOM = cmd.getOptionValue("d");
+				Global.NOM = Integer.parseInt(cmd.getOptionValue("d"));
 				Global.DEBUG = true;
 			}
 			if(cmd.hasOption("h")){
@@ -91,6 +92,13 @@ public class IniServer {
 			System.exit(1);
 		} catch(Exception e){
 			e.printStackTrace();
+		}
+
+		
+		//Attention : a supprimer pour avoir la vraie IP à l'initiatisation :
+		if(!Global.DEBUG)
+		{
+			Global.MYSELF = new Machine("127.0.0.1", 5000);
 		}
 	}
 }

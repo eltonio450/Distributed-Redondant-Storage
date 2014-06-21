@@ -15,14 +15,19 @@ public class Donnees {
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
 	
-	//ArrayList<Paquet> est le tableau de 5 paquets.
-	static private LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
+	//longueur de la data primaire en bits (ou bytes ?)
+	static public long longueur;
+	
+	//passage en public (cf la remarque sur le lock)
+	static public LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
 
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
 	static private ReentrantLock myHostsLock= new ReentrantLock ();
 	static private ReentrantLock myDataLock= new ReentrantLock ();
-	static private ReentrantLock myOwnDataLock= new ReentrantLock ();
+	
+	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
+	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
 	public static void initializeData(LinkedList<ArrayList<Paquet>> mesPaquets){
 	  myOwnData = mesPaquets ;
@@ -120,6 +125,11 @@ public class Donnees {
 	  myDataLock.lock();
 	  myData.put(p.id, p) ;
 	  myDataLock.unlock();
+	}
+	
+	public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
+	{
+		//génère les paquets supplémentaire dans le tableau. Algo à faire
 	}
 }
 

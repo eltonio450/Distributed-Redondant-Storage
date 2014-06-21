@@ -1,5 +1,7 @@
 package Utilitaires;
 
+import Stockage.Machine;
+
 /**
  * 
  * @author Simon
@@ -22,6 +24,8 @@ public class Global {
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;
+	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
+	public static long PAQUETSIZE = 40; //taille d'un sous paquet en bytes.
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
 
 	// GestionnaireMort
@@ -37,7 +41,12 @@ public class Global {
 	public static int SERVERPRPORT; // ClientPRPort +1
 	public static int TCP_PORT; // ClientPRPort +2
 	public static int FIRST_PORT;
-	public static String MY_IP = "127.0.0.1";
+	//public static String MY_IP = "127.0.0.1";
+	public static Machine MYSELF;
+	
+	
+	
+	
 	public static String FIRST_IP;
 	
 	
@@ -47,8 +56,8 @@ public class Global {
 	
 	
 	//pathToMyData dépend du mode : si le mode debug est activé, un dossier prefixe avec l'id du programme est créé. Sinon elle est juste dans myOwnData/ 
-	public static String PATHTOMYDATA = NOM+"/myOwnData/fichier.txt";
-	public static String PATHTODATA = NOM+"/data/";
+	public static String PATHTOMYDATA;
+	public static String PATHTODATA;
 	// Threads Serveurs
 	public static RelationsPubliques.ServerPR serverPR;
 	public static  RelationsPubliques.ClientPR clientPR;

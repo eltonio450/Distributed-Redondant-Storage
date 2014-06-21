@@ -29,22 +29,34 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Paquet {
 
   long id ;
+  
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
   boolean enLecture;
+  
   String pathOnDisk;
+  
   FileChannel fichier;
+  
+  //il va falloir protéger cette variable vis-à-vis de la concurrence je pense
   ArrayList<Machine> otherHosts ;
+  
   Machine owner ;
+  
+  boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
+  long dernierePositionSignificative; //la position de la "fin" de l'information
+  
   Lock isUsed = new ReentrantLock();
   
-  Paquet(long Id, int p , Machine proprio) {
-    id = Id ;
+  public Paquet(long Id, int p , Machine proprio, boolean significatif, long dernierePos) {
+    dernierSignificatif = significatif;
+    dernierePositionSignificative = dernierePos;
+	id = Id ;
     power = p ;
     owner = proprio ;
-    pathOnDisk=Global.PATHTODATA ;
+    
     	try {
-			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +65,10 @@ public class Paquet {
 			e.printStackTrace();
 		}
   }
-  
+  public String pathOnDisk()
+  {
+	  return Global.PATHTODATA+"/"+Global.MYSELF.toString()+"-"+id+".txt";
+  }
   
   public void putPower(int p){
     power = p ;
@@ -95,7 +110,7 @@ public class Paquet {
     int power = 0 ;
     String IpAdresse = "" ;
     int port = 0 ;
-    //TODO : � voir avec Utilitaires
+    //TODO : � voir avec Utilitaires
     Machine owner = new Machine(IpAdresse,port) ;
     return new Paquet(id,power,owner) ;
   }
