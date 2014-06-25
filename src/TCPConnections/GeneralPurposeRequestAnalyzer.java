@@ -27,6 +27,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		while (true) {
 			for (Requester r : aTraiter) {
 				try {
+					buff.clear();
 					r.socket.read(buff);
 				} catch (IOException e) {
 					aEnlever.add(r);
@@ -79,7 +80,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			else if (token.equals(Global.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
-			  //TODO : interpréter pour récupérer
+			  //TODO : interprï¿½ter pour rï¿½cupï¿½rer
 			  String Id = "";
 			  int place =0;
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;

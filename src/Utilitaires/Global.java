@@ -19,7 +19,7 @@ public class Global {
 	public static String NEXT_BUFFER = "NEXT";
 	public static String BEGIN = "BEGIN";
 	public static String GET_LIST = "GET_LIST";
-
+	public static String NEW_SERVER = "NEWBROHERE";
 
 	// Relations Publiques
 	public static String PREFIXE_BONJOUR = "WESH";

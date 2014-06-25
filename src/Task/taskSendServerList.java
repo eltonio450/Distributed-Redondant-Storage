@@ -42,6 +42,6 @@ public class taskSendServerList implements Runnable {
 			}
 		}
 		
-		// TODO DIRE QUE X S'EST CONNECTE A TOUT LE MONDE
+		TCPConnections.broadcast.broadcastAll();
 	}
 }
