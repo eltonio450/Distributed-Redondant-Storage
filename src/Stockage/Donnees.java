@@ -120,12 +120,12 @@ public class Donnees {
 
 
 
-	/*public static ArrayList<Paquet> firstOwnData(){
-		myOwnDataL.lock();
+	public static ArrayList<Paquet> firstOwnData(){
+		//myOwnDataL.lock();
 		ArrayList<Paquet> retour = myOwnData.peek() ;
 		//myOwnDataLock.unlock();
 		return retour;
-	}*/
+	}
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
