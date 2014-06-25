@@ -10,7 +10,7 @@ package Utilitaires;
  */
 public class Slaver {
 	static final int NB_SLOWSLAVES = 100;
-	static final int NB_FASTSLAVES = 4;
+	static final int NB_FASTSLAVES = 20;
 	static SlaveThread [] slowSlaves, fastSlaves;
 	
 	static final void initialize () {

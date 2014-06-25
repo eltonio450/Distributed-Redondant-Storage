@@ -20,6 +20,7 @@ public class Message {
 		public static String PREFIXE_BONJOUR = "WESH#";
 		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
-
+		public static String VERIFY_DEATH = "YOUDEADBRO?#";
+		public static String NOT_DEAD = "NOPE#";
 
 }
