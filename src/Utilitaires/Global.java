@@ -24,8 +24,6 @@ public class Global {
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
   
 	// GestionnaireMort
-	public static String VERIFY_DEATH = "YOUDEADBRO?#";
-	public static String NOT_DEAD = "NOPE#";
 	public static int DEATH_TIMEOUT = 10000;
 
 	//RP de debug
