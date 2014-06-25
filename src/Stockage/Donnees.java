@@ -13,14 +13,14 @@ public class Donnees {
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
-	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
+	static private HashMap<String,Paquet> myData = new HashMap<String,Paquet>();
 	
 	//longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
 	
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
-	static public LinkedList<Paquet> toSendASAP = new LinkedList<String>();
+	static public LinkedList<String> toSendASAP = new LinkedList<String>();
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
@@ -30,7 +30,7 @@ public class Donnees {
 	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
 	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
-	public static void initializeData(LinkedList<ArrayList<Paquet>> mesPaquets){
+	public static void initializeData(LinkedList<String> mesPaquets){
 	  myOwnData = mesPaquets ;
 	}
 
@@ -120,15 +120,8 @@ public class Donnees {
 	}
 
 	public static ArrayList<Paquet> firstOwnData(){
-<<<<<<< HEAD
-
-		return null;
-=======
-		myOwnDataLock.lock();
-		ArrayList<Paquet> retour = myOwnData.peek() ;
-		myOwnDataLock.unlock();
-		return retour;
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+	  //TODO
+	  return null ;
 	}
 
 	public static void addInterestServeur(Machine m){
