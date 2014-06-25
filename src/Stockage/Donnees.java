@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
@@ -29,7 +30,7 @@ public class Donnees {
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
 
-	static public LinkedList<Paquet> toSendASAP = new LinkedList<Paquet>();
+	static public LinkedList<String> toSendASAP = new LinkedList<String>();
 
 
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
@@ -158,10 +159,13 @@ public class Donnees {
 	  }
 	}
 	
-  public static LinkedList<Paquet> chooseManyPaquetToSend() {
-    // TODO Auto-generated method stub
-    return null;
+  public static LinkedList<String> chooseManyPaquetToSend1() {
+      return toSendASAP ;
   }
+  
+  public static Set<String> chooseManyPaquetToSend2() {
+    return myData.keySet();
+}
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
