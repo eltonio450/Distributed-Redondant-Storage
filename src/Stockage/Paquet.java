@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Paquet {
 
-  long id ;
+  String id ;
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
@@ -44,15 +44,17 @@ public class Paquet {
   
   Machine owner ;
   
-  boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
-  long dernierePositionSignificative; //la position de la "fin" de l'information
+  //boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
+  //long dernierePositionSignificative; //la position de la "fin" de l'information
   
   Lock isUsed = new ReentrantLock();
   
-  public Paquet(long Id, int p , Machine proprio, boolean significatif, long dernierePos) {
-    dernierSignificatif = significatif;
-    dernierePositionSignificative = dernierePos;
-	id = Id ;
+  public Paquet(String Id, int p , Machine proprio 
+      //,boolean significatif, long dernierePos
+      ) {
+    //dernierSignificatif = significatif;
+    //dernierePositionSignificative = dernierePos;
+    id = Id ;
     power = p ;
     owner = proprio ;
 
@@ -120,15 +122,10 @@ public class Paquet {
   
   public static Paquet createPaquetFromBuffer(ByteBuffer b){
     //buffer is flipped
-    long id = 0;
-    int power = 0 ;
-    String IpAdresse = "" ;
-    int port = 0 ;
-    //TODO : � voir avec Utilitaires
     String s = Utilitaires.buffToString(b);
     Scanner scan = new Scanner(s) ; 
     
-    long id = scan.nextLong() ;
+    String id = scan.next() ;
     int power  = scan.nextInt() ;
     String IpAdresse = scan.next() ;
     int port = scan.nextInt() ;

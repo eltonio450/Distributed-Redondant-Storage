@@ -13,7 +13,7 @@ public class Donnees {
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
-	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
+	static private HashMap<String,Paquet> myData = new HashMap<String,Paquet>();
 	
 	//longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
@@ -52,7 +52,7 @@ public class Donnees {
   }
   
   
-  public static void changeHostForPaquet(long Id, int place, Machine newHost){
+  public static void changeHostForPaquet(String Id, int place, Machine newHost){
     myDataLock.lock();
     try{
       myData.get(Id).otherHosts.set(place, newHost) ;
@@ -119,9 +119,9 @@ public class Donnees {
 	}
 
 	public static ArrayList<Paquet> firstOwnData(){
-		myOwnDataLock.lock();
+		//myOwnDataLock.lock();
 		ArrayList<Paquet> retour = myOwnData.peek() ;
-		myOwnDataLock.unlock();
+		//myOwnDataLock.unlock();
 		return retour;
 	}
 
@@ -137,7 +137,7 @@ public class Donnees {
 		myHostsLock.unlock();
 	}
 	
-	public static Paquet getHostedPaquet(Long Id){
+	public static Paquet getHostedPaquet(String Id){
 	  myDataLock.lock();
 	  try{
 	    return myData.get(Id) ;

@@ -80,7 +80,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Global.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
 			  //TODO : interpréter pour récupérer
-			  long Id =0;
+			  String Id = "";
 			  int place =0;
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
