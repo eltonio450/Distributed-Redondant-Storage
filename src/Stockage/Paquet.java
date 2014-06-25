@@ -22,8 +22,8 @@ import Utilitaires.Utilitaires;
 
 public class Paquet {
 
-  public String id ;
-  
+  public int id ;
+  public String nomUnique;
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
   boolean enLecture;
@@ -46,7 +46,9 @@ public class Paquet {
   public Paquet(int Id, int p , Machine proprio) {
     //dernierSignificatif = significatif;
     //dernierePositionSignificative = dernierePos;
-    id = Global.MYSELF.toString()+"-"+id ;
+	  id = Id;
+    nomUnique = Global.MYSELF.toString()+"-"+Id ;
+    
     power = p ;
     owner = proprio ;
 

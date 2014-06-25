@@ -167,8 +167,8 @@ public class Donnees {
 	public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
 	{
 		FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
-		Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
-		p.pathOnDisk
+		Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,0,Global.MYSELF);
+		tableau.add(Global.NOMBRESOUSPAQUETS-1, p);
 		
 		for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
 			try {
@@ -190,6 +190,7 @@ public class Donnees {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				b.flip();
 				temp += b.get();
 			}
 			b.clear();
