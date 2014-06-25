@@ -24,6 +24,7 @@ import Utilitaires.*;
  * 		- REMETTRE LA SOCKET EN MODE BLOQUANT (socket.configureBlocking(false);) (ou en subir les conséquences)
  * 		- Faire ce qu'on veut en sachant qu'on a la première partie du message (qui peut être tout le message ou
  * 					juste le premier mot, donc)
+ * 		- AJOUTER LA SOCKET A aEnlever !! (pas de problème de concurrence)
  */
 public class GeneralPurposeRequestAnalyzer extends Thread {
 	LinkedList<Requester> aTraiter;
