@@ -1,6 +1,6 @@
 package Utilitaires;
 
-public class Messages {
+public class Message {
 	
 	// TCP Connections
 	  public static String HOST_CHANGED = "host-changed#" ;

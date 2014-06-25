@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Utilitaires.Message;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Utilitaires.*;
@@ -83,17 +84,17 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		String token = s.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
-				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
+				r.socket.write(Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE));
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
 			}
-			else if (token.equals(Global.MONITOR)){
+			else if (token.equals(Message.MONITOR)){
 				// Suite
 			}
-			else if (token.equals(Global.VERIFY_DEATH)) {
+			else if (token.equals(Message.VERIFY_DEATH)) {
 			//	r.socket.write(Global.)
 			}
-			else if (token.equals(Global.HOST_CHANGED)) {
+			else if (token.equals(Message.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
 			  //TODO : interpr�ter pour r�cup�rer
 			  String Id = "";
@@ -101,7 +102,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
-			else if (token.equals(Global.ASKFORLOCK))
+			else if (token.equals(Message.ASKFORLOCK))
 			{
 				r.socket.configureBlocking(true);
 				//Blocker le packet correspondant
