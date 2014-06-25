@@ -28,15 +28,15 @@ public class Stockage {
 	}
 
 	public static void initPartage(){
-		ArrayList<Paquet> lp = Donnees.firstOwnData() ;
-		while(lp != null){
+		Paquet p = Donnees.choosePaquetToSend() ;
+		while(p != null){
 			try {
-			  SendPaquet.sendMyOwnData(lp) ;
+			  SendPaquet.sendMyOwnData(p) ;
 			}
 			catch(IOException e) {
 			  //TODO : do something smart
 			}
-			lp = Donnees.firstOwnData() ;
+			p = Donnees.choosePaquetToSend() ;
 		}
 	}
 	

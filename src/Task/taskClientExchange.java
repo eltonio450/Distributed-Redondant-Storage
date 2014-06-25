@@ -30,7 +30,7 @@ public class taskClientExchange implements Runnable {
     clientSocket.connect(remote); 
     
     //ask to exchange
-    ByteBuffer buffer = Utilitaires.stringToBuffer(Global.EXCHANGE + " " + aEnvoyer.id) ;
+    ByteBuffer buffer = Utilitaires.stringToBuffer(Global.EXCHANGE) ;
     buffer.flip() ;
     clientSocket.write(buffer) ;
     buffer.clear() ;

@@ -11,8 +11,9 @@ import Utilitaires.Utilitaires;
 
 public class SendPaquet {
 
-  public static void sendMyOwnData(ArrayList<Paquet> listPaquets) throws IOException {
+  public static void sendMyOwnData(Paquet p) throws IOException {
     
+    //TODO : reimplement this !!
     ArrayList<Machine> hosts = new ArrayList<Machine>(5) ;
     boolean hostsFound = false ;
      for(int i =0 ; i<5; i++) {
@@ -40,7 +41,7 @@ public class SendPaquet {
           if (s.equals(Global.REPONSE_EXCHANGE)){
             hostsFound = true ;
             hosts.set(i, correspondant);
-            Paquet toSend = listPaquets.get(i) ;
+            Paquet toSend = p.get(i) ;
             toSend.putOtherHosts(hosts) ;
             toSend.envoyerPaquet(clientSocket);
             buffer.clear();

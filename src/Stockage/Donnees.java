@@ -30,10 +30,6 @@ public class Donnees {
 	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
 	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
-	public static void initializeData(LinkedList<String> mesPaquets){
-	  myOwnData = mesPaquets ;
-	}
-
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
@@ -53,7 +49,7 @@ public class Donnees {
   }
   
   
-  public static void changeHostForPaquet(long Id, int place, Machine newHost){
+  public static void changeHostForPaquet(String Id, int place, Machine newHost){
     myDataLock.lock();
     try{
       myData.get(Id).otherHosts.set(place, newHost) ;
@@ -119,7 +115,7 @@ public class Donnees {
 		//		 etc.
 	}
 
-	public static ArrayList<Paquet> firstOwnData(){
+	public static Paquet choosePaquetToSend(){
 	  //TODO
 	  return null ;
 	}
@@ -136,10 +132,10 @@ public class Donnees {
 		myHostsLock.unlock();
 	}
 	
-	public static Paquet getHostedPaquet(Long Id){
+	public static Paquet getHostedPaquet(String id){
 	  myDataLock.lock();
 	  try{
-	    return myData.get(Id) ;
+	    return myData.get(id) ;
 	  }
 	  finally {
 	    myDataLock.unlock();
