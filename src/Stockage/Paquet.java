@@ -22,7 +22,7 @@ import Utilitaires.Utilitaires;
 
 public class Paquet {
 
-  String id ;
+  public String id ;
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
@@ -165,6 +165,13 @@ public class Paquet {
     }
   }
   
+  
+
+
+  
+  public void unlock(){
+    isUsed.unlock();
+  }
   //cette fonction bloque l'ensemble des paquets freres
   
   public boolean askForlock(){
@@ -209,9 +216,7 @@ public class Paquet {
 	  
   }
   
-  public void unlock(){
-	  isUsed.unlock();
-  }
+
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){
 	  
