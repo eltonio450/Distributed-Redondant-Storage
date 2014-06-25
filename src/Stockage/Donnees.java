@@ -14,8 +14,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
 
-import Utilitaires.Global;
-
 
 public class Donnees {
 
@@ -186,45 +184,47 @@ public class Donnees {
 	  myDataLock.unlock();
 	}
 	
-	public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
-  {
-    FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
-    Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
-    p.pathOnDisk
-    
-    for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
-      try {
-        fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-    int temp = 0;
-    ByteBuffer b = ByteBuffer.allocate(1);
-    for(long j = 0;j<Global.PAQUET_SIZE;j++)
-    {
-      for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++){
-        b.clear();
-        try {
-          fichier[i].read(b);
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-        temp += b.get();
-      }
-      b.clear();
-      temp%=256;
-      b.put((byte) temp);
-      b.flip();
-      try {
-        fichier[Global.NOMBRESOUSPAQUETS-1].write(b);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
+	 public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
+	  {
+	    FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
+	    Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
+	    p.pathOnDisk
+	    
+	    for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
+	      try {
+	        fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+	      } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	      }
+	    }
+	    int temp = 0;
+	    ByteBuffer b = ByteBuffer.allocate(1);
+	    for(long j = 0;j<Global.PAQUET_SIZE;j++)
+	    {
+	      for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++){
+	        b.clear();
+	        try {
+	          fichier[i].read(b);
+	        } catch (IOException e) {
+	          // TODO Auto-generated catch block
+	          e.printStackTrace();
+	        }
+	        temp += b.get();
+	      }
+	      b.clear();
+	      temp%=256;
+	      b.put((byte) temp);
+	      b.flip();
+	      try {
+	        fichier[Global.NOMBRESOUSPAQUETS-1].write(b);
+	      } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	      }
+	    }
+
+	  }
 
   }
 
