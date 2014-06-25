@@ -23,10 +23,7 @@ public class taskServeurExchange implements Runnable {
   
   //when this task is called, the server has already answer to the client with DEMANDE_ID
   
-<<<<<<< Upstream, based on origin/master
   public void recoitPaquet() throws IOException{
-=======
-  public void exchange() throws IOException{
     
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
@@ -34,21 +31,7 @@ public class taskServeurExchange implements Runnable {
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
     
-    if(Donnees.acceptePaquet(s)){
-      
-    }
-    
-    Paquet receivedPaquet = Paquet.recoitPaquet(socket) ;
-    Machine otherMachine = Machine.otherMachineFromSocket(socket) ;
-    Donnees.receptionPaquet(otherMachine, receivedPaquet);
->>>>>>> 9e2328d Fuck Git
-    
-    ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
-    buffer.clear() ;
-    socket.read(buffer) ;
-    buffer.flip() ;
-    String s = Utilitaires.buffToString(buffer) ;
-    
+
     if(Donnees.acceptePaquet(s)){
       buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
       socket.write(buffer) ;
@@ -72,10 +55,10 @@ public class taskServeurExchange implements Runnable {
     
     if(s.equals(Message.END_ENVOI)){
       boolean ok = false ;
-      LinkedList<Paquet> paquets = Donnees.chooseManyPaquetToSend() ;
+      LinkedList<String> paquets = Donnees.chooseManyPaquetToSend1() ;
       
       while(!ok && !paquets.isEmpty()){
-        Paquet aEnvoyer = paquets.pop() ;
+        Paquet aEnvoyer = Donnees.getPaquet(paquets.pop()) ;
         buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
         socket.write(buffer) ;
         buffer.clear() ;
@@ -83,7 +66,7 @@ public class taskServeurExchange implements Runnable {
         buffer.flip() ;
         s = Utilitaires.buffToString(buffer) ;
         if(s.equals(Message.REPONSE_EXCHANGE)){
-          Paquet toSend = Donnees.selectPaquetToSend() ;
+          Paquet toSend = Donnees.choosePaquetToSend() ;
           toSend.envoyerPaquet(socket);
           ok = true ;
         }
