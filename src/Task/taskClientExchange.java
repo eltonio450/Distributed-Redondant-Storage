@@ -39,6 +39,18 @@ public class taskClientExchange implements Runnable {
     clientSocket.read(buffer) ;
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
+    
+    if(!s.equals(Message.DEMANDE_ID)){
+      return false ;
+    }
+    
+    buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+    buffer.flip() ;
+    clientSocket.write(buffer) ;
+    buffer.clear() ;
+    clientSocket.read(buffer) ;
+    buffer.flip() ;
+    s = Utilitaires.buffToString(buffer) ;
    
     if (s.equals(Message.REPONSE_EXCHANGE)){
       //exchange can begin : send its package
@@ -76,6 +88,7 @@ public class taskClientExchange implements Runnable {
     clientSocket.read(buffer) ;
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
+    
     while(!Donnees.acceptePaquet(s) || s.equals(Message.ANNULE_ENVOI)){
       buffer.clear() ;
       buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT) ;

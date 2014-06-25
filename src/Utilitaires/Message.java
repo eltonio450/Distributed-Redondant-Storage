@@ -2,7 +2,7 @@ package Utilitaires;
 
 public class Message {
 	
-	// TCP Connections
+    // TCP Connections
 	  public static String HOST_CHANGED = "host-changed#" ;
 		public static String EXCHANGE = "exchange#" ;
 		public static String REPONSE_EXCHANGE = "ok-exchange#" ;
@@ -15,11 +15,14 @@ public class Message {
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static String ANNULE_ENVOI = "stop" ;
 		public static String DO_NOT_ACCEPT = "non" ;
+		public static int BUFFER_LENGTH = 1000 ;
+		public static final String DEMANDE_ID = "id please";
 		
 		//PR
 		public static String PREFIXE_BONJOUR = "WESH#";
 		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
-
+		public static String VERIFY_DEATH = "YOUDEADBRO?#";
+    public static String NOT_DEAD = "NOPE#";
 
 }

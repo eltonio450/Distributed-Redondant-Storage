@@ -93,7 +93,7 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.unlock();
 		
 		while (!dead.isEmpty()) {
-			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10, false);
+			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10);
 		}
 	}
 }
