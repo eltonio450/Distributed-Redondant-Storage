@@ -32,20 +32,26 @@ public class IniDonnees {
 
 		System.out.println(System.getProperty("user.dir").toString());
 		try {
+			//System.out.println("Blah !3");
 			myOwnFile = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTOMYDATA),StandardOpenOption.READ, StandardOpenOption.CREATE);
 			Donnees.longueur = myOwnFile.size();
 			System.out.println(Donnees.longueur);
 
 
-
+			
 
 			while(!finDepassee)
 			{
+				//System.out.println("Blah !4");
 
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);
+				//System.out.println("Blah !4");
 				for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
 				{
+					//System.out.println("Blah !5");
+					//System.out.println("Blah !1");
 					onDisk = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTODATA+"/"+Global.MYSELF.toString()+"-"+id+".txt"),StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+					//System.out.println("Blah !2");
 					if(!finDepassee && Donnees.longueur > myOwnFile.position()+Global.PAQUET_SIZE)
 					{
 						if(i==0)

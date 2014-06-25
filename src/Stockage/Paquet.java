@@ -39,13 +39,11 @@ public class Paquet {
   
   //boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
   //long dernierePositionSignificative; //la position de la "fin" de l'information
-  
+
   Lock isUsed = new ReentrantLock();
   Lock hasAskedForALock = new ReentrantLock();
   
-  public Paquet(int Id, int p , Machine proprio 
-      //,boolean significatif, long dernierePos
-      ) {
+  public Paquet(int Id, int p , Machine proprio) {
     //dernierSignificatif = significatif;
     //dernierePositionSignificative = dernierePos;
     id = Global.MYSELF.toString()+"-"+id ;
@@ -53,7 +51,8 @@ public class Paquet {
     owner = proprio ;
 
     pathOnDisk=Global.PATHTODATA ;
-    otherHosts = new ArrayList<Machine> (5) ;
+    otherHosts = new ArrayList<Machine> (Global.NOMBRESOUSPAQUETS) ;
+    otherHosts.add(Global.MYSELF);
 
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
