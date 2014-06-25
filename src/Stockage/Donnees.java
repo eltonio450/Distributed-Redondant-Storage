@@ -36,7 +36,7 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une tâche et là donner à un slave
+		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une tï¿½che et lï¿½ donner ï¿½ un slave
 	}
 	
   public static Paquet selectPaquetToSend() {
@@ -118,12 +118,12 @@ public class Donnees {
 		//		 etc.
 	}
 
-	public static ArrayList<Paquet> firstOwnData(){
-		myOwnDataLock.lock();
+	/*public static ArrayList<Paquet> firstOwnData(){
+		myOwnDataL.lock();
 		ArrayList<Paquet> retour = myOwnData.peek() ;
 		myOwnDataLock.unlock();
 		return retour;
-	}
+	}*/
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
