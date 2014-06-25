@@ -55,10 +55,12 @@ public class taskServeurExchange implements Runnable {
     
     if(s.equals(Message.END_ENVOI)){
       boolean ok = false ;
-      LinkedList<String> paquets = Donnees.chooseManyPaquetToSend1() ;
       
-      while(!ok && !paquets.isEmpty()){
-        Paquet aEnvoyer = Donnees.getPaquet(paquets.pop()) ;
+      //try with toSendASAP
+      LinkedList<String> paquets1 = Donnees.chooseManyPaquetToSend1() ;
+      
+      while(!ok && !paquets1.isEmpty()){
+        Paquet aEnvoyer = Donnees.getPaquet(paquets1.pop()) ;
         buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
         socket.write(buffer) ;
         buffer.clear() ;
@@ -72,14 +74,36 @@ public class taskServeurExchange implements Runnable {
         }
       }
       
-      if(!ok && paquets.isEmpty()){
-        buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
-        socket.write(buffer) ;
-        return false ;
+      if(!ok && paquets1.isEmpty()){
+        //try with all data
+        LinkedList<String> paquets2 = Donnees.chooseManyPaquetToSend2() ;
+        
+        while(!ok && !paquets2.isEmpty()){
+          Paquet aEnvoyer = Donnees.getPaquet(paquets2.pop()) ;
+          buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+          socket.write(buffer) ;
+          buffer.clear() ;
+          socket.read(buffer) ;
+          buffer.flip() ;
+          s = Utilitaires.buffToString(buffer) ;
+          if(s.equals(Message.REPONSE_EXCHANGE)){
+            Paquet toSend = Donnees.choosePaquetToSend() ;
+            toSend.envoyerPaquet(socket);
+            ok = true ;
+          }
+        }
+        
+        if(!ok && paquets2.isEmpty()){
+          buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
+          socket.write(buffer) ;
+          return false ;
+        }
+        else {
+          return true ;
+        }
+        
       }
-      else {
-        return true ;
-      }
+     
      
     }
     else {

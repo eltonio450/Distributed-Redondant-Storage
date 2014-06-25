@@ -163,9 +163,13 @@ public class Donnees {
       return toSendASAP ;
   }
   
-  public static Set<String> chooseManyPaquetToSend2() {
-    return myData.keySet();
-}
+  public static LinkedList<String> chooseManyPaquetToSend2() {
+    return new LinkedList(myData.keySet()) ;
+ }
+  
+  public static Paquet getPaquet(String id){
+    return myData.get(id) ;
+  }
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
