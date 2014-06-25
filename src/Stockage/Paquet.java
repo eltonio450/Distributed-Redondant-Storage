@@ -22,8 +22,8 @@ import Utilitaires.Utilitaires;
 
 public class Paquet {
 
-  public String id ;
-  
+  public int id ;
+  public String nomUnique;
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
   boolean enLecture;
@@ -39,21 +39,22 @@ public class Paquet {
   
   //boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
   //long dernierePositionSignificative; //la position de la "fin" de l'information
-  
+
   Lock isUsed = new ReentrantLock();
   Lock hasAskedForALock = new ReentrantLock();
   
-  public Paquet(int Id, int p , Machine proprio 
-      //,boolean significatif, long dernierePos
-      ) {
+  public Paquet(int Id, int p , Machine proprio) {
     //dernierSignificatif = significatif;
     //dernierePositionSignificative = dernierePos;
-    id = Global.MYSELF.toString()+"-"+id ;
+	  id = Id;
+    nomUnique = Global.MYSELF.toString()+"-"+Id ;
+    
     power = p ;
     owner = proprio ;
 
     pathOnDisk=Global.PATHTODATA ;
-    otherHosts = new ArrayList<Machine> (5) ;
+    otherHosts = new ArrayList<Machine> (Global.NOMBRESOUSPAQUETS) ;
+    otherHosts.add(Global.MYSELF);
 
     	try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
