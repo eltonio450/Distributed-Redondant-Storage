@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import Utilitaires.Global;
+import Utilitaires.Message;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
@@ -19,6 +20,7 @@ public class taskClientExchange implements Runnable {
     aEnvoyer = p ;
   }
   
+  
   public boolean initEtEnvoiePaquet() { //return true if succeeded
     try (SocketChannel clientSocket = SocketChannel.open()) { 
     
@@ -30,7 +32,7 @@ public class taskClientExchange implements Runnable {
     clientSocket.connect(remote); 
     
     //ask to exchange
-    ByteBuffer buffer = Utilitaires.stringToBuffer(Global.EXCHANGE) ;
+    ByteBuffer buffer = Utilitaires.stringToBuffer(Message.EXCHANGE) ;
     buffer.flip() ;
     clientSocket.write(buffer) ;
     buffer.clear() ;
@@ -42,17 +44,14 @@ public class taskClientExchange implements Runnable {
       //exchange can begin : send its package
       aEnvoyer.envoyerPaquet(clientSocket);
       
-      //now receive the package in exchange
-      Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-      Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
-      Donnees.receptionPaquet(otherMachine, receivedPaquet);
-      
-      //kill the package we sent before :
-      //TODO :
-      // faire un truc dans donnees pour l'enlever de myData
-      //aEnvoyer.deleteData() ;
-      
-      return true ;
+      if(recoitPaquet(clientSocket)){
+        //kill the package we sent before :
+        //TODO :
+        // faire un truc dans donnees pour l'enlever de myData
+        //aEnvoyer.deleteData() ;
+        
+        return true ;
+      }
     }
     else {
       return false ;
@@ -62,6 +61,27 @@ public class taskClientExchange implements Runnable {
       return false ;
     }
    } 
+  
+  public boolean recoitPaquet(SocketChannel clientSocket){
+    
+    //say I have finished, what Paquet do you want to send to me ?
+    ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI) ;
+    buffer.flip() ;
+    clientSocket.write(buffer) ;
+    buffer.clear() ;
+    clientSocket.read(buffer) ;
+    buffer.flip() ;
+    String s = Utilitaires.buffToString(buffer) ;
+    while(!Donnees.acceptePaquet(s) || s.equals(Message.ANNULE_ENVOI)){
+
+    }
+    
+    //now receive the package in exchange
+    Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
+    Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
+    Donnees.receptionPaquet(otherMachine, receivedPaquet);
+    return null ;
+  }
     
   public void run() {
     boolean success = false ;

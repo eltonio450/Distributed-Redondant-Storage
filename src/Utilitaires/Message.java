@@ -13,11 +13,12 @@ public class Message {
 		public static String GET_LIST = "GET_LIST#";
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
-		
+		public static String ANNULE_ENVOI = "stop" ;
 		
 		//PR
 		public static String PREFIXE_BONJOUR = "WESH#";
 		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
+
 
 }
