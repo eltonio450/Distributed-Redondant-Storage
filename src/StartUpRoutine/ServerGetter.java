@@ -7,8 +7,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
 import Stockage.Donnees;
-import Utilitaires.Global;
+import Utilitaires.Message;
 import Utilitaires.Utilitaires;
+import Utilitaires.Global;
 
 public class ServerGetter {
 	public static void getServerList() {
@@ -22,7 +23,7 @@ public class ServerGetter {
 			InetSocketAddress remote = new InetSocketAddress(Global.FIRST_IP, Global.FIRST_PORT); 
 			clientSocket.connect(remote); 
 
-			clientSocket.write(Utilitaires.stringToBuffer(Global.GET_LIST));
+			clientSocket.write(Utilitaires.stringToBuffer(Message.GET_LIST));
 
 			ByteBuffer b = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
 			String message, token;
@@ -34,16 +35,16 @@ public class ServerGetter {
 				Scanner sc = new Scanner(message);
 				while (sc.hasNext()) {
 					token = sc.next();
-					if (token.equals(Global.END_ENVOI)) {
+					if (token.equals(Message.END_ENVOI)) {
 						continuer = false;
 						break;
 					}
 					
-					if (token.equals(Global.NEXT_BUFFER)) {
+					if (token.equals(Message.NEXT_BUFFER)) {
 						break;
 					}
 
-					if (token.equals(Global.BEGIN)) {
+					if (token.equals(Message.BEGIN)) {
 						try {
 							Donnees.putServer(sc.next(), Integer.parseInt(sc.next()));
 						} catch (Exception e) {
