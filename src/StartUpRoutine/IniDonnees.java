@@ -58,7 +58,7 @@ public class IniDonnees {
 					else if(!finDepassee)
 					{
 
-						paquetTemp = new Paquet(id, 0);//, Global.MYSELF, true, Global.PAQUET_SIZE - Donnees.longueur%Global.PAQUET_SIZE);
+						paquetTemp = new Paquet(id, 0, Global.MYSELF);//, true, Global.PAQUET_SIZE - Donnees.longueur%Global.PAQUET_SIZE);
 
 						onDisk.transferFrom(myOwnFile, 0, Donnees.longueur - myOwnFile.position());
 						onDisk.position(Donnees.longueur%Global.PAQUET_SIZE);
