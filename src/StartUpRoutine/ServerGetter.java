@@ -26,7 +26,6 @@ public class ServerGetter {
 
 			ByteBuffer b = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
 			String message, token;
-			int niveau;
 			boolean continuer = true;
 
 			while (continuer) {
