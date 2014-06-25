@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Paquet {
 
-  String id ;
+  public String id ;
   
   //pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
   int power ;
@@ -48,6 +48,7 @@ public class Paquet {
   //long dernierePositionSignificative; //la position de la "fin" de l'information
   
   Lock isUsed = new ReentrantLock();
+  Lock hasAskedForALock = new ReentrantLock();
   
   public Paquet(int Id, int p , Machine proprio 
       //,boolean significatif, long dernierePos
@@ -169,6 +170,55 @@ public class Paquet {
     finally{
      isUsed.unlock(); 
     }
+  }
+  
+
+  //cette fonction bloque l'ensemble des paquets freres
+  
+  public boolean askForlock(){
+    hasAskedForALock.lock();
+    boolean success = true;
+    int i = 0;
+    
+    while(success)
+      success = sendAskForLock(otherHosts.get(i), i);
+
+    return success;
+  }
+  
+  public boolean sendAskForLock(Machine m, int i){
+            try (SocketChannel clientSocket = SocketChannel.open()) { 
+              
+              //init connection
+              InetSocketAddress local = new InetSocketAddress(0); 
+              clientSocket.bind(local); 
+              InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
+              clientSocket.connect(remote); 
+              
+              //message
+              ByteBuffer buffer = Utilitaires.stringToBuffer("ASKFORLOCK");
+              buffer.flip() ;
+              clientSocket.write(buffer) ;
+              //bon là il faut lire que le mec a bien fait le lock clientSocket.re
+            }
+            catch(IOException e){
+              //TODO : on a pas pu pr�venir m !
+            }
+
+    return true;
+  }
+  
+  
+  public void lock(){
+    isUsed.lock();    
+  }
+  
+  public void spreadUnlock(){
+    
+  }
+  
+  public void unlock(){
+    isUsed.unlock();
   }
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){

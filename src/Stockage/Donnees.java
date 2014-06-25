@@ -151,10 +151,8 @@ public class Donnees {
 
 
 	public static ArrayList<Paquet> firstOwnData(){
-		//myOwnDataL.lock();
-		ArrayList<Paquet> retour = myOwnData.peek() ;
-		//myOwnDataLock.unlock();
-		return retour;
+
+		return null;
 	}
 
 	public static void addInterestServeur(Machine m){
