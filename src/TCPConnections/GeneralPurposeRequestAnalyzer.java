@@ -98,14 +98,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Message.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
 			  Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
-			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
-			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
 			else if (token.equals(Message.ASK_FOR_LOCK))
 			{
 				r.socket.configureBlocking(true);
 				//Blocker le packet correspondant
-				r.socket
+				//r.socket
 			}
 			
 			/**

@@ -23,7 +23,6 @@ public class Stockage {
 	  // TODO : ouvrir une socket
 		LinkedList<Machine> serveurs = getAllServeurs(m) ;
 		LinkedList<ArrayList<Paquet>> mesPaquets = Paquet.fileToPaquets(mesDonnees) ;
-		Donnees.initializeData(mesPaquets);
 		Donnees.actualiseAllServeur(serveurs) ;
 	}
 
@@ -31,12 +30,11 @@ public class Stockage {
 		Paquet p = Donnees.choosePaquetToSend() ;
 		while(p != null){
 			try {
-			  SendPaquet.sendMyOwnData(p) ;
+			  //TODO
 			}
-			catch(IOException e) {
+			catch(Exception e) {
 			  //TODO : do something smart
 			}
-			p = Donnees.choosePaquetToSend() ;
 		}
 	}
 	

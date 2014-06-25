@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
@@ -59,11 +60,10 @@ public class Donnees {
     long b = n%Global.NOMBRESOUSPAQUETS ;
     LinkedList<String> res = new LinkedList<String>() ;
     for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
-      if(i != (int) b){
-        String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
-        if (myData.containsKey(testId)){ res.add(testId) ; }
-      }
+      String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
+      if (myData.containsKey(testId)){ res.add(testId) ; }
     }
+    return res ;
   }
 
 	public static void receptionPaquet(Machine m, Paquet p){
@@ -72,12 +72,7 @@ public class Donnees {
 		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une t�che et l� donner � un slave
 	}
 
-	public static Paquet selectPaquetToSend() {
-		//for the task taskServeurExchange : should choose a random package to exchange for a first connection
-		//TODO : is it a reasonable choice ?
-		return (Paquet) myData.values().toArray()[0] ;
-	}	
-
+	
 	// TODO : implement this and put it in an other place
 	public static Boolean verifieMort(Machine m){
 		//envoie un message � m pour v�rifier qu'il est bien mort
@@ -88,7 +83,10 @@ public class Donnees {
 	public static void changeHostForPaquet(String Id, int place, Machine newHost){
 		myDataLock.lock();
 		try{
-			myData.get(Id).otherHosts.set(place, newHost) ;
+		  LinkedList<String> paquets = hasPaquetLike(Id) ;
+		  for(String s : paquets){
+		    myData.get(Id).otherHosts.set(place, newHost) ;
+		  }
 		}
 		finally{
 			myDataLock.unlock();
@@ -152,9 +150,18 @@ public class Donnees {
 	}
 
 	public static Paquet choosePaquetToSend(){
-		//TODO
-		return null ;
+	  if(toSendASAP.isEmpty()){
+	    return (Paquet) myData.values().toArray()[0] ;
+	  }
+	  else{
+	    return(myData.get(toSendASAP.getFirst()) ) ;
+	  }
 	}
+	
+  public static LinkedList<Paquet> chooseManyPaquetToSend() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
@@ -183,53 +190,10 @@ public class Donnees {
 		myData.put(p.id, p) ;
 		myDataLock.unlock();
 	}
-<<<<<<< HEAD
-	
-	 public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
-	  {
-	    FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
-	    Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
-	    p.pathOnDisk
-	    
-	    for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
-	      try {
-	        fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-	      } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	      }
-	    }
-	    int temp = 0;
-	    ByteBuffer b = ByteBuffer.allocate(1);
-	    for(long j = 0;j<Global.PAQUET_SIZE;j++)
-	    {
-	      for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++){
-	        b.clear();
-	        try {
-	          fichier[i].read(b);
-	        } catch (IOException e) {
-	          // TODO Auto-generated catch block
-	          e.printStackTrace();
-	        }
-	        temp += b.get();
-	      }
-	      b.clear();
-	      temp%=256;
-	      b.put((byte) temp);
-	      b.flip();
-	      try {
-	        fichier[Global.NOMBRESOUSPAQUETS-1].write(b);
-	      } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	      }
-	    }
 
-	  }
 
-=======
 
-	public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
+	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau)
 	{
 		FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
 		Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,0,Global.MYSELF);
@@ -272,16 +236,6 @@ public class Donnees {
 
 	}
 
-  public static boolean acceptePaquet(String s) {
-    // TODO Auto-generated method stub
-    return false;
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
-  }
 
-
-  public static LinkedList<Paquet> chooseManyPaquetToSend() {
-    // TODO Auto-generated method stub
-    return null;
-  }
 }
 
