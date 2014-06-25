@@ -22,7 +22,11 @@ public class Global {
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
+<<<<<<< Upstream, based on origin/master
 
+=======
+  
+>>>>>>> 9e2328d Fuck Git
 	// GestionnaireMort
 	public static int DEATH_TIMEOUT = 10000;
 

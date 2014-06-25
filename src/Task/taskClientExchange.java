@@ -44,6 +44,7 @@ public class taskClientExchange implements Runnable {
     }
     
     buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+    buffer.flip() ;
     clientSocket.write(buffer) ;
     buffer.clear() ;
     clientSocket.read(buffer) ;

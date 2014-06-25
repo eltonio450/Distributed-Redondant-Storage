@@ -13,16 +13,16 @@ public class Message {
 		public static String GET_LIST = "GET_LIST#";
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
-		public static String ANNULE_ENVOI = "stop" ;
-		public static String DO_NOT_ACCEPT = "non" ;
 		public static int BUFFER_LENGTH = 1000 ;
-		public static final String DEMANDE_ID = "id please";
+		public static final String DEMANDE_ID = "id pleas#";
+		public static String ANNULE_ENVOI = "stop#" ;
+		public static String DO_NOT_ACCEPT = "non#" ;
 		
 		//PR
 		public static String PREFIXE_BONJOUR = "WESH#";
 		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
 		public static String VERIFY_DEATH = "YOUDEADBRO?#";
-    public static String NOT_DEAD = "NOPE#";
-
+		public static String NOT_DEAD = "NOPE#";
+		public static String IS_DEAD = "ILESTMORT#";
 }

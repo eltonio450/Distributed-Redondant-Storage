@@ -23,7 +23,25 @@ public class taskServeurExchange implements Runnable {
   
   //when this task is called, the server has already answer to the client with DEMANDE_ID
   
+<<<<<<< Upstream, based on origin/master
   public void recoitPaquet() throws IOException{
+=======
+  public void exchange() throws IOException{
+    
+    ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
+    buffer.clear() ;
+    socket.read(buffer) ;
+    buffer.flip() ;
+    String s = Utilitaires.buffToString(buffer) ;
+    
+    if(Donnees.acceptePaquet(s)){
+      
+    }
+    
+    Paquet receivedPaquet = Paquet.recoitPaquet(socket) ;
+    Machine otherMachine = Machine.otherMachineFromSocket(socket) ;
+    Donnees.receptionPaquet(otherMachine, receivedPaquet);
+>>>>>>> 9e2328d Fuck Git
     
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
@@ -92,7 +110,7 @@ public class taskServeurExchange implements Runnable {
     }
     catch(IOException e){
       //traiter l'erreur - recommencer l'envoie ?
-      //a priori le client s'est rendu compte du problème et va recommencer tout seul
+      //a priori le client s'est rendu compte du problï¿½me et va recommencer tout seul
     }
   }
 
