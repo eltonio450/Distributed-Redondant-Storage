@@ -5,7 +5,7 @@ import StartUpRoutine.IniUDP;
 import StartUpRoutine.ServerGetter;
 
 
-public class Main{
+public class Main {
 
 
 	public static void main(String[] args)  {
@@ -32,5 +32,7 @@ public class Main{
 		IniUDP.iniUDP();
 		System.out.println("UDP server ready...");
 		System.out.println("All set and ready to go !");
+		
+		// bLABLABLABLABLABLABLABLA
 	}
 }

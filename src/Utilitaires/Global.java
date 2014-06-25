@@ -56,7 +56,7 @@ public class Global {
 	
 	
 	//NOM est un identifiant unique lorsque le serveur est executé en mode debug (donc avec plusieurs serveurs sur le meme PC)
-	public static String NOM;
+	public static int NOM;
 	
 	
 	//pathToMyData dépend du mode : si le mode debug est activé, un dossier prefixe avec l'id du programme est créé. Sinon elle est juste dans myOwnData/ 
