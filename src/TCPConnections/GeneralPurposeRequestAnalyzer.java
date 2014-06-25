@@ -102,7 +102,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
-			else if (token.equals(Message.ASKFORLOCK))
+			else if (token.equals(Message.ASK_FOR_LOCK))
 			{
 				r.socket.configureBlocking(true);
 				//Blocker le packet correspondant
