@@ -52,14 +52,14 @@ public class IniDonnees {
 				for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
 				{
 					onDisk = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTODATA+"/"+Global.MYSELF.toString()+"-"+id+".txt"),StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-					if(!finDepassee && Donnees.longueur > myOwnFile.position()+Global.PAQUETSIZE)
+					if(!finDepassee && Donnees.longueur > myOwnFile.position()+Global.PAQUET_SIZE)
 					{
 						if(i==0)
 							paquetTemp = new Paquet(id, 1, Global.MYSELF, false, 0);
 						else
 							paquetTemp = new Paquet(id, 0, Global.MYSELF, false, 0);
 
-						onDisk.transferFrom(myOwnFile, 0, Global.PAQUETSIZE);
+						onDisk.transferFrom(myOwnFile, 0, Global.PAQUET_SIZE);
 					}
 					else if(!finDepassee)
 					{
@@ -67,9 +67,9 @@ public class IniDonnees {
 						paquetTemp = new Paquet(id, 0, Global.MYSELF, true, 0);
 
 						onDisk.transferFrom(myOwnFile, 0, Donnees.longueur - myOwnFile.position());
-						onDisk.position(Donnees.longueur%Global.PAQUETSIZE);
+						onDisk.position(Donnees.longueur%Global.PAQUET_SIZE);
 
-						for(long l = 0;l<Global.PAQUETSIZE - Donnees.longueur%Global.PAQUETSIZE;l++)
+						for(long l = 0;l<Global.PAQUET_SIZE - Donnees.longueur%Global.PAQUET_SIZE;l++)
 						{
 							System.out.println("Blah !");
 							bufferUnByte.flip();
@@ -85,7 +85,7 @@ public class IniDonnees {
 					{
 						paquetTemp = new Paquet(id, 0, Global.MYSELF, false, 0);
 
-						for(int j=0;j<Global.PAQUETSIZE;j++)
+						for(int j=0;j<Global.PAQUET_SIZE;j++)
 						{
 							bufferUnByte.flip();
 

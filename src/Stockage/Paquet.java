@@ -120,13 +120,11 @@ public class Paquet {
   
   public static Paquet createPaquetFromBuffer(ByteBuffer b){
     //buffer is flipped
-<<<<<<< HEAD
     long id = 0;
     int power = 0 ;
     String IpAdresse = "" ;
     int port = 0 ;
     //TODO : � voir avec Utilitaires
-=======
     String s = Utilitaires.buffToString(b);
     Scanner scan = new Scanner(s) ; 
     
@@ -134,7 +132,6 @@ public class Paquet {
     int power  = scan.nextInt() ;
     String IpAdresse = scan.next() ;
     int port = scan.nextInt() ;
->>>>>>> branch 'master' of https://github.com/eltonio450/modal
     Machine owner = new Machine(IpAdresse,port) ;
     
     ArrayList<Machine> hosts = new ArrayList<Machine>(5) ;
