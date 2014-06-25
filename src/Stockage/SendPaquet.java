@@ -93,9 +93,16 @@ public class SendPaquet {
             clientSocket.connect(remote); 
             
             //message
-            ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED + " " + id +" " + placeToModify) ;
-            buffer.flip() ;
+            ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED) ;
             clientSocket.write(buffer) ;
+            buffer.clear() ;
+            clientSocket.read(buffer) ;
+            buffer.flip() ;
+            String response = Utilitaires.buffToString(buffer) ;
+            if(response.equals(Message.OK)){
+              buffer = Utilitaires.stringToBuffer(id +" " + placeToModify) ;
+              clientSocket.write(buffer) ; 
+            }
           }
           catch(IOException e){
             //TODO : on a pas pu prévenir m !

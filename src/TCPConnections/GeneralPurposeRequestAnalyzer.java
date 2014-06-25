@@ -97,9 +97,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			else if (token.equals(Message.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
-			  //TODO : interpr�ter pour r�cup�rer
-			  String Id = "";
-			  int place =0;
+			  Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
