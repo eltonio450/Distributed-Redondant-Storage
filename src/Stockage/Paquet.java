@@ -165,55 +165,13 @@ public class Paquet {
     }
   }
   
-<<<<<<< HEAD
+  
 
-  //cette fonction bloque l'ensemble des paquets freres
-  
-  public boolean askForlock(){
-    hasAskedForALock.lock();
-    boolean success = true;
-    int i = 0;
-    
-    while(success)
-      success = sendAskForLock(otherHosts.get(i), i);
 
-    return success;
-  }
-  
-  public boolean sendAskForLock(Machine m, int i){
-            try (SocketChannel clientSocket = SocketChannel.open()) { 
-              
-              //init connection
-              InetSocketAddress local = new InetSocketAddress(0); 
-              clientSocket.bind(local); 
-              InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
-              clientSocket.connect(remote); 
-              
-              //message
-              ByteBuffer buffer = Utilitaires.stringToBuffer("ASKFORLOCK");
-              buffer.flip() ;
-              clientSocket.write(buffer) ;
-              //bon là il faut lire que le mec a bien fait le lock clientSocket.re
-            }
-            catch(IOException e){
-              //TODO : on a pas pu pr�venir m !
-            }
-
-    return true;
-  }
-  
-  
-  public void lock(){
-    isUsed.lock();    
-  }
-  
-  public void spreadUnlock(){
-    
-  }
   
   public void unlock(){
     isUsed.unlock();
-=======
+  }
   //cette fonction bloque l'ensemble des paquets freres
   
   public boolean askForlock(){
@@ -258,10 +216,7 @@ public class Paquet {
 	  
   }
   
-  public void unlock(){
-	  isUsed.unlock();
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
-  }
+
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){
 	  
