@@ -49,12 +49,12 @@ public class Paquet {
   
   Lock isUsed = new ReentrantLock();
   
-  public Paquet(String Id, int p , Machine proprio 
+  public Paquet(int Id, int p , Machine proprio 
       //,boolean significatif, long dernierePos
       ) {
     //dernierSignificatif = significatif;
     //dernierePositionSignificative = dernierePos;
-    id = Id ;
+    id = Global.MYSELF.toString()+"-"+id ;
     power = p ;
     owner = proprio ;
 
