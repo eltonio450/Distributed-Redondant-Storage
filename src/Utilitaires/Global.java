@@ -22,11 +22,8 @@ public class Global {
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
-	//public static int BUFFER_LENGTH1 = 200 ; //TODO
-  
+
 	// GestionnaireMort
-	public static String VERIFY_DEATH = "YOUDEADBRO?#";
-	public static String NOT_DEAD = "NOPE#";
 	public static int DEATH_TIMEOUT = 10000;
 
 	//RP de debug

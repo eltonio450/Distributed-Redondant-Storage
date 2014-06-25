@@ -205,5 +205,15 @@ public class Donnees {
 		}
 
 	}
+
+  public static boolean acceptePaquet(String s) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public static LinkedList<Paquet> chooseManyPaquetToSend() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
 

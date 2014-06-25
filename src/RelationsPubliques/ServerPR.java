@@ -10,7 +10,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Stockage.Machine;
 import GestionnaireMort.deathVerifier;
-import Utilitaires.*;
 
 /**
  * 
@@ -32,7 +31,7 @@ public class ServerPR extends Thread{
 
 	public ServerPR () throws IOException{
 		this.channel = DatagramChannel.open();
-		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
+		this.channel.bind(new InetSocketAddress("localhost", Utilitaires.Global.SERVERPRPORT));
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.expectedMessagesLock = new ReentrantLock();
 		this.expectedMessages = new LinkedList<ExpectedMessage>();
@@ -46,7 +45,7 @@ public class ServerPR extends Thread{
 				receivedMessage.flip();
 
 				try {
-					traiter (Utilitaires.buffToString(receivedMessage), sender);
+					traiter (Utilitaires.Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {}
 				
 				checkExpectedMessages();
@@ -69,14 +68,14 @@ public class ServerPR extends Thread{
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 		
-		if (token.equals(Global.PREFIXE_BONJOUR)) {
+		if (token.equals(Utilitaires.Message.PREFIXE_BONJOUR)) {
 			// On dit au client de répondre au serveur de l'hôte distant
-			Global.clientPR.sendMessage(new Message (Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
+			Utilitaires.Global.clientPR.sendMessage(new Message (Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
-			expectedMessages.remove(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, 0));
-			expectedMessages.add(new ExpectedMessage(Global.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT));
+			expectedMessages.remove(new ExpectedMessage(Utilitaires.Message.PREFIXE_BONJOUR, sender, 0));
+			expectedMessages.add(new ExpectedMessage(Utilitaires.Message.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Utilitaires.Global.TIMEOUT));
 		}
-		else if (token.equals(Global.PREFIXE_REPONSE_BONJOUR)) {
+		else if (token.equals(Utilitaires.Message.PREFIXE_REPONSE_BONJOUR)) {
 			// On a eu une réponse au bonjour
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 		}
@@ -94,7 +93,7 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.unlock();
 		
 		while (!dead.isEmpty()) {
-			Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10);
+			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10);
 		}
 	}
 }
