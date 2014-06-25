@@ -1,11 +1,20 @@
 
 package Stockage;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
+
+import Utilitaires.Global;
+
+import Utilitaires.Global;
 
 
 public class Donnees {
@@ -38,6 +47,26 @@ public class Donnees {
 	  myOwnData = mesPaquets ;
 	}*/
 
+  public static boolean acceptePaquet(String s) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+  
+  public static LinkedList<String> hasPaquetLike(String ID){
+    Scanner s = new Scanner(ID) ;
+    s.useDelimiter("-") ;
+    final String newId = s.next() + "-" + s.next() +"-" ;
+    long n = s.nextLong() ;
+    long a = n/Global.NOMBRESOUSPAQUETS ;
+    long b = n%Global.NOMBRESOUSPAQUETS ;
+    LinkedList<String> res = new LinkedList<String>() ;
+    for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
+      if(i != (int) b){
+        String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
+        if (myData.containsKey(testId)){ res.add(testId) ; }
+      }
+    }
+  }
 
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
@@ -158,13 +187,47 @@ public class Donnees {
 	}
 	
 	public static void genererPaquetsSécurité(ArrayList<Paquet> tableau)
-	{
-		//génère les paquets supplémentaire dans le tableau. Algo à faire
-	}
-  public static boolean acceptePaquet(String s) {
-    // TODO Auto-generated method stub
-    return false;
+  {
+    FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
+    Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
+    p.pathOnDisk
+    
+    for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
+      try {
+        fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    int temp = 0;
+    ByteBuffer b = ByteBuffer.allocate(1);
+    for(long j = 0;j<Global.PAQUET_SIZE;j++)
+    {
+      for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++){
+        b.clear();
+        try {
+          fichier[i].read(b);
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        temp += b.get();
+      }
+      b.clear();
+      temp%=256;
+      b.put((byte) temp);
+      b.flip();
+      try {
+        fichier[Global.NOMBRESOUSPAQUETS-1].write(b);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+
   }
+
 
   public static LinkedList<Paquet> chooseManyPaquetToSend() {
     // TODO Auto-generated method stub
