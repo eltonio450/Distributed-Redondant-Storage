@@ -49,6 +49,7 @@ public class taskClientExchange implements Runnable {
       
       //kill the package we sent before :
       //TODO :
+      // faire un truc dans donnees pour l'enlever de myData
       //aEnvoyer.deleteData() ;
       
       return true ;

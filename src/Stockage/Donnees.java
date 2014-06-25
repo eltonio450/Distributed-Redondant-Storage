@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
+
+import Utilitaires.Global;
 
 
 public class Donnees {
@@ -31,7 +34,7 @@ public class Donnees {
 	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
 	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
-	public static void initializeData(LinkedList<ArrayList<Paquet>> mesPaquets){
+	public static void initializeData(LinkedList<String> mesPaquets){
 	  myOwnData = mesPaquets ;
 	}
 
@@ -39,6 +42,31 @@ public class Donnees {
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
 		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une t�che et l� donner � un slave
+	}
+	
+	public static boolean acceptExchange(String Id){
+	  ArrayList<String> res = hasAPaquetLike(Id);
+	  boolean b = !res.isEmpty() ;
+	  return b ;
+	}
+	
+	public static ArrayList<String> hasAPaquetLike(String Id){
+	  Scanner s = new Scanner(Id) ;
+	  s.useDelimiter("-") ;
+	  String newId = s.next() ; 
+	  newId = newId + "-" + s.next() + "-";
+	  long n = s.nextLong() ;
+	  long a = n / Global.NOMBRESOUSPAQUETS ;
+	  long r = n%Global.NOMBRESOUSPAQUETS ;
+	  ArrayList<String> res = new ArrayList<String>() ;
+	  for (int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
+	    if(i != (int) r){
+	      String id = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
+	      if(myData.containsKey(id)){
+	        res.add(id) ;
+	      }
+	    }
+	  }
 	}
 	
   public static Paquet selectPaquetToSend() {
