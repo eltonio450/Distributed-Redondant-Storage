@@ -10,11 +10,12 @@ import Stockage.Machine;
 
 public class Global {
 	
-
+	//TCP
+	
+	public static int BUFFER_LENGTH = 1000 ;
+	
 	// Relations Publiques
-	public static String PREFIXE_BONJOUR = "WESH#";
-	public static String PREFIXE_REPONSE_BONJOUR = "YO#";
-	public static String SELF_WAKE_UP = "DEBOUT#";
+	
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;

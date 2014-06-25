@@ -20,7 +20,9 @@ public class Donnees {
 	
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
-	static public LinkedList<String> toSendASAP = new LinkedList<String>();
+
+	static public LinkedList<Paquet> toSendASAP = new LinkedList<Paquet>();
+
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
@@ -29,6 +31,13 @@ public class Donnees {
 	
 	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
 	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
+	//deprecated
+	/*
+
+	public static void initializeData(LinkedList<String> mesPaquets){
+	  myOwnData = mesPaquets ;
+	}*/
+
 
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
