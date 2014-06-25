@@ -81,11 +81,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		Scanner s = new Scanner (r.recu);
 		String token = s.next();
 		try {
-			if (token.equals(Global.EXCHANGE)) {
+			if (token.equals(Message.EXCHANGE)) {
 				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
-							}
+			}
 			else if (token.equals(Global.MONITOR)){
 				// Suite
 			}
@@ -100,6 +100,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
+			else if (token.equals(Global.ASKFORLOCK))
+			{
+				r.socket.configureBlocking(true);
+				//Blocker le packet correspondant
+				r.socket
+			}
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;
