@@ -59,7 +59,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 			lock.lock();
 			aTraiter.addAll(aAjouter);
-			aTraiter.clear();
+			aAjouter.clear();
 			lock.unlock();
 			for (Requester r : aEnlever) {
 				aTraiter.remove(r);
@@ -68,13 +68,13 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 	}
 
 	public void addRequester(Requester requester) {
-		lock.lock();
 		try {
 			requester.socket.configureBlocking(false);
 		} catch (IOException e) {
 			System.out.println("Problème de changement Blocking / Non blocking");
 			return;
 		}
+		lock.lock();
 		aAjouter.add(requester);
 		lock.unlock();
 	}
@@ -109,6 +109,19 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				//Blocker le packet correspondant
 				r.socket
 			}
+			
+			/**
+			 * Modèle :
+			 * 
+			 * else if (token.equals(MOT_CLEF) {
+			 * 		MyTache m = new MyTache (r.socket);					// Nouvelle tâche
+			 * 		r.socket.configureBlocking(true);		// La nouvelle tâche va attendre qu'il parle
+			 * 		aEnlever.add(r); 						// On enlève r de la liste à analyser par le GPRA
+			 * 		Slaver.giveTask(m); 					// Ou Slaver.giveUrgentTask(m)
+			 * }
+			 *
+			 *
+			 *
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;

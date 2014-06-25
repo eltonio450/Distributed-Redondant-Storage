@@ -19,7 +19,7 @@ public class deathVerifier implements Runnable {
 	public void run () {
 		Boolean mort = verifyDeath(m);
 		if (mort) {
-			//TODO broadcastDeath(m);
+			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port, Donnees.getAllServeurs());
 		}
 	}
 	
@@ -31,7 +31,7 @@ public class deathVerifier implements Runnable {
 			clientSocket.bind(local); 
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
 			clientSocket.connect(remote);
-			clientSocket.write(Utilitaires.stringToBuffer(Global.VERIFY_DEATH));
+			clientSocket.write(Utilitaires.stringToBuffer(Message.VERIFY_DEATH));
 			clientSocket.socket().setSoTimeout(Global.DEATH_TIMEOUT);
 			if (clientSocket.read(ByteBuffer.allocateDirect(1000)) > 0)
 				mort = false;
