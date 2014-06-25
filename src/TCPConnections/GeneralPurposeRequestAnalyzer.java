@@ -85,8 +85,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		try {
 			if (token.equals(Message.EXCHANGE)) {
 				//TODO ??
-			  //r.socket.write(Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE)); => plus mtn
-				//r.socket.configureBlocking(true);
+			  r.socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
+				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
 			}
 			else if (token.equals(Message.MONITOR)){

@@ -33,7 +33,6 @@ public class taskClientExchange implements Runnable {
     
     //ask to exchange
     ByteBuffer buffer = Utilitaires.stringToBuffer(Message.EXCHANGE) ;
-    buffer.flip() ;
     clientSocket.write(buffer) ;
     buffer.clear() ;
     clientSocket.read(buffer) ;
@@ -45,7 +44,6 @@ public class taskClientExchange implements Runnable {
     }
     
     buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
-    buffer.flip() ;
     clientSocket.write(buffer) ;
     buffer.clear() ;
     clientSocket.read(buffer) ;

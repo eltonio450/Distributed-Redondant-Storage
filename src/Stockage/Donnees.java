@@ -165,5 +165,10 @@ public class Donnees {
     // TODO Auto-generated method stub
     return false;
   }
+
+  public static LinkedList<Paquet> chooseManyPaquetToSend() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
 
