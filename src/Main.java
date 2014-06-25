@@ -2,7 +2,7 @@ import StartUpRoutine.IniServer;
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniTCP;
 import StartUpRoutine.IniUDP;
-import StartUpRoutine.ServerListGetter;
+import StartUpRoutine.ServerGetter;
 
 
 public class Main{
@@ -25,7 +25,7 @@ public class Main{
 		System.out.println("Ok");
 		
 		System.out.print("Getting server list.............");
-		ServerListGetter.getServerList();
+		ServerGetter.getServerList();
 		System.out.println("Ok");
 		
 		System.out.print("Starting UDP server.............");
