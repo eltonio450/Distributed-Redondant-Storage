@@ -19,8 +19,10 @@ public class Donnees {
 	static public long longueur;
 	
 	//passage en public (cf la remarque sur le lock)
-	static public LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>() ;
+	static public LinkedList<ArrayList<Paquet>> myOwnData = new LinkedList<ArrayList<Paquet>>();
 
+	static public LinkedList<Paquet> toSendASAP = new LinkedList<Paquet>();
+	
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
 	static private ReentrantLock myHostsLock= new ReentrantLock ();

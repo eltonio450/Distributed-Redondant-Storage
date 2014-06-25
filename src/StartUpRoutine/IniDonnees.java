@@ -22,12 +22,6 @@ public class IniDonnees {
 
 	static ByteBuffer bufferUnByte = ByteBuffer.allocateDirect(1);
 
-
-
-
-
-
-
 	public static void iniDonnees () {
 
 		iniPaths();
@@ -71,7 +65,7 @@ public class IniDonnees {
 
 						for(long l = 0;l<Global.PAQUET_SIZE - Donnees.longueur%Global.PAQUET_SIZE;l++)
 						{
-							System.out.println("Blah !");
+							//System.out.println("Blah !");
 							bufferUnByte.flip();
 
 							onDisk.write(bufferUnByte);
