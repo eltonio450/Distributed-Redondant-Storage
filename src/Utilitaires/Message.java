@@ -14,6 +14,7 @@ public class Message {
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static String ANNULE_ENVOI = "stop" ;
+		public static String DO_NOT_ACCEPT = "non" ;
 		
 		//PR
 		public static String PREFIXE_BONJOUR = "WESH#";

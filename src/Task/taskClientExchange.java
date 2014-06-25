@@ -40,7 +40,7 @@ public class taskClientExchange implements Runnable {
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
    
-    if (s.equals(Global.REPONSE_EXCHANGE)){
+    if (s.equals(Message.REPONSE_EXCHANGE)){
       //exchange can begin : send its package
       aEnvoyer.envoyerPaquet(clientSocket);
       
@@ -52,17 +52,21 @@ public class taskClientExchange implements Runnable {
         
         return true ;
       }
+      else { return false ; }
     }
+    
     else {
       return false ;
     }
+    
     }
     catch(IOException e){
       return false ;
     }
    } 
   
-  public boolean recoitPaquet(SocketChannel clientSocket){
+  public boolean recoitPaquet(SocketChannel clientSocket) {
+  try {
     
     //say I have finished, what Paquet do you want to send to me ?
     ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI) ;
@@ -73,14 +77,30 @@ public class taskClientExchange implements Runnable {
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
     while(!Donnees.acceptePaquet(s) || s.equals(Message.ANNULE_ENVOI)){
-
+      buffer.clear() ;
+      buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT) ;
+      buffer.flip() ;
+      clientSocket.write(buffer) ;
     }
-    
-    //now receive the package in exchange
-    Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-    Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
-    Donnees.receptionPaquet(otherMachine, receivedPaquet);
-    return null ;
+    if(s.equals(Message.ANNULE_ENVOI)) {
+      return false ;
+    }
+    else {
+      buffer.clear() ;
+      buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
+      buffer.flip() ;
+      clientSocket.write(buffer) ;
+      
+      //now receive the package in exchange
+      Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
+      Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
+      Donnees.receptionPaquet(otherMachine, receivedPaquet);
+      return true ;
+    }
+  }
+  catch(IOException e){
+    return false ;
+  }
   }
     
   public void run() {

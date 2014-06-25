@@ -161,5 +161,9 @@ public class Donnees {
 	{
 		//génère les paquets supplémentaire dans le tableau. Algo à faire
 	}
+  public static boolean acceptePaquet(String s) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }
 
