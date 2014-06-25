@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Stockage.Donnees;
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
 
 public class ClientPR extends Thread{
 	
@@ -23,8 +22,8 @@ public class ClientPR extends Thread{
 	public ClientPR () throws IOException{
 		this.channel = DatagramChannel.open();
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
-		this.buffBonjour = Utilitaires.stringToBuffer(Global.PREFIXE_BONJOUR);
-		this.buffDebout = Utilitaires.stringToBuffer(Global.SELF_WAKE_UP);
+		this.buffBonjour = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.PREFIXE_BONJOUR);
+		this.buffDebout = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.SELF_WAKE_UP);
 		this.remoteIndex = 0;
 		this.remoteIndex = 0;
 	}
@@ -40,7 +39,7 @@ public class ClientPR extends Thread{
 				// On envoie bonjour au serveur de l'hôte distant
 				channel.send(buffBonjour, remote);
 				// On dit au serveur d'attendre une réponse du client de l'hôte distant
-				Global.serverPR.expectMessage(new ExpectedMessage(Global.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+				Global.serverPR.expectMessage(new ExpectedMessage(Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 				// Réveille le serveur si personne d'autre ne lui parle
 				channel.send(buffDebout, new InetSocketAddress("localhost", Global.SERVERPRPORT));
 
@@ -50,7 +49,7 @@ public class ClientPR extends Thread{
 				// Envoie ce qu'on lui a demandé d'envoyer
 				for (int i=0; !toSend.isEmpty() && i<100; i++) {
 					message = toSend.poll();
-					channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
+					channel.send(Utilitaires.Utilitaires.stringToBuffer(message.body), message.dest);
 				}
 
 				if (toSend.isEmpty()) {

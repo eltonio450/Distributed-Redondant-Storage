@@ -3,8 +3,8 @@ package RelationsPubliques;
 import java.net.InetSocketAddress;
 
 public class Message {
-	String body;
-	InetSocketAddress dest;
+	public String body;
+	public InetSocketAddress dest;
 
 	public Message (String body, InetSocketAddress dest) {
 		this.body = body;
