@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 
 import Utilitaires.Global;
+import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
 public class SendPaquet {
@@ -75,9 +76,9 @@ public class SendPaquet {
   }
   
   
-  public static void prevenirHostChanged(String Id){
+  public static void prevenirHostChanged(String id){
     //préviens une machine que cette machine remplace m pour le paquet d'id Id
-    Paquet p = Donnees.getHostedPaquet(Id) ;
+    Paquet p = Donnees.getHostedPaquet(id) ;
     int placeToModify = p.power ;
     for (int i =0 ; i< 5 ; i++) {
       if (i!=placeToModify){
@@ -92,7 +93,7 @@ public class SendPaquet {
             clientSocket.connect(remote); 
             
             //message
-            ByteBuffer buffer = Utilitaires.stringToBuffer(Global.HOST_CHANGED + " " + Id +" " + placeToModify) ;
+            ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED + " " + id +" " + placeToModify) ;
             buffer.flip() ;
             clientSocket.write(buffer) ;
           }
