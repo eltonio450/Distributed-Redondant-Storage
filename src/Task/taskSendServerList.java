@@ -42,6 +42,6 @@ public class taskSendServerList implements Runnable {
 			}
 		}
 		
-		// TODO DIRE QUE X S'EST CONNECTE A TOUT LE MONDE
+		TCPConnections.Broadcast.broadcastAll(Global.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getLocalPort());
 	}
 }

@@ -7,10 +7,26 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Utilitaires.Message;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Utilitaires.*;
-
+/**
+ * 
+ * @author Simon
+ * 
+ * Surveille une liste de sockets encapsulées dans un Requester
+ * Lit le buffer EN MODE NON BLOQUANT
+ * Met tout dans la chaîne du requester
+ * 
+ * POUR FAIRE QUELQUE CHOSE :
+ * Regarder la chaîne du requester (avec le scan, bref...)
+ * Si on a le premier token, 
+ * 		- REMETTRE LA SOCKET EN MODE BLOQUANT (socket.configureBlocking(false);) (ou en subir les conséquences)
+ * 		- Faire ce qu'on veut en sachant qu'on a la première partie du message (qui peut être tout le message ou
+ * 					juste le premier mot, donc)
+ * 		- AJOUTER LA SOCKET A aEnlever !! (pas de problème de concurrence)
+ */
 public class GeneralPurposeRequestAnalyzer extends Thread {
 	LinkedList<Requester> aTraiter;
 	LinkedList<Requester> aAjouter;
@@ -27,6 +43,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		while (true) {
 			for (Requester r : aTraiter) {
 				try {
+					buff.clear();
 					r.socket.read(buff);
 				} catch (IOException e) {
 					aEnlever.add(r);
@@ -66,25 +83,31 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		Scanner s = new Scanner (r.recu);
 		String token = s.next();
 		try {
-			if (token.equals(Global.EXCHANGE)) {
-				r.socket.write(Utilitaires.stringToBuffer(Global.REPONSE_EXCHANGE));
+			if (token.equals(Message.EXCHANGE)) {
+				r.socket.write(Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE));
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
-							}
-			else if (token.equals(Global.MONITOR)){
+			}
+			else if (token.equals(Message.MONITOR)){
 				// Suite
 			}
-			else if (token.equals(Global.VERIFY_DEATH)) {
+			else if (token.equals(Message.VERIFY_DEATH)) {
 			//	r.socket.write(Global.)
 			}
-			else if (token.equals(Global.HOST_CHANGED)) {
+			else if (token.equals(Message.HOST_CHANGED)) {
 			  r.socket.configureBlocking(true);
-			  //TODO : interpr�ter pour r�cup�rer
+			  //TODO : interpr�ter pour r�cup�rer
 			  String Id = "";
 			  int place =0;
 			  Machine newHost = Machine.otherMachineFromSocket(r.socket) ;
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 	      }
+			else if (token.equals(Message.ASKFORLOCK))
+			{
+				r.socket.configureBlocking(true);
+				//Blocker le packet correspondant
+				r.socket
+			}
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;

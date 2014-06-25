@@ -9,22 +9,12 @@ import Stockage.Machine;
  */
 
 public class Global {
-	// TCP Connections
-  public static String HOST_CHANGED = "host-changed" ;
-	public static String EXCHANGE = "exchange" ;
-	public static String REPONSE_EXCHANGE = "ok-exchange" ;
-	public static String MONITOR = "monitor";
-	public static String END_ENVOI = "fin-1er-envoi" ;
-	public static int BUFFER_LENGTH = 1000 ;
-	public static String NEXT_BUFFER = "NEXT";
-	public static String BEGIN = "BEGIN";
-	public static String GET_LIST = "GET_LIST";
-
+	
 
 	// Relations Publiques
-	public static String PREFIXE_BONJOUR = "WESH";
-	public static String PREFIXE_REPONSE_BONJOUR = "YO";
-	public static String SELF_WAKE_UP = "DEBOUT";
+	public static String PREFIXE_BONJOUR = "WESH#";
+	public static String PREFIXE_REPONSE_BONJOUR = "YO#";
+	public static String SELF_WAKE_UP = "DEBOUT#";
 	public static long TIMEOUT = 60000;
 	public static long SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;
@@ -33,8 +23,8 @@ public class Global {
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
 
 	// GestionnaireMort
-	public static String VERIFY_DEATH = "YOUDEADBRO?";
-	public static String NOT_DEAD = "NOPE";
+	public static String VERIFY_DEATH = "YOUDEADBRO?#";
+	public static String NOT_DEAD = "NOPE#";
 	public static int DEATH_TIMEOUT = 10000;
 
 	//RP de debug

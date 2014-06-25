@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
-
-import Utilitaires.Global;
 
 
 public class Donnees {
@@ -16,15 +13,14 @@ public class Donnees {
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
-	static private HashMap<String,Paquet> myData = new HashMap<String,Paquet>();
+	static private HashMap<Long,Paquet> myData = new HashMap<Long,Paquet>();
 	
 	//longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
 	
 	//passage en public (cf la remarque sur le lock)
-	static public LinkedList<String> myOwnData = new LinkedList<String>();
-
-	static public LinkedList<Paquet> toSendASAP = new LinkedList<Paquet>();
+	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
+	static public LinkedList<Paquet> toSendASAP = new LinkedList<String>();
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock ();
 	static private ReentrantLock interestServeurLock= new ReentrantLock ();
@@ -34,7 +30,7 @@ public class Donnees {
 	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
 	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
 
-	public static void initializeData(LinkedList<String> mesPaquets){
+	public static void initializeData(LinkedList<ArrayList<Paquet>> mesPaquets){
 	  myOwnData = mesPaquets ;
 	}
 
@@ -42,31 +38,6 @@ public class Donnees {
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
 		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une t�che et l� donner � un slave
-	}
-	
-	public static boolean acceptExchange(String Id){
-	  ArrayList<String> res = hasAPaquetLike(Id);
-	  boolean b = !res.isEmpty() ;
-	  return b ;
-	}
-	
-	public static ArrayList<String> hasAPaquetLike(String Id){
-	  Scanner s = new Scanner(Id) ;
-	  s.useDelimiter("-") ;
-	  String newId = s.next() ; 
-	  newId = newId + "-" + s.next() + "-";
-	  long n = s.nextLong() ;
-	  long a = n / Global.NOMBRESOUSPAQUETS ;
-	  long r = n%Global.NOMBRESOUSPAQUETS ;
-	  ArrayList<String> res = new ArrayList<String>() ;
-	  for (int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
-	    if(i != (int) r){
-	      String id = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
-	      if(myData.containsKey(id)){
-	        res.add(id) ;
-	      }
-	    }
-	  }
 	}
 	
   public static Paquet selectPaquetToSend() {
@@ -82,7 +53,7 @@ public class Donnees {
   }
   
   
-  public static void changeHostForPaquet(String Id, int place, Machine newHost){
+  public static void changeHostForPaquet(long Id, int place, Machine newHost){
     myDataLock.lock();
     try{
       myData.get(Id).otherHosts.set(place, newHost) ;
@@ -148,11 +119,16 @@ public class Donnees {
 		//		 etc.
 	}
 
-
-
 	public static ArrayList<Paquet> firstOwnData(){
+<<<<<<< HEAD
 
 		return null;
+=======
+		myOwnDataLock.lock();
+		ArrayList<Paquet> retour = myOwnData.peek() ;
+		myOwnDataLock.unlock();
+		return retour;
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 	}
 
 	public static void addInterestServeur(Machine m){
@@ -167,7 +143,7 @@ public class Donnees {
 		myHostsLock.unlock();
 	}
 	
-	public static Paquet getHostedPaquet(String Id){
+	public static Paquet getHostedPaquet(Long Id){
 	  myDataLock.lock();
 	  try{
 	    return myData.get(Id) ;

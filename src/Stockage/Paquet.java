@@ -1,30 +1,23 @@
 package Stockage;
 
 
-import RelationsPubliques.*;
-import Utilitaires.Global;
-import Utilitaires.Utilitaires;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 
 public class Paquet {
@@ -126,7 +119,7 @@ public class Paquet {
     String s = Utilitaires.buffToString(b);
     Scanner scan = new Scanner(s) ; 
     
-    String id = scan.next() ;
+    int id = scan.nextInt() ;
     int power  = scan.nextInt() ;
     String IpAdresse = scan.next() ;
     int port = scan.nextInt() ;
@@ -172,6 +165,7 @@ public class Paquet {
     }
   }
   
+<<<<<<< HEAD
 
   //cette fonction bloque l'ensemble des paquets freres
   
@@ -219,6 +213,54 @@ public class Paquet {
   
   public void unlock(){
     isUsed.unlock();
+=======
+  //cette fonction bloque l'ensemble des paquets freres
+  
+  public boolean askForlock(){
+	  hasAskedForALock.lock();
+	  boolean success = true;
+	  int i = 0;
+	  
+	  while(success)
+		  success = sendAskForLock(otherHosts.get(i), i);
+
+	  return success;
+  }
+  
+  public boolean sendAskForLock(Machine m, int i){
+	          try (SocketChannel clientSocket = SocketChannel.open()) { 
+	            
+	            //init connection
+	            InetSocketAddress local = new InetSocketAddress(0); 
+	            clientSocket.bind(local); 
+	            InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
+	            clientSocket.connect(remote); 
+	            
+	            //message
+	            ByteBuffer buffer = Utilitaires.stringToBuffer("ASKFORLOCK");
+	            buffer.flip() ;
+	            clientSocket.write(buffer) ;
+	            //bon là il faut lire que le mec a bien fait le lock clientSocket.re
+	          }
+	          catch(IOException e){
+	            //TODO : on a pas pu pr�venir m !
+	          }
+
+	  return true;
+  }
+  
+  
+  public void lock(){
+	  isUsed.lock();	  
+  }
+  
+  public void spreadUnlock(){
+	  
+  }
+  
+  public void unlock(){
+	  isUsed.unlock();
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
   }
 	
   /*public boolean nextByteBuffer(ByteBuffer aRemplir){
