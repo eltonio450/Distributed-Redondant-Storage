@@ -10,7 +10,21 @@ import java.util.concurrent.locks.ReentrantLock;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Utilitaires.*;
-
+/**
+ * 
+ * @author Simon
+ * 
+ * Surveille une liste de sockets encapsulées dans un Requester
+ * Lit le buffer EN MODE NON BLOQUANT
+ * Met tout dans la chaîne du requester
+ * 
+ * POUR FAIRE QUELQUE CHOSE :
+ * Regarder la chaîne du requester (avec le scan, bref...)
+ * Si on a le premier token, 
+ * 		- REMETTRE LA SOCKET EN MODE BLOQUANT (socket.configureBlocking(false);) (ou en subir les conséquences)
+ * 		- Faire ce qu'on veut en sachant qu'on a la première partie du message (qui peut être tout le message ou
+ * 					juste le premier mot, donc)
+ */
 public class GeneralPurposeRequestAnalyzer extends Thread {
 	LinkedList<Requester> aTraiter;
 	LinkedList<Requester> aAjouter;

@@ -42,6 +42,6 @@ public class taskSendServerList implements Runnable {
 			}
 		}
 		
-		TCPConnections.broadcast.broadcastAll();
+		TCPConnections.Broadcast.broadcastAll(Global.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getLocalPort(), );
 	}
 }
