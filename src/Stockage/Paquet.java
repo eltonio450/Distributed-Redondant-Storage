@@ -47,8 +47,8 @@ public class Paquet {
 	//boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
 	//long dernierePositionSignificative; //la position de la "fin" de l'information
 
-	public boolean lockLogique; //défini si le paquet peut-être déplacé. Attention : différent d'un Lock : locked peut-être modifié par n'importe quel Thread.
-	public boolean hasAskedForALock= false;
+	public boolean lockLogique = false; //défini si le paquet peut-être déplacé. Attention : différent d'un Lock : locked peut-être modifié par n'importe quel Thread.
+	public boolean isAskingTheLock = false;
 	
 	//Lock lockHasAsked = new ReentrantLock();
 	Lock isUsed = new ReentrantLock();
@@ -214,12 +214,12 @@ public class Paquet {
 			
 			return true;
 		case 1:
-			hasAskedForALock = false;
+			lockLogique = true;
 			return false;
 		case 2:
 			//là, il y a un problème dans otherHosts... il s'agit de retrouver le paquet...
 			//retrouverOtherHosts();
-			spreadUnlock();
+			//spreadUnlock();
 			return false;
 		default:
 			return false;				
@@ -287,11 +287,8 @@ public class Paquet {
 		
 	}
 
-	public boolean getHasAskedForALock()
-	{
-		lockHasAsked.lock();
-		boolean res = hasAskedForALock;
-		
+	public boolean isLocked(){
+		return lockLogique;		
 	}
 
 	/*public boolean nextByteBuffer(ByteBuffer aRemplir){

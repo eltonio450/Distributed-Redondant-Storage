@@ -28,6 +28,19 @@ public class taskLockPacket implements Callable
 		
 		//Etape 3 : effectuer le lock si c'est possible.
 		
+		//si il n'est pas en train de le demander
+		/*
+		 * 
+		 * if(paquet.isAsking.tryLock())
+		 *		
+		 *	else
+		 *		if(priorityDemandeur>priorityReceveur)
+		 *			paquet.lock();
+		 *
+		 	
+		 *
+		 */
+			then 
 		//Etpae 4 : répondre que le lock a bien été effectué
 
 	}
