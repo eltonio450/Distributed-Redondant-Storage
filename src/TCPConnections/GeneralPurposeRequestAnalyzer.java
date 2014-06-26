@@ -2,15 +2,13 @@ package TCPConnections;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Message;
-import Stockage.Donnees;
-import Stockage.Machine;
-import Utilitaires.*;
+import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 /**
  * 
  * @author Simon
@@ -101,9 +99,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 	      }
 			else if (token.equals(Message.ASK_FOR_LOCK))
 			{
+				Runnable Locking = (r.socket);
 				r.socket.configureBlocking(true);
-				//Blocker le packet correspondant
-				//r.socket
+				aEnlever.add(r);
+				Slaver.giveUrgentTask(m);
 			}
 			
 			/**

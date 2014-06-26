@@ -97,7 +97,7 @@ public class IniDonnees {
 					onDisk.close();
 
 				}
-				Donnees.genererPaquetsSécurité(paquetsEnConstruction);
+				Donnees.genererPaquetsSecurite(paquetsEnConstruction);
 				id++;
 				
 				for(int i = 0;i<paquetsEnConstruction.size();i++)

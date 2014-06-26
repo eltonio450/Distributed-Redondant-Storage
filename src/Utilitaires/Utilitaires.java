@@ -32,6 +32,11 @@ public class Utilitaires {
 		b.flip();
 		return s;
 	}
+
+	public static ByteBuffer stringToBuffer(int id) {
+		String s = Integer.valueOf(id).toString();
+		return stringToBuffer(s);
+	}
 	
 	
 }
