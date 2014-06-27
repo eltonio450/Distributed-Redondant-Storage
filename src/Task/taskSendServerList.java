@@ -19,8 +19,9 @@ public class taskSendServerList implements Runnable {
 	public void run () {
 		String message;
 		LinkedList<Stockage.Machine> servers = Donnees.getAllServeurs();
+		boolean continuer = true;
 		
-		while (true) {
+		while (continuer) {
 			message = new String ();
 			
 			while (message.length() < Global.BUFFER_LENGTH/10 && !servers.isEmpty()) {
@@ -30,6 +31,7 @@ public class taskSendServerList implements Runnable {
 			
 			if (servers.isEmpty()) {
 				message += Message.END_ENVOI;
+				continuer = false;
 				break;
 			}
 			else
@@ -42,6 +44,12 @@ public class taskSendServerList implements Runnable {
 			}
 		}
 		
-		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getLocalPort(), Donnees.getAllServeurs());
+		try {
+			s.close ();
+		} catch (IOException e) {
+			// Nobody cares !
+		}
+		
+		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getPort() + " #", Donnees.getAllServeurs());
 	}
 }

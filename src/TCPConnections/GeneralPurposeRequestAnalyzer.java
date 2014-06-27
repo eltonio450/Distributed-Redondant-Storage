@@ -78,25 +78,95 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 	}
 
 	private void traiter (Requester r) {
-		Scanner s = new Scanner (r.recu);
-		String token = s.next();
+		Scanner scan = new Scanner (r.recu);
+		String token = scan.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
-				//TODO ??
-			  r.socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
+				// TODO : NE REPONDRE QUE DANS LA TACHE, PAS ICI (sinon l'hôte distant va se faire plaisir et répondre avant qu'on n'ait vraiment fait un truc)
+				
+				/*********************************************************************************************
+				 * 						
+				 * => a déplacer : r.socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID)); 
+				 * 
+				 *********************************************************************************************/
+				
 				r.socket.configureBlocking(true);
+				aEnlever.add(r);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
 			}
+			
+			
 			else if (token.equals(Message.MONITOR)){
 				// Suite
 			}
-			else if (token.equals(Message.VERIFY_DEATH)) {
-			//	r.socket.write(Global.)
+			
+			
+			else if (token.equals(Message.IS_DEAD)) {
+				if (scan.hasNext()) {
+					String ip = scan.next();
+					int port = -1;
+					if (scan.hasNext()) {
+						try {
+							port = Integer.parseInt(scan.next());
+						} catch (Exception e) {
+							// Parsing exception
+							// The number following the IP Adress is wrong
+							// Remove the requester (won't get any better
+							// Warn
+							aEnlever.add(r);
+							System.out.println("Corrupted message : " + r.recu);
+							return;
+						} 
+
+						if (scan.hasNext()) {
+							// Alors le numéro de port était bien fini
+							// On peut agir
+							Slaver.giveUrgentTask(new taskReactToDeath(ip, port), 1);
+							aEnlever.add(r);
+							r.socket.close();
+							return;
+						}
+					}
+				}
 			}
+			
+			
+			else if (token.equals(Message.NEW_SERVER)) {
+				if (scan.hasNext()) {
+					String ip = scan.next();
+					int port = -1;
+					if (scan.hasNext()) {
+						try {
+							port = Integer.parseInt(scan.next());
+						} catch (Exception e) {
+							// Parsing exception
+							// The number following the IP Adress is wrong
+							// Remove the requester (won't get any better
+							// Warn
+							aEnlever.add(r);
+							System.out.println("Corrupted message : " + r.recu);
+							return;
+						} 
+
+						if (scan.hasNext()) {
+							// Alors le numéro de port était bien fini
+							// On peut agir
+							Slaver.giveUrgentTask(new taskReactToDeath(ip, port), 1);
+							aEnlever.add(r);
+							r.socket.close();
+							return;
+						}
+					}
+				}
+			}
+			
+			
 			else if (token.equals(Message.HOST_CHANGED)) {
-			  r.socket.configureBlocking(true);
-			  Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
-	      }
+				r.socket.configureBlocking(true);
+				Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
+			}
+			
+			
 			else if (token.equals(Message.ASK_FOR_LOCK))
 			{
 				Runnable Locking = (r.socket);
@@ -104,7 +174,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(m);
 			}
-			
+
 			/**
 			 * Modèle :
 			 * 
@@ -120,8 +190,9 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		} catch (IOException e) {
 			aEnlever.add(r);
 			return;
-		} finally {
-			s.close();
+		} catch (Exception e) {
+			// Catch parsing exception etc.
 		}
+		scan.close();
 	}
 }

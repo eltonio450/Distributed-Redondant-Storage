@@ -13,7 +13,12 @@ public class SlaveThread extends Thread{
 		
 		while (true) {
 			r = tasks.poll();
+			try {
 			r.run();
+			} catch (Exception e) {
+				e.printStackTrace();
+				// We don't want to crash the slave if the runnable is wrong.
+			}
 			estimatedLoad -= loads.poll();
 		}
 	}

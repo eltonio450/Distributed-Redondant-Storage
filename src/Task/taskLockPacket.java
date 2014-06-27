@@ -14,6 +14,12 @@ public class taskLockPacket implements Callable
 	 * @param asker : true si c'est celui qui a demandé le lock, false sinon.
 	 *	Ce reunnable est executé lorsqu'on reçoit l'instruction de locker des paquets sur le socket.
 	 */
+	
+	/** TODO :
+	 * 
+	 * FERMER LA SOCKET après utilisation
+	 *
+	 */
 
 	public taskLockPacket(Socket socket){
 		s = socket;

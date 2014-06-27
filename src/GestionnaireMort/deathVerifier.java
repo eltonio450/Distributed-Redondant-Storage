@@ -19,7 +19,7 @@ public class deathVerifier implements Runnable {
 	public void run () {
 		Boolean mort = verifyDeath(m);
 		if (mort) {
-			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port, Donnees.getAllServeurs());
+			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port + " #", Donnees.getAllServeurs());
 		}
 	}
 	
@@ -37,7 +37,7 @@ public class deathVerifier implements Runnable {
 				mort = false;
 			clientSocket.close();
 		} catch (IOException e) {
-			// Il est bel et bien mort (ou je suis déconnecté et il faut relancer l'appli) 
+			// Il est mort.
 		}
 		return mort;
 	}
