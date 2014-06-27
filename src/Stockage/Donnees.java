@@ -73,9 +73,11 @@ public class Donnees {
 	}
 
 	public static void receptionPaquet(Machine m, Paquet p) {
+	  System.out.println("-------------Reception paquet--------------------"); 
 		addInterestServeur(m);
 		putNewPaquet(p);
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
+		System.out.println("fin reception"); 
 	}
 
 
