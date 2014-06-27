@@ -41,7 +41,7 @@ public class Paquet {
 	//otherHosts est la liste des host : Attention, les indices correspondent au numero du paquet !
 	public ArrayList<Machine> otherHosts ;
 
-	Machine owner ;
+	public Machine owner ;
 
 	//boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
 	//long dernierePositionSignificative; //la position de la "fin" de l'information
