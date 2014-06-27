@@ -121,7 +121,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						if (scan.hasNext()) {
 							// Alors le numéro de port était bien fini
 							// On peut agir
-							Slaver.giveUrgentTask(new taskReactToDeath(ip, port), 1);
+							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip, port), 1);
 							aEnlever.add(r);
 							r.socket.close();
 							return;
@@ -151,7 +151,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						if (scan.hasNext()) {
 							// Alors le numéro de port était bien fini
 							// On peut agir
-							Slaver.giveUrgentTask(new taskReactToDeath(ip, port), 1);
+							Stockage.Donnees.addHost(new Stockage.Machine (ip, port));
 							aEnlever.add(r);
 							r.socket.close();
 							return;
