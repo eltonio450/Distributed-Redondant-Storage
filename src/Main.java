@@ -37,6 +37,7 @@ public class Main {
 		ServerGetter.getServerList();
 		Utilitaires.out("Ok");
 
+
 		//Utilitaires.out("Starting UDP server.............");
 		//IniUDP.iniUDP();
 		//Utilitaires.out("Ok");
@@ -54,5 +55,10 @@ public class Main {
 		//Utilitaires.out("Serveurs lancés") ;
 		//new Thread(new ThreadClient()).start();
    
+
+		Utilitaires.out("Starting UDP server.............");
+		IniUDP.iniUDP();
+		Utilitaires.out("Ok");
+
 	}
 }

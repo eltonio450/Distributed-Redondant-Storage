@@ -152,6 +152,7 @@ public class Donnees {
 	}
 
 	public static Machine chooseMachine() {
+	  //pour test1 : return(new Machine("127.0.0.1",5004)) ;
 		return allServeur.peek();
 	}
 

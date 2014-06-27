@@ -23,9 +23,9 @@ public class Utilitaires {
 
 	/**
 	 * 
-	 * @param b
-	 *            buffer to convert (already flipped !)
-	 * @return resulting string Le buffer est flippé
+	 * @param b     buffer to convert (already flipped !)
+	 * @return resulting string 
+	 * Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
 
@@ -58,12 +58,10 @@ public class Utilitaires {
 		boolean continuer = true;
 
 		while (continuer && i < Global.BUFFER_LENGTH) {
-			if (s.read(b) == -1) {
-				continuer = false;
-			}
+			if (s.read(b) == -1) continuer = false;
+			if (s.socket().isClosed()) throw new IOException ();
 			i++;
 			s.read(b);
-
 			b.flip();
 			m = buffToString(b);
 
@@ -71,7 +69,6 @@ public class Utilitaires {
 			b.clear();
 
 			Scanner sc = new Scanner(m);
-
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
 				for (String w : finalWords) {

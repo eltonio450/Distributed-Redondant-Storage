@@ -20,7 +20,7 @@ public class taskWarnHostChanged implements Runnable {
   }
   
   public void run(){
-    System.out.println("-------------task warn host changed--------------------"); 
+    //System.out.println("-------------task warn host changed--------------------"); 
     prevenirHostChanged(ID) ;
   }
   
@@ -51,7 +51,7 @@ public class taskWarnHostChanged implements Runnable {
               String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
               buffer = Utilitaires.stringToBuffer(s) ;
               clientSocket.write(buffer) ; 
-              System.out.println("Envoyé : " + s) ;
+              //System.out.println("Envoyé : " + s) ;
             }
             
           }

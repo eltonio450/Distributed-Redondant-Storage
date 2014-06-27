@@ -12,11 +12,6 @@ import Stockage.Paquet;
 import Stockage.Stockage;
 import Utilitaires.Utilitaires;
 
-/** TODO :
- * 
- * FERMER LA SOCKET après utilisation
- *
- */
 
 public class taskClientExchange implements Runnable {
 
@@ -48,28 +43,30 @@ public class taskClientExchange implements Runnable {
 			if(!s.equals(Message.DEMANDE_ID)){
 				return false ;
 			}
-
-			buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
-			buffer.flip() ;
-			clientSocket.write(buffer) ;
-			buffer.clear() ;
-			clientSocket.read(buffer) ;
-			buffer.flip() ;
-			s = Utilitaires.buffToString(buffer) ;
-
-			if (s.equals(Message.REPONSE_EXCHANGE)){
-				//exchange can begin : send its package
-				aEnvoyer.envoyerPaquet(clientSocket);
-
-				if(recoitPaquet(clientSocket)){
-					aEnvoyer.removePaquet();
-					return true ;
-				}
-				else { return false ; }
-			}
-
-			else {
-				return false ;
+			
+			else{
+  			buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
+  			clientSocket.write(buffer) ;
+  			buffer.clear() ;
+  			clientSocket.read(buffer) ;
+  			buffer.flip() ;
+  			s = Utilitaires.buffToString(buffer) ;
+  
+  			if (s.equals(Message.REPONSE_EXCHANGE)){
+  				//exchange can begin : send its package
+  				aEnvoyer.envoyerPaquet(clientSocket);
+  
+  				if(recoitPaquet(clientSocket)){
+  					aEnvoyer.removePaquet();
+  					return true ;
+  				}
+  				else { return false ; }
+  			}
+  
+  			else {
+  			  clientSocket.close();
+  				return false ;
+  			}
 			}
 
 		}
@@ -80,35 +77,35 @@ public class taskClientExchange implements Runnable {
 
 	public boolean recoitPaquet(SocketChannel clientSocket) {
 		try {
-
 			//say I have finished, what Paquet do you want to send to me ?
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI) ;
-			buffer.flip() ;
 			clientSocket.write(buffer) ;
 			buffer.clear() ;
 			clientSocket.read(buffer) ;
 			buffer.flip() ;
 			String s = Utilitaires.buffToString(buffer) ;
 
-			while(!Donnees.acceptePaquet(s) || s.equals(Message.ANNULE_ENVOI)){
-				buffer.clear() ;
+			while(!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)){
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT) ;
-				buffer.flip() ;
 				clientSocket.write(buffer) ;
+	      buffer.clear() ;
+	      clientSocket.read(buffer) ;
+	      buffer.flip() ;
+	      s = Utilitaires.buffToString(buffer) ;
 			}
 			if(s.equals(Message.ANNULE_ENVOI)) {
+			  clientSocket.close();
 				return false ;
 			}
 			else {
-				buffer.clear() ;
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
-				buffer.flip() ;
 				clientSocket.write(buffer) ;
 
 				//now receive the package in exchange
 				Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
 				Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
 				Donnees.receptionPaquet(otherMachine, receivedPaquet);
+				clientSocket.close();
 				return true ;
 			}
 		}
@@ -123,6 +120,11 @@ public class taskClientExchange implements Runnable {
   		while(!success){
   			success = initEtEnvoiePaquet() ;
   		}
+  		try {
+        Thread.sleep(Message.TIME_TO_SLEEP_1) ;  //TODO : ?
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
 	  //}
 	}
 

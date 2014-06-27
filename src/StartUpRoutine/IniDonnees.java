@@ -26,7 +26,6 @@ public class IniDonnees {
 	public static void iniDonnees() {
 
 		iniPaths();
-
 		bufferUnByte.put((byte) 'a');
 
 		//System.out.println(System.getProperty("user.dir").toString());
