@@ -1,11 +1,11 @@
 package Task;
 
 import java.net.Socket;
-import java.util.concurrent.Callable;
+import java.nio.channels.SocketChannel;
 
-public class taskLockPacket implements Callable
+public class taskLockPacket implements Runnable
 {
-	Socket s;
+	SocketChannel s;
 
 	/**
 	 * @author Antoine
@@ -21,11 +21,11 @@ public class taskLockPacket implements Callable
 	 *
 	 */
 
-	public taskLockPacket(Socket socket){
+	public taskLockPacket(SocketChannel socket){
 		s = socket;
 	}
 
-	public boolean run() {
+	public void run() {
 		//Etape 1 : renvoyer le message d'ACK
 		
 		String id;

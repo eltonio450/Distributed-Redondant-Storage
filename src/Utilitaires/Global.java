@@ -55,6 +55,7 @@ public class Global {
 	public static RelationsPubliques.ServerPR serverPR;
 	public static  RelationsPubliques.ClientPR clientPR;
 	public static TCPConnections.ServeurTCP serveurTCP;
+	public static TCPConnections.GeneralPurposeRequestAnalyzer GPRA;
 	
 	public static void debug(int i)
 	{

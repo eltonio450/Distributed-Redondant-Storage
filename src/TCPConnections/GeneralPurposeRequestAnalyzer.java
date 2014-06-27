@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Task.taskLockPacket;
 import Utilitaires.Message;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
@@ -160,11 +161,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			
 			
 			else if (token.equals(Message.ASK_FOR_LOCK))
-			{
-				Runnable Locking = (r.socket);
+			{ 
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				Slaver.giveUrgentTask(m);
+				Slaver.giveUrgentTask(new taskLockPacket (r.socket), 2);
 			}
 
 			/**

@@ -50,12 +50,13 @@ public class Utilitaires {
 			if (s.read(b) == -1) throw new IOException ();
 			b.flip();
 			m = buffToString(b);
+			retour += m;
 			b.clear();
-
+			System.out.println(retour);
+			
 			Scanner sc = new Scanner (m);
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
-				retour += token;
 				for (String w : finalWord) {
 					if (token.equals(w)) {
 						continuer = false;

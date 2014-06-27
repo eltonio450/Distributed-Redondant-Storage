@@ -54,9 +54,11 @@ public class ServerGetter {
 					}
 
 					if (token.equals(Message.BEGIN)) {
+						System.out.println("FUCK BITCH");
 						try {
 							Donnees.putServer(sc.next(), Integer.parseInt(sc.next()));
 						} catch (Exception e) {
+							System.out.println("Wapitit");
 							// Parsing error - Nobody cares
 						}
 					}
@@ -69,11 +71,6 @@ public class ServerGetter {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-
-		Donnees.putServer(Global.MYSELF.ipAdresse, Global.MYSELF.port);
-
-		// DEBUG
-		Donnees.putServer("127.0.0.1", 5000);
 
 		Stockage.Donnees.fillingServers(false);
 	}

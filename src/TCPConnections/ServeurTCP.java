@@ -8,7 +8,6 @@ import java.nio.channels.SocketChannel;
 import Utilitaires.Global;
 
 public class ServeurTCP extends Thread {
-	public GeneralPurposeRequestAnalyzer GPRA;
 	
 	public void run () {
 		try {
@@ -17,7 +16,7 @@ public class ServeurTCP extends Thread {
 			serverSocket.bind(local);
 			while (true) {
 				SocketChannel client = serverSocket.accept();
-				GPRA.addRequester(new Requester(client));
+				Global.GPRA.addRequester(new Requester(client));
 			}
 		} catch (IOException e) {
 			return;
