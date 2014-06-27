@@ -21,6 +21,7 @@ public class Message {
 		public static String DO_NOT_ACCEPT = "non#" ;
 		public static String OK = "ok#" ;
 		public static int TIME_TO_SLEEP_1 = 500 ; //TODO : make a reasonable choice
+		public static String SendOne = "sendOnePaquet" ;
 		
 		//PR
 		public static String PREFIXE_BONJOUR = "WESH#";
