@@ -25,6 +25,7 @@ public class taskClientExchange implements Runnable {
 	public taskClientExchange(Paquet p){
 		aEnvoyer = p ;
 	}
+	
 
 	public boolean initEtEnvoiePaquet() { //return true if succeeded
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
