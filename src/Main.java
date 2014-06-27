@@ -32,7 +32,5 @@ public class Main {
 		IniUDP.iniUDP();
 		System.out.println("UDP server ready...");
 		System.out.println("All set and ready to go !");
-		
-		// bLABLABLABLABLABLABLABLA
 	}
 }
