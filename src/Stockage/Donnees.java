@@ -77,6 +77,12 @@ public class Donnees {
 		putNewPaquet(p) ;
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
 	}
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost){
 		myDataLock.lock();
@@ -135,6 +141,11 @@ public class Donnees {
 		}
 	}
 
+	
+	public static Machine chooseMachine(){
+	  return allServeur.peek() ;
+	}
+	
 	public static void putServer (String ip, int port) {
 		allServeurLock.lock();
 		try {
