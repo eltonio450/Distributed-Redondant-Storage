@@ -17,7 +17,7 @@ public class ServerGetter {
 			return; // premier serveur
 		}
 		
-		Stockage.Donnees.beginFillingServers();
+		Stockage.Donnees.fillingServers(true);
 		
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
 			InetSocketAddress local = new InetSocketAddress(0); 
@@ -63,6 +63,6 @@ public class ServerGetter {
 			System.exit(-1);
 		}
 		
-		Stockage.Donnees.endFillingServers();
+		Stockage.Donnees.fillingServers(false);
 	}
 }

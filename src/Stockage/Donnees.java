@@ -2,6 +2,7 @@
 package Stockage;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileSystems;
@@ -29,6 +30,7 @@ public class Donnees {
 
 	static private boolean filling = true;
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine> ();
+	static private int index = 0;
 
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
@@ -271,6 +273,22 @@ public class Donnees {
 				toRemove.clear();
 			}
 		}
+	}
+
+	public static InetSocketAddress getRemote () {
+		allServeurLock.lock();
+		try {
+			index ++;
+
+			if (allServeur.isEmpty()) {
+				index %= allServeur.size();
+				Machine m = allServeur.get(index);
+				return new InetSocketAddress(m.ipAdresse, m.port + 2); // Port du serveur UDP
+			}
+			else {
+				return null;
+			}
+		} finally {allServeurLock.unlock();}
 	}
 }
 

@@ -93,7 +93,9 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.unlock();
 		
 		while (!dead.isEmpty()) {
-			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(dead.removeFirst())), 10);
+			InetSocketAddress toCheck = dead.removeFirst();
+			
+			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
 	}
 }

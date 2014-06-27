@@ -14,8 +14,6 @@ public class ClientPR extends Thread{
 	private DatagramChannel channel;
 	private ByteBuffer buffBonjour;
 	private ByteBuffer buffDebout;
-	private int remoteIndex;
-
 	private ConcurrentLinkedQueue<Message> toSend;
 
 
@@ -24,8 +22,6 @@ public class ClientPR extends Thread{
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
 		this.buffBonjour = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.PREFIXE_BONJOUR);
 		this.buffDebout = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.SELF_WAKE_UP);
-		this.remoteIndex = 0;
-		this.remoteIndex = 0;
 	}
 
 	public void run () {
@@ -35,7 +31,14 @@ public class ClientPR extends Thread{
 		while (true) {
 			try {
 				// Envoie coucou
-				remote = getRemote();
+				remote = Stockage.Donnees.getRemote();
+				if (remote == null) {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+					}
+					continue;
+				}
 				// On envoie bonjour au serveur de l'hôte distant
 				channel.send(buffBonjour, remote);
 				// On dit au serveur d'attendre une réponse du client de l'hôte distant
@@ -69,11 +72,5 @@ public class ClientPR extends Thread{
 	public void sendMessage (Message message) {
 		toSend.add(message);
 		this.interrupt();
-	}
-
-	private InetSocketAddress getRemote () {
-		remoteIndex ++;
-		return null; // Tricky :/
-		//TODO
 	}
 }
