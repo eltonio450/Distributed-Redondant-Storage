@@ -31,7 +31,7 @@ public class Paquet {
 	public int idInterne;
 
 	//pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
-	int power ;
+	public int power ;
 	//boolean enLecture;
 
 	String pathOnDisk;
@@ -40,7 +40,7 @@ public class Paquet {
 
 	//il va falloir protéger cette variable vis-à-vis de la concurrence je pense
 	//otherHosts est la liste des host : Attention, les indices correspondent au numero du paquet !
-	ArrayList<Machine> otherHosts ;
+	public ArrayList<Machine> otherHosts ;
 
 	Machine owner ;
 
