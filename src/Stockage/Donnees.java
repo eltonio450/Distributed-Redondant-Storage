@@ -78,7 +78,7 @@ public class Donnees {
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 	}
 
-	
+
 
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
@@ -291,15 +291,11 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			index++;
+			index %= allServeur.size();
+			Machine m = allServeur.get(index);
+			if (m.ipAdresse.equals(Global.MYSELF.ipAdresse) && m.port == Global.MYSELF.port) return null;
+			return new InetSocketAddress(m.ipAdresse, m.port + 2);
 
-			if (allServeur.isEmpty()) {
-				index %= allServeur.size();
-				Machine m = allServeur.get(index);
-				return new InetSocketAddress(m.ipAdresse, m.port + 2);
-			}
-			else {
-				return null;
-			}
 		}
 		finally {
 			allServeurLock.unlock();

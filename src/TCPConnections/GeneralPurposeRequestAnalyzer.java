@@ -144,7 +144,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							// Alors le numéro de port était bien fini
 							// On peut agir
 							Stockage.Donnees.addHost(new Stockage.Machine (ip, port));
-							Slaver.giveTask(new Task.taskDumpToMachine(ip, port));
 							aEnlever.add(r);
 							r.socket.close();
 							return;

@@ -14,6 +14,7 @@ import cli.java.org.apache.commons.cli.ParseException;
 import cli.java.org.apache.commons.cli.PosixParser;
 
 public class IniServer {
+	@SuppressWarnings("static-access")
 	public static void iniServer (String [] args) {
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");
