@@ -82,14 +82,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		String token = scan.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
-				// TODO : NE REPONDRE QUE DANS LA TACHE, PAS ICI (sinon l'hôte distant va se faire plaisir et répondre avant qu'on n'ait vraiment fait un truc)
-				
-				/*********************************************************************************************
-				 * 						
-				 * => a déplacer : r.socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID)); 
-				 * 
-				 *********************************************************************************************/
-				
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
