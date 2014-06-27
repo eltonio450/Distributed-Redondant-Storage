@@ -55,7 +55,7 @@ public class Paquet {
 	Lock lockPhysique = new ReentrantLock();
 
 
-	public Paquet(int Id, int p , Machine proprio) {
+	public Paquet(int Id, Machine proprio) {
 
 		//possessionLock = false;
 		idMachine = Id;
@@ -63,7 +63,7 @@ public class Paquet {
 
 		idGlobal = proprio.toString()+"-"+Id ;
 
-		power = p ;
+		power = idInterne ;
 		owner = proprio ;
 
 		pathOnDisk=Global.PATHTODATA ;
