@@ -7,14 +7,14 @@ public class Message {
 		public static String EXCHANGE = "exchange#" ;
 		public static String REPONSE_EXCHANGE = "ok-exchange#" ;
 		public static String MONITOR = "monitor#";
-		public static String END_ENVOI = "fin-1er-envoi#" ;
+		public static String END_ENVOI = "fin#" ;
 		public static String NEXT_BUFFER = "NEXT#";
 		public static String BEGIN = "BEGIN#";
 		public static String GET_LIST = "GET_LIST#";
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static int BUFFER_LENGTH = 1000 ;
-		public static final String DEMANDE_ID = "id pleas#";
+		public static final String DEMANDE_ID = "id_pleas#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";
 		public static String ANNULE_ENVOI = "stop#" ;
 		public static String DO_NOT_ACCEPT = "non#" ;
