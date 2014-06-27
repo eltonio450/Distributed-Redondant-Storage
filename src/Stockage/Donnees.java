@@ -27,6 +27,9 @@ public class Donnees {
 	//longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
 
+	static private boolean filling = true;
+	static private LinkedList<Machine> toRemove = new LinkedList<Machine> ();
+
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
 
@@ -117,7 +120,13 @@ public class Donnees {
 		} finally {interestServeurLock.unlock();}
 		allServeurLock.lock();
 		try {
-			allServeur.remove(m);
+			if (!filling)
+				allServeur.remove(m);
+			else {
+				synchronized (toRemove) {
+					toRemove.add(m);
+				}
+			}
 		} finally {allServeurLock.unlock();}
 	}
 
@@ -252,6 +261,16 @@ public class Donnees {
 
 	}
 
-
+	public static void fillingServers(boolean flag) {
+		filling = flag;
+		if (flag = false) {
+			synchronized (toRemove) {
+				for (Machine m : toRemove) {
+					traiteUnMort(m);
+				}
+				toRemove.clear();
+			}
+		}
+	}
 }
 

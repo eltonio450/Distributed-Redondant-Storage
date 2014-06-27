@@ -18,7 +18,7 @@ public class Utilitaires {
 		buff.flip();
 		return buff;
 	}
-	
+
 	/**
 	 * 
 	 * @param b buffer to convert (already flipped !)
@@ -36,7 +36,5 @@ public class Utilitaires {
 	public static ByteBuffer stringToBuffer(int id) {
 		String s = Integer.valueOf(id).toString();
 		return stringToBuffer(s);
-	}
-	
-	
+	}	
 }
