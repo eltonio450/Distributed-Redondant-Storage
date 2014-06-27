@@ -263,7 +263,19 @@ public class Donnees {
 
 	}
 
-	public static void fillingServers(boolean flag) {
+
+  public static void removePaquet(String ID) {
+    myDataLock.lock();
+    try{
+      myData.remove(ID) ;
+      toSendASAP.remove(ID);
+    }
+    finally{
+      myDataLock.unlock();
+    }
+  }
+
+  public static void fillingServers(boolean flag) {
 		filling = flag;
 		if (flag = false) {
 			synchronized (toRemove) {

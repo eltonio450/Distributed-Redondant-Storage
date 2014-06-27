@@ -169,7 +169,15 @@ public class Paquet {
 		return p ;
 	}
 
+	public void removePaquet(){
+	  Donnees.removePaquet(idGlobal) ;
+	  deleteData() ;
+	}
+	
 	public void deleteData() {
+	  //TODO : vérifier que cette suppression fonctionne bien et ensuite l'utiliser
+	  //ie pour l'instant on ne supprime rien du disque
+	  /*
 		isUsed.lock();
 		try{
 			File f = new File(pathOnDisk) ;
@@ -178,6 +186,7 @@ public class Paquet {
 		finally{
 			isUsed.unlock(); 
 		}
+		*/
 	}
 
 
