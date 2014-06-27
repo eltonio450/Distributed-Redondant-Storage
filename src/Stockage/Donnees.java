@@ -75,7 +75,7 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.idGlobal) ; //TODO : faire une t�che et l� donner � un slave
+		//TODO : lancer taskWarnHostChanged(p.idGlobal) - tache urgente !
 	}
 
 
