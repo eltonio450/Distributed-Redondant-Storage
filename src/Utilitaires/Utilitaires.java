@@ -29,7 +29,7 @@ public class Utilitaires {
 	public static String buffToString(ByteBuffer b) {
 		String s = new String ();
 		while (b.hasRemaining())
-			s += (char) b.getChar();
+			s +=(char) b.get();		// nc compatibility
 		b.flip();
 		return s;
 	}
@@ -47,9 +47,10 @@ public class Utilitaires {
 		boolean continuer = true;
 
 		while (continuer) {
-			if (s.read(b) == -1) throw new IOException ();
+			if (s.read(b) == -1) continuer = false;
 			b.flip();
 			m = buffToString(b);
+			
 			retour += m;
 			b.clear();
 			

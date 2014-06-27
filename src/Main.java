@@ -34,7 +34,7 @@ public class Main {
     System.out.println("Ok");
 
     System.out.print("Getting server list.............");
- //   ServerGetter.getServerList();
+    ServerGetter.getServerList();
     System.out.println("Ok");
 
     System.out.print("Starting UDP server.............");

@@ -48,6 +48,8 @@ public class ServerPR extends Thread{
 					traiter (Utilitaires.Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {}
 				
+				receivedMessage.clear();
+				
 				checkExpectedMessages();
 
 			} catch (IOException e) {
@@ -65,10 +67,12 @@ public class ServerPR extends Thread{
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
+		System.out.println(message);
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 		
 		if (token.equals(Utilitaires.Message.PREFIXE_BONJOUR)) {
+			System.out.println("Contact making sure we're still alive.");
 			// On dit au client de répondre au serveur de l'hôte distant
 			Utilitaires.Global.clientPR.sendMessage(new Message (Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
