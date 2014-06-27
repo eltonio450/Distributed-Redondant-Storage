@@ -63,6 +63,8 @@ public class ServerGetter {
 			System.exit(-1);
 		}
 		
+		Donnees.putServer(Global.MYSELF.ipAdresse, Global.MYSELF.port);
+		
 		Stockage.Donnees.fillingServers(false);
 	}
 }
