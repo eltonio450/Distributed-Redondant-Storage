@@ -154,6 +154,13 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			
 			
+			else if (token.equals(Message.GET_LIST)) {
+				r.socket.configureBlocking(true);
+				r.socket.write(Utilitaires.stringToBuffer("Aye aye, sir !\n"));
+				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);			
+			}
+			
+			
 			else if (token.equals(Message.HOST_CHANGED)) {
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
