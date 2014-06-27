@@ -25,6 +25,7 @@ public class taskServeurExchange implements Runnable {
   
   public void recoitPaquet() throws IOException{
     
+    socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
     socket.read(buffer) ;
@@ -80,7 +81,7 @@ public class taskServeurExchange implements Runnable {
         
         while(!ok && !paquets2.isEmpty()){
           Paquet aEnvoyer = Donnees.getPaquet(paquets2.pop()) ;
-          buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+          buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
           socket.write(buffer) ;
           buffer.clear() ;
           socket.read(buffer) ;
