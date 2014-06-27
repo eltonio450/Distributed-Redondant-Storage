@@ -121,7 +121,7 @@ public class Paquet {
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
 
-		String s = idMachine + " " + power + " " + owner.ipAdresse + " " + owner.port ;
+		String s = idMachine + " " + owner.ipAdresse + " " + owner.port ;
 		for (int i = 0 ; i < 5 ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
@@ -136,7 +136,6 @@ public class Paquet {
 		Scanner scan = new Scanner(s) ; 
 
 		int id = scan.nextInt() ;
-		int power  = scan.nextInt() ;
 		String IpAdresse = scan.next() ;
 		int port = scan.nextInt() ;
 		Machine owner = new Machine(IpAdresse,port) ;
@@ -148,7 +147,7 @@ public class Paquet {
 			hosts.set(i, new Machine(ip,p)) ;
 		}
 
-		Paquet paq = new Paquet(id,power,owner) ;
+		Paquet paq = new Paquet(id,owner) ;
 		paq.putOtherHosts(hosts);
 		return paq ;
 	}
