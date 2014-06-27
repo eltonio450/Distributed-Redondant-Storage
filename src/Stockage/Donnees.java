@@ -78,7 +78,7 @@ public class Donnees {
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 	}
 
-	
+
 
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
@@ -209,6 +209,7 @@ public class Donnees {
 	public static void addHost(Machine m) {
 		myHostsLock.lock();
 		myHosts.add(m);
+		System.out.println(m.ipAdresse + ":" + m.port + " added.");
 		myHostsLock.unlock();
 	}
 
@@ -239,9 +240,11 @@ public class Donnees {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 
 					b.clear();
+					//if(tableau.get(i).fichier.isOpen())
+					//	System.out.println("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
-					Global.debug(i);
+					//Global.debug(i);
 					temp += (int) b.get(0);
 				}
 				b.clear();
@@ -251,6 +254,9 @@ public class Donnees {
 
 				tableau.get(Global.NOMBRESOUSPAQUETS - 1).fichier.write(b);
 			}
+			
+			for(int i=0;i<Global.NOMBRESOUSPAQUETS;i++)
+				tableau.get(i).remettrePositionZero();
 
 		}
 		catch (IOException e) {
@@ -286,18 +292,17 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			index++;
+			if (allServeur.isEmpty()) return null;
+			index %= allServeur.size();
+			Machine m = allServeur.get(index);
+			if (m.ipAdresse.equals(Global.MYSELF.ipAdresse) && m.port == Global.MYSELF.port) return null;
+			return new InetSocketAddress(m.ipAdresse, m.port + 2);
 
-			if (allServeur.isEmpty()) {
-				index %= allServeur.size();
-				Machine m = allServeur.get(index);
-				return new InetSocketAddress(m.ipAdresse, m.port + 2);
-			}
-			else {
-				return null;
-			}
 		}
 		finally {
 			allServeurLock.unlock();
 		}
 	}
+	
+	
 }

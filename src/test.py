@@ -1,5 +1,5 @@
 import os
-nombreDeServeur = 2
+nombreDeServeur = 4
 i = 0
 
 #os.system("killall java")
@@ -16,10 +16,9 @@ os.system("fuser -fk " + str(5000)+"/udp")
 ligne = " -d " + str(0) + " -p " + str(5000) + " -t "
 print(ligne)
 
-while (i < nombreDeServeur) :
+while (i < nombreDeServeur-1) :
     i=i+1
     ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 127.0.0.1" + " -P 5000" 
-    #print("java ../bin/Main")
     os.system("fuser -fk " + str(5000+4*i)+"/udp")
     #os.system("fuser -fk " + str(5000+4*i)+"/tcp")
     os.chdir("../bin")

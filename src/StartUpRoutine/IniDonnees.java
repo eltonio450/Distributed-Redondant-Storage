@@ -36,7 +36,7 @@ public class IniDonnees {
 
 			while (!finDepassee) {
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);
-				System.out.println("Blah !2");
+				//System.out.println("Blah !2");
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 					paquetTemp = new Paquet(id, Global.MYSELF);
 					onDisk = paquetTemp.fichier;
@@ -67,6 +67,7 @@ public class IniDonnees {
 					
 					id++;
 					paquetsEnConstruction.add(paquetTemp);
+					paquetTemp.remettrePositionZero();
 
 
 				}
@@ -90,12 +91,11 @@ public class IniDonnees {
 
 	public static void iniPaths() {
 		if (Global.DEBUG) {
-			;
-
-			// pathToMyData dépend du mode : si le mode debug est activé, un
-			// dossier prefixe avec l'id du programme est créé. Sinon elle est
-			// juste dans myOwnData/
-
+			System.out.println(System.getProperty("user.dir"));
+			
+			Global.PATHTOMYDATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/myOwnData/fichier.txt";
+			Global.PATHTODATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/data/";
+			
 		}
 		else {
 			Global.PATHTOMYDATA = "myOwnData/fichier.txt";
