@@ -11,7 +11,7 @@ import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
 public class SendPaquet {
-
+/*
   public static void prevenirHostChanged(String id){
     //préviens une machine que cette machine remplace m pour le paquet d'id Id
     Paquet p = Donnees.getHostedPaquet(id) ;

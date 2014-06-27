@@ -63,11 +63,7 @@ public class taskClientExchange implements Runnable {
 				aEnvoyer.envoyerPaquet(clientSocket);
 
 				if(recoitPaquet(clientSocket)){
-					//kill the package we sent before :
-					//TODO :
-					// faire un truc dans donnees pour l'enlever de myData
-					//aEnvoyer.deleteData() ;
-
+					aEnvoyer.removePaquet();
 					return true ;
 				}
 				else { return false ; }

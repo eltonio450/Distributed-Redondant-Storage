@@ -2,6 +2,7 @@
 package Stockage;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileSystems;
@@ -26,6 +27,10 @@ public class Donnees {
 
 	//longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
+
+	static private boolean filling = true;
+	static private LinkedList<Machine> toRemove = new LinkedList<Machine> ();
+	static private int index = 0;
 
 	//passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
@@ -70,16 +75,8 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.idGlobal) ; //TODO : faire une t�che et l� donner � un slave
+		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
 	}
-
-
-	// TODO : implement this and put it in an other place
-	public static Boolean verifieMort(Machine m){
-		//envoie un message � m pour v�rifier qu'il est bien mort
-		return null ;
-	}
-
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost){
 		myDataLock.lock();
@@ -117,7 +114,13 @@ public class Donnees {
 		} finally {interestServeurLock.unlock();}
 		allServeurLock.lock();
 		try {
-			allServeur.remove(m);
+			if (!filling)
+				allServeur.remove(m);
+			else {
+				synchronized (toRemove) {
+					toRemove.add(m);
+				}
+			}
 		} finally {allServeurLock.unlock();}
 	}
 
@@ -252,5 +255,43 @@ public class Donnees {
 	}
 
 
+  public static void removePaquet(String ID) {
+    myDataLock.lock();
+    try{
+      myData.remove(ID) ;
+      toSendASAP.remove(ID);
+    }
+    finally{
+      myDataLock.unlock();
+    }
+  }
+
+  public static void fillingServers(boolean flag) {
+		filling = flag;
+		if (flag = false) {
+			synchronized (toRemove) {
+				for (Machine m : toRemove) {
+					traiteUnMort(m);
+				}
+				toRemove.clear();
+			}
+		}
+	}
+
+	public static InetSocketAddress getRemote () {
+		allServeurLock.lock();
+		try {
+			index ++;
+
+			if (allServeur.isEmpty()) {
+				index %= allServeur.size();
+				Machine m = allServeur.get(index);
+				return new InetSocketAddress(m.ipAdresse, m.port + 2); // Port du serveur UDP
+			}
+			else {
+				return null;
+			}
+		} finally {allServeurLock.unlock();}
+	}
 }
 

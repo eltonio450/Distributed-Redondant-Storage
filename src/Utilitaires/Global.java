@@ -5,7 +5,7 @@ import Stockage.Machine;
 /**
  * 
  * @author Simon
- * Chaque appli choisit son port MAIS SERVERPRPORT = CLIENTPRPORT + 1
+ * Chaque appli choisit son port MAIS SERVERPRPORT = CLIENTPRPORT + 1 = TCPPORT + 2
  */
 
 public class Global {

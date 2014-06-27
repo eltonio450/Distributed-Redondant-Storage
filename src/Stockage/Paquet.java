@@ -31,7 +31,7 @@ public class Paquet {
 	public int idInterne;
 
 	//pour rétablir un paquet manquant : si on a power 1, c'est à nous de rétablir le paquet.
-	int power ;
+	public int power ;
 	//boolean enLecture;
 
 	String pathOnDisk;
@@ -40,7 +40,7 @@ public class Paquet {
 
 	//il va falloir protéger cette variable vis-à-vis de la concurrence je pense
 	//otherHosts est la liste des host : Attention, les indices correspondent au numero du paquet !
-	ArrayList<Machine> otherHosts ;
+	public ArrayList<Machine> otherHosts ;
 
 	Machine owner ;
 
@@ -121,7 +121,7 @@ public class Paquet {
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
 
-		String s = idMachine + " " + power + " " + owner.ipAdresse + " " + owner.port ;
+		String s = idMachine + " " + owner.ipAdresse + " " + owner.port ;
 		for (int i = 0 ; i < 5 ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
@@ -136,7 +136,6 @@ public class Paquet {
 		Scanner scan = new Scanner(s) ; 
 
 		int id = scan.nextInt() ;
-		int power  = scan.nextInt() ;
 		String IpAdresse = scan.next() ;
 		int port = scan.nextInt() ;
 		Machine owner = new Machine(IpAdresse,port) ;
@@ -148,7 +147,7 @@ public class Paquet {
 			hosts.set(i, new Machine(ip,p)) ;
 		}
 
-		Paquet paq = new Paquet(id,power,owner) ;
+		Paquet paq = new Paquet(id,owner) ;
 		paq.putOtherHosts(hosts);
 		return paq ;
 	}
@@ -170,7 +169,15 @@ public class Paquet {
 		return p ;
 	}
 
+	public void removePaquet(){
+	  Donnees.removePaquet(idGlobal) ;
+	  deleteData() ;
+	}
+	
 	public void deleteData() {
+	  //TODO : v�rifier que cette suppression fonctionne bien et ensuite l'utiliser
+	  //ie pour l'instant on ne supprime rien du disque
+	  /*
 		isUsed.lock();
 		try{
 			File f = new File(pathOnDisk) ;
@@ -179,6 +186,7 @@ public class Paquet {
 		finally{
 			isUsed.unlock(); 
 		}
+		*/
 	}
 
 

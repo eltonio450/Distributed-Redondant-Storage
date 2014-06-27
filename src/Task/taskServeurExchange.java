@@ -41,18 +41,22 @@ public class taskServeurExchange implements Runnable {
       Machine otherMachine = Machine.otherMachineFromSocket(socket) ;
       Donnees.receptionPaquet(otherMachine, receivedPaquet);
       
-      envoitPaquet() ;
+      Paquet sentPaquet = envoitPaquet() ;
+      if(sentPaquet != null){
+        sentPaquet.removePaquet();
+      }
     }
 
   }
   
-  public boolean envoitPaquet() throws IOException {
+  public Paquet envoitPaquet() throws IOException {
    
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
     socket.read(buffer) ;
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
+    Paquet sentPaquet = null ;
     
     if(s.equals(Message.END_ENVOI)){
       boolean ok = false ;
@@ -72,6 +76,7 @@ public class taskServeurExchange implements Runnable {
           Paquet toSend = Donnees.choosePaquetToSend() ;
           toSend.envoyerPaquet(socket);
           ok = true ;
+          sentPaquet = toSend ;
         }
       }
       
@@ -91,26 +96,27 @@ public class taskServeurExchange implements Runnable {
             Paquet toSend = Donnees.choosePaquetToSend() ;
             toSend.envoyerPaquet(socket);
             ok = true ;
+            sentPaquet = toSend ;
           }
         }
         
         if(!ok){
           buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
           socket.write(buffer) ;
-          return false ;
+          return sentPaquet ;
         }
         else {
-          return true ;
+          return sentPaquet;
         }
         
       }
       else{
-        return true ;
+        return sentPaquet ;
       }
        
     }
     else {
-      return false ;
+      return sentPaquet ;
     }
   }
   
