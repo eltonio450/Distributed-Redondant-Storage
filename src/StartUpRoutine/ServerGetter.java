@@ -13,7 +13,7 @@ import Utilitaires.Global;
 
 public class ServerGetter {
 	public static void getServerList() {
-		if (Global.FIRST_IP.equals("127.0.0.1")) {
+		if (Global.FIRST_IP.equals(Global.NO_FIRST_SERVER)) {
 			return; // premier serveur
 		}
 		
@@ -34,6 +34,8 @@ public class ServerGetter {
 			while (continuer) {
 				clientSocket.read(b);
 				message = Utilitaires.buffToString(b);
+				b.clear();
+				System.out.println(message);
 				Scanner sc = new Scanner(message);
 				while (sc.hasNext()) {
 					token = sc.next();
@@ -50,7 +52,7 @@ public class ServerGetter {
 						try {
 							Donnees.putServer(sc.next(), Integer.parseInt(sc.next()));
 						} catch (Exception e) {
-							// Parsing error - Nobody Cares
+							// Parsing error - Nobody cares
 						}
 					}
 				}

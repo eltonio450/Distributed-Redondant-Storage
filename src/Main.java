@@ -30,7 +30,7 @@ public class Main {
 		
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
-		System.out.println("UDP server ready...");
+		System.out.println("Ok");
 		System.out.println("All set and ready to go !");
 	}
 }
