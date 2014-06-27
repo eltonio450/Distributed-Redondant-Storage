@@ -212,16 +212,13 @@ public class Donnees {
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau)
 	{
 		FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
-		Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,0,Global.MYSELF);
+		Paquet p = new Paquet(tableau.get(0).idMachine+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
 		tableau.add(Global.NOMBRESOUSPAQUETS-1, p);
 
 		for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
-			try {
-				fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				System.out.println(tableau.get(i).pathOnDisk());
+				fichier[i] = tableau.get(i).fichier;
+
 		}
 		int temp = 0;
 		ByteBuffer b = ByteBuffer.allocate(1);
@@ -232,11 +229,13 @@ public class Donnees {
 				try {
 					fichier[i].read(b);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println("Problème lors de la génération des paquets de sécurité !");
 					e.printStackTrace();
 				}
 				b.flip();
-				temp += b.get();
+				//System.out.println("Blah !");
+				temp += (int) b.get(0);
+				//System.out.println("Blah 2");
 			}
 			b.clear();
 			temp%=256;
