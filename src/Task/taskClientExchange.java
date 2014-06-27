@@ -31,7 +31,7 @@ public class taskClientExchange implements Runnable {
 	public boolean initEtEnvoiePaquet() { //return true if succeeded
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
 
-			Machine correspondant = Stockage.chooseMachine() ;
+			Machine correspondant = Donnees.chooseMachine() ;
 			//init connection
 			InetSocketAddress local = new InetSocketAddress(0); 
 			clientSocket.bind(local); 
