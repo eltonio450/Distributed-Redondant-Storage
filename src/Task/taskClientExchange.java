@@ -12,7 +12,6 @@ import Stockage.Paquet;
 import Stockage.Stockage;
 import Utilitaires.Utilitaires;
 
-
 /** TODO :
  * 
  * FERMER LA SOCKET après utilisation
@@ -26,7 +25,6 @@ public class taskClientExchange implements Runnable {
 	public taskClientExchange(Paquet p){
 		aEnvoyer = p ;
 	}
-
 
 	public boolean initEtEnvoiePaquet() { //return true if succeeded
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
@@ -119,10 +117,12 @@ public class taskClientExchange implements Runnable {
 	}
 
 	public void run() {
-		boolean success = false ;
-		while(!success){
-			success = initEtEnvoiePaquet() ;
-		}
+	  //if(aEnvoyer.askForlock()){
+  		boolean success = false ;
+  		while(!success){
+  			success = initEtEnvoiePaquet() ;
+  		}
+	  //}
 	}
 
 

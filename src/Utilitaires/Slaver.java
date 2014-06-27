@@ -8,6 +8,7 @@ package Utilitaires;
  * Pas encore utilisé mais sera sans doute utile
  *
  */
+
 public class Slaver {
 	static final int NB_SLOWSLAVES = 100;
 	static final int NB_FASTSLAVES = 20;

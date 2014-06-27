@@ -55,18 +55,35 @@ public class Donnees {
 		return false;
 	}
 
-	public static LinkedList<String> hasPaquetLike(String ID) {
-		Scanner s = new Scanner(ID);
-		s.useDelimiter("-");
-		final String newId = s.next() + "-" + s.next() + "-";
-		long n = s.nextLong();
-		long a = n / Global.NOMBRESOUSPAQUETS;
-		long b = n % Global.NOMBRESOUSPAQUETS;
-		LinkedList<String> res = new LinkedList<String>();
-		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
-			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
-			if (myData.containsKey(testId)) {
-				res.add(testId);
+
+	public static LinkedList<String> hasPaquetLike(String ID){
+		Scanner s = new Scanner(ID) ;
+		s.useDelimiter("-") ;
+		final String newId = s.next() + "-" + s.next() +"-" ;
+		long n = s.nextLong() ;
+		long a = n/Global.NOMBRESOUSPAQUETS ;
+		long b = n%Global.NOMBRESOUSPAQUETS ;
+		LinkedList<String> res = new LinkedList<String>() ;
+		for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
+			String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
+			if (myData.containsKey(testId)){ res.add(testId) ; }
+		}
+		return res ;
+	}
+
+	public static void receptionPaquet(Machine m, Paquet p){
+		addInterestServeur(m) ;
+		putNewPaquet(p) ;
+		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
+	}
+
+	public static void changeHostForPaquet(String Id, int place, Machine newHost){
+		myDataLock.lock();
+		try{
+			LinkedList<String> paquets = hasPaquetLike(Id) ;
+			for(String s : paquets){
+				myData.get(Id).otherHosts.set(place, newHost) ;
+
 			}
 		}
 		return res;

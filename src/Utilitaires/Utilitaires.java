@@ -2,8 +2,6 @@ package Utilitaires;
 
 import java.nio.ByteBuffer;
 
-import Stockage.Machine;
-
 public class Utilitaires {
 	/**
 	 * 
