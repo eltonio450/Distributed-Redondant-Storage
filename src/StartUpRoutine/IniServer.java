@@ -36,6 +36,7 @@ public class IniServer {
 		options.addOption(OptionBuilder.withArgName("debug").hasArg()
 				.withDescription("Active le mode debuggage. Doit etre suivi d'un identifiant unique sur la machine").create("d"));
 		options.addOption(OptionBuilder.withArgName("port").hasArg().withDescription("port de fonctionnement").create("p"));
+		options.addOption(OptionBuilder.withArgName("first node").withDescription("si le serveur est le premier").create("t"));
 
 		try {
 			// Etape 2: Analyse de la ligne de commande
@@ -47,7 +48,10 @@ public class IniServer {
 				Global.SERVERPRPORT = Global.CLIENTPRPORT + 1;
 				Global.TCP_PORT = Global.SERVERPRPORT + 1;
 			}
-
+			if (cmd.hasOption("t")){
+				Global.FIRST_IP="none#";
+				System.out.println("Je suis le serveur de base !");
+			}
 			if (cmd.hasOption("I"))
 				Global.FIRST_IP = cmd.getOptionValue("I");
 			if (cmd.hasOption("P"))
