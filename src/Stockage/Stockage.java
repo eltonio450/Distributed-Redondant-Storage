@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+//TODO : ce n'est plus d'actualité !
+
 public class Stockage {
 
+  /*
 	public static LinkedList<Machine> getAllServeurs(Machine m){ //TODO
 		return null ;
 	}
@@ -37,5 +40,5 @@ public class Stockage {
 			}
 		}
 	}
-	
+	*/
 }

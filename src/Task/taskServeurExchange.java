@@ -25,6 +25,7 @@ public class taskServeurExchange implements Runnable {
   
   public void recoitPaquet() throws IOException{
     
+    socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
     socket.read(buffer) ;
@@ -61,7 +62,7 @@ public class taskServeurExchange implements Runnable {
       
       while(!ok && !paquets1.isEmpty()){
         Paquet aEnvoyer = Donnees.getPaquet(paquets1.pop()) ;
-        buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+        buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
         socket.write(buffer) ;
         buffer.clear() ;
         socket.read(buffer) ;
@@ -74,13 +75,13 @@ public class taskServeurExchange implements Runnable {
         }
       }
       
-      if(!ok && paquets1.isEmpty()){
+      if(!ok){
         //try with all data
         LinkedList<String> paquets2 = Donnees.chooseManyPaquetToSend2() ;
         
         while(!ok && !paquets2.isEmpty()){
           Paquet aEnvoyer = Donnees.getPaquet(paquets2.pop()) ;
-          buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+          buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
           socket.write(buffer) ;
           buffer.clear() ;
           socket.read(buffer) ;
@@ -93,7 +94,7 @@ public class taskServeurExchange implements Runnable {
           }
         }
         
-        if(!ok && paquets2.isEmpty()){
+        if(!ok){
           buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
           socket.write(buffer) ;
           return false ;
@@ -103,8 +104,10 @@ public class taskServeurExchange implements Runnable {
         }
         
       }
-     
-     
+      else{
+        return true ;
+      }
+       
     }
     else {
       return false ;

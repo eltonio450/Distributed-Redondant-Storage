@@ -26,8 +26,8 @@ public class taskHostHasChanged implements Runnable {
 	public void run() {
 		try{
 			Machine newHost = Machine.otherMachineFromSocket(socket) ;
-			// Tu remplies et vide ton buffer à la suite...
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
+			socket.write(buffer) ;
 			buffer.clear() ;
 			socket.read(buffer) ;
 			buffer.flip() ;

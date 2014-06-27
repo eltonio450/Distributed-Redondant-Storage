@@ -70,7 +70,7 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		SendPaquet.prevenirHostChanged(p.id) ; //TODO : faire une t�che et l� donner � un slave
+		SendPaquet.prevenirHostChanged(p.idGlobal) ; //TODO : faire une t�che et l� donner � un slave
 	}
 
 
@@ -203,7 +203,7 @@ public class Donnees {
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
-		myData.put(p.id, p) ;
+		myData.put(p.idGlobal, p) ;
 		myDataLock.unlock();
 	}
 
