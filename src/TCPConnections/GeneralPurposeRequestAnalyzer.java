@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Task.taskLockPacket;
+import Task.taskSendRequestedPaquet;
 import Utilitaires.Message;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
@@ -121,6 +122,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						}
 					}
 				}
+			}
+			
+			else if(token.equals(Message.DEMANDE_PAQUET)){
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				Slaver.giveTask(new taskSendRequestedPaquet(r.socket), 1);
 			}
 			
 			

@@ -27,10 +27,11 @@ public class Utilitaires {
 	 * Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
+		b.flip();
 		String s = new String ();
 		while (b.hasRemaining())
 			s += b.getChar();
-		b.flip();
+		//b.flip();
 		return s;
 	}
 

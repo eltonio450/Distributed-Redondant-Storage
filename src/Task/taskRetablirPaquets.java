@@ -10,6 +10,12 @@ import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
+/**
+ * 
+ * @author antoine
+ * @param f : paquet dont on cherche les frères pour reconstruire le paquet manquant.
+ * @param num : le numéro du paquet manquant
+ */
 public class taskRetablirPaquets implements Runnable {
 
 	Paquet frere;
@@ -34,10 +40,11 @@ public class taskRetablirPaquets implements Runnable {
 
 	@Override
 	public void run() {
-		//Etape 1: se connecter sur les autres paquets
 
-		for(int i =0;i<Global.NOMBRESOUSPAQUETS;i++)
-			if(i!=numeroMort){
+		//Etape 1: se connecter sur les autres paquets et récupérer le buffer correspond.
+
+		for(int i =0;i<Global.NOMBRESOUSPAQUETS;i++){
+			if(i!=numeroMort &&i!=frere.idInterne){
 				try {
 					InetSocketAddress local = new InetSocketAddress(0); 
 					clientSocket[i].bind(local); 
@@ -59,58 +66,60 @@ public class taskRetablirPaquets implements Runnable {
 					while(b[i].position()!=Global.PAQUET_SIZE)
 						clientSocket[i].read(b[i]);
 					b[i].flip();
+
+
 					//Etape 5 : remercier
-					clientSocket[i].write(Utilitaires.stringToBuffer(Message.OK));
+					//nan en fait on s'en fout
+					//clientSocket[i].write(Utilitaires.stringToBuffer(Message.OK));
 
 				}
 				catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		}
+		for(int j = 0;j<Global.PAQUET_SIZE;j++)
+		{
 
-				for(int j = 0;j<Global.PAQUET_SIZE;j++)
+			//temp est le buffer temporaire qui contient le byte qui va être écrit réellement.
+			b[reconstruit.idInterne].clear();
+
+			if(numeroMort>=Global.NOMBRESOUSPAQUETSSIGNIFICATIFS)
+			{
+				for(int i=0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
+					newByte += (int) b[i].get(j);
+				newByte %= 256;
+				b[numeroMort].put((byte)newByte);
+			}
+			else
+			{
+				for(int i=0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
 				{
-					
-					//temp est le buffer temporaire qui contient le byte qui va être écrit réellement.
-					b[reconstruit.idInterne].clear();
+					if(i!=numeroMort)
+						newByte += (int) b[i].get(j);
 
-					if(numeroMort>=Global.NOMBRESOUSPAQUETSSIGNIFICATIFS)
-					{
-						for(i=0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
-							newByte += (int) b[i].get(j);
-						newByte %= 256;
-						b[numeroMort].put((byte)newByte);
-					}
-					else
-					{
-						for(i=0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++)
-						{
-							if(i!=numeroMort)
-								newByte += (int) b[i].get(j);
-
-
-						}
-						newByte =(b[Global.NOMBRESOUSPAQUETSSIGNIFICATIFS-1].get(j) - newByte)%256;
-						b[numeroMort].put((byte)newByte);
-					}
-
-					b[reconstruit.idInterne].flip();
 
 				}
-				try {
-					reconstruit.fichier.write(b[numeroMort]);
-					reconstruit.remettrePositionZero();
-				}
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				
+				newByte =(b[Global.NOMBRESOUSPAQUETSSIGNIFICATIFS-1].get(j) - newByte)%256;
+				b[numeroMort].put((byte)newByte);
 			}
 
-		//Etape 2 : reconstruire le paquet
+			b[reconstruit.idInterne].flip();
+
+		}
+		try {
+			reconstruit.fichier.write(b[numeroMort]);
+			reconstruit.remettrePositionZero();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
-	}
+
+
+
+	
 }
