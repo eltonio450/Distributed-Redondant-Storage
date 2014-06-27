@@ -7,14 +7,14 @@ public class SlaveThread extends Thread{
 	private LinkedBlockingQueue<Runnable> tasks;	// Vérifier si l'attente sur une file vide ne prend pas trop de temps
 	private ConcurrentLinkedQueue<Integer> loads;
 	private int estimatedLoad;
-	
+
 	public void run () {
 		Runnable r;
-		
+
 		while (true) {
-			r = tasks.poll();
 			try {
-			r.run();
+				r = tasks.take();
+				r.run();
 			} catch (Exception e) {
 				e.printStackTrace();
 				// We don't want to crash the slave if the runnable is wrong.
@@ -22,7 +22,7 @@ public class SlaveThread extends Thread{
 			estimatedLoad -= loads.poll();
 		}
 	}
-	
+
 	public boolean doThat(Runnable r, int estimatedLoad) {
 		if (tasks.add(r)) {	// return false if couldnt add task (should not happen normally)
 			this.estimatedLoad += estimatedLoad;
@@ -31,11 +31,11 @@ public class SlaveThread extends Thread{
 		}
 		return false;
 	}
-	
+
 	public int getLoad() {
 		return estimatedLoad;
 	}
-	
+
 	public SlaveThread () {
 		tasks = new LinkedBlockingQueue<Runnable>();
 		loads = new ConcurrentLinkedQueue<Integer>();

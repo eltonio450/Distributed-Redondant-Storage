@@ -12,8 +12,11 @@ public class Main {
 
 
 	public static void main(String[] args)  {
-		String fuck = "fuck la de";
 		System.out.println("Modal launched !");
+		
+		System.out.println("Enslaving innocent threads....");
+		Utilitaires.Slaver.initialize();
+		
 		System.out.print("Parsing arguments...............");
 		IniServer.iniServer(args);
 		System.out.println("Arguments parsed...");
@@ -35,9 +38,6 @@ public class Main {
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
 		System.out.println("Ok");
-		
-		System.out.println("Enslaving innocent threads....");
-		Utilitaires.Slaver.initialize();
 		
 		System.out.println("All set and ready to go !");
 	}

@@ -19,11 +19,11 @@ public class Slaver {
 		fastSlaves = new SlaveThread[NB_FASTSLAVES];
 		for (int i=0; i<NB_SLOWSLAVES; i++) {
 			slowSlaves[i] = new SlaveThread();
-			slowSlaves[i].run();
+			slowSlaves[i].start();
 		}
 		for (int i=0; i<NB_FASTSLAVES; i++) {
 			fastSlaves[i] = new SlaveThread();
-			fastSlaves[i].run();
+			fastSlaves[i].start();
 		}
 	}
 	
