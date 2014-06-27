@@ -15,7 +15,7 @@ public class taskWarnHostChanged implements Runnable {
   
   String ID ;
   
-  taskWarnHostChanged (String id){
+  public taskWarnHostChanged (String id){
     ID = id ;
   }
   
@@ -24,7 +24,7 @@ public class taskWarnHostChanged implements Runnable {
   }
   
   public static void prevenirHostChanged(String id){
-    //préviens une machine que cette machine remplace m pour le paquet d'id Id
+    //prï¿½viens une machine que cette machine remplace m pour le paquet d'id Id
     Paquet p = Donnees.getHostedPaquet(id) ;
     int placeToModify = p.power ;
     for (int i =0 ; i< 5 ; i++) {
@@ -52,7 +52,7 @@ public class taskWarnHostChanged implements Runnable {
             }
           }
           catch(IOException e){
-            //TODO : on a pas pu prévenir m !
+            //TODO : on a pas pu prï¿½venir m !
           }
         }
       }

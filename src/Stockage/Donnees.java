@@ -76,6 +76,7 @@ public class Donnees {
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
 		//TODO : lancer taskWarnHostChanged(p.idGlobal) - tache urgente !
+		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
 	}
 
 
