@@ -29,7 +29,11 @@ public class Utilitaires {
 	public static String buffToString(ByteBuffer b) {
 		String s = new String ();
 		while (b.hasRemaining())
+<<<<<<< HEAD
 			s += b.getChar();
+=======
+			s += (char) b.getChar();
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 		b.flip();
 		return s;
 	}
