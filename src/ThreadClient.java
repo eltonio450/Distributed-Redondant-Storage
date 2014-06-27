@@ -19,7 +19,7 @@ public class ThreadClient implements Runnable {
         for(int i = 0 ; i< 5 ; i++) {
           aEnvoyer.otherHosts.add(i, Global.MYSELF);
         }
-        Machine correspondant = new Machine("198.168.153.1",5656) ;
+        Machine correspondant = new Machine("localhost",5656) ;
         //init connection
         InetSocketAddress local = new InetSocketAddress(0); 
         clientSocket.bind(local); 

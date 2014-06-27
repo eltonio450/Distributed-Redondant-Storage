@@ -30,6 +30,8 @@ public class taskServeurReceiveOnePaquet implements Runnable {
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
     
+    //System.out.println("Serveur : " + s) ;
+    
 
     if(Donnees.acceptePaquet(s)){
       buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;

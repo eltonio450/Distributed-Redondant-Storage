@@ -9,7 +9,11 @@ public class ThreadTcpServer implements Runnable {
   }
   
   public void run() { 
-    try { Server.tcpServer(port, tailleBuffer) ; }
+    try { 
+      while(true){
+        Server.tcpServer(port, tailleBuffer) ;
+        }
+      }
     catch (Exception e) {throw new RuntimeException(e); }
   } 
 }

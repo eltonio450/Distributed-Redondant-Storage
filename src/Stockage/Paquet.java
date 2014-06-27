@@ -88,6 +88,10 @@ public class Paquet {
 		power = p ;
 	}
 
+	// TODO : supprimer ça , c'est juste pour test1
+	public void changeOwner(Machine m){
+	  owner = m ;
+	}
 
 	public void putOtherHosts(ArrayList<Machine> liste){
 		int n = liste.size() ;

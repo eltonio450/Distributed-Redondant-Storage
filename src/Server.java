@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
+import Task.taskServeurReceiveOnePaquet;
 import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
@@ -44,11 +45,20 @@ public class Server {
     InetSocketAddress local = new InetSocketAddress(port); 
     socket.bind(local); 
     try (SocketChannel client = socket.accept()) { 
-    //for (int i = 0 ; i<5 ; i++) {
+      client.configureBlocking(true) ;
+    for (int i = 0 ; i<11 ; i ++) {
       ByteBuffer buffer = ByteBuffer.allocate(tailleBuffer);
       buffer.clear() ;
       client.read(buffer) ;
       buffer.flip() ;
+      String s = Utilitaires.buffToString(buffer);
+      System.out.println(s) ;
+      if (s.equals(Message.SendOne)){
+        Runnable task = new taskServeurReceiveOnePaquet(client) ;
+        task.run() ;
+      }
+      
+      /*
       System.out.println("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
       buffer = Utilitaires.stringToBuffer(Message.DEMANDE_ID) ;
       client.write(buffer) ;
@@ -67,10 +77,10 @@ public class Server {
         Machine otherMachine = Machine.otherMachineFromSocket(client) ;
         Donnees.receptionPaquet(otherMachine, receivedPaquet);
         
-       
-      }
-    //}
-    } 
+      
+      }*/
+    }
+    }
     }
   }
   

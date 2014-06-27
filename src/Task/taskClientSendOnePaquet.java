@@ -24,14 +24,14 @@ public class taskClientSendOnePaquet implements Runnable {
 
   public boolean initEtEnvoiePaquet() { //return true if succeeded
     try (SocketChannel clientSocket = SocketChannel.open()) { 
-
+      
       Machine correspondant = Donnees.chooseMachine() ;
       //init connection
       InetSocketAddress local = new InetSocketAddress(0); 
       clientSocket.bind(local); 
       InetSocketAddress remote = new InetSocketAddress(correspondant.ipAdresse, correspondant.port); 
       clientSocket.connect(remote); 
-
+      
       //ask to exchange
       ByteBuffer buffer = Utilitaires.stringToBuffer(Message.SendOne) ;
       clientSocket.write(buffer) ;
@@ -39,14 +39,15 @@ public class taskClientSendOnePaquet implements Runnable {
       clientSocket.read(buffer) ;
       buffer.flip() ;
       String s = Utilitaires.buffToString(buffer) ;
-
+      
+      //System.out.println(s) ;
+      
       if(!s.equals(Message.DEMANDE_ID)){
         clientSocket.close();
         return false ;
       }
       else {
         buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
-        buffer.flip() ;
         clientSocket.write(buffer) ;
         buffer.clear() ;
         clientSocket.read(buffer) ;
