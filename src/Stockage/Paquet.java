@@ -121,7 +121,7 @@ public class Paquet {
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
 
-		String s = idGlobal + " " + power + " " + owner.ipAdresse + " " + owner.port ;
+		String s = idMachine + " " + power + " " + owner.ipAdresse + " " + owner.port ;
 		for (int i = 0 ; i < 5 ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
@@ -211,7 +211,6 @@ public class Paquet {
 		}
 		switch(resultat){
 		case 0:
-			
 			return true;
 		case 1:
 			lockLogique = true;

@@ -50,7 +50,7 @@ public class taskClientExchange implements Runnable {
 				return false ;
 			}
 
-			buffer = Utilitaires.stringToBuffer(aEnvoyer.id) ;
+			buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
 			buffer.flip() ;
 			clientSocket.write(buffer) ;
 			buffer.clear() ;
