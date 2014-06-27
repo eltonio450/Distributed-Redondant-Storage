@@ -35,6 +35,7 @@ public class deathVerifier implements Runnable {
 			clientSocket.socket().setSoTimeout(Global.DEATH_TIMEOUT);
 			if (clientSocket.read(ByteBuffer.allocateDirect(1000)) > 0)
 				mort = false;
+			clientSocket.close();
 		} catch (IOException e) {
 			// Il est bel et bien mort (ou je suis déconnecté et il faut relancer l'appli) 
 		}
