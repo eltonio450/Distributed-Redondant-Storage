@@ -29,7 +29,7 @@ public class Utilitaires {
 	public static String buffToString(ByteBuffer b) {
 		String s = new String ();
 		while (b.hasRemaining())
-			s += (char) b.get();
+			s += b.getChar();
 		b.flip();
 		return s;
 	}

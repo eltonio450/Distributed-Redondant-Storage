@@ -20,6 +20,7 @@ public class taskWarnHostChanged implements Runnable {
   }
   
   public void run(){
+    System.out.println("-------------task warn host changed--------------------"); 
     prevenirHostChanged(ID) ;
   }
   

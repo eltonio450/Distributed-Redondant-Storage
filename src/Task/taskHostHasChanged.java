@@ -25,6 +25,7 @@ public class taskHostHasChanged implements Runnable {
 
 	public void run() {
 		try{
+		  System.out.println("-------------------taskHostChanged-------------------") ;
 			Machine newHost = Machine.otherMachineFromSocket(socket) ;
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
@@ -47,6 +48,7 @@ public class taskHostHasChanged implements Runnable {
 					s = s + Utilitaires.buffToString(buffer) ;
 				}
 			}
+			System.out.println(msg);
 			Scanner scan2 = new Scanner(msg) ;
 			String Id = scan2.next() ;
 			int place = scan2.nextInt() ;
