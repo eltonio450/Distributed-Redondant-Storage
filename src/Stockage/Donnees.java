@@ -75,17 +75,8 @@ public class Donnees {
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
 		putNewPaquet(p) ;
-		//TODO : lancer taskWarnHostChanged(p.idGlobal) - tache urgente !
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
 	}
-
-
-	// TODO : implement this and put it in an other place
-	public static Boolean verifieMort(Machine m){
-		//envoie un message � m pour v�rifier qu'il est bien mort
-		return null ;
-	}
-
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost){
 		myDataLock.lock();
