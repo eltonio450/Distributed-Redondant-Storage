@@ -24,6 +24,11 @@ public class Main {
 		IniDonnees.iniDonnees();
 		System.out.println("Data initialized...");
 		System.out.println("Ok");
+		
+		System.out.print("Enslaving innocent threads......");
+		Slaver.initialize();
+		System.out.println("Ok");
+		System.out.println("All set and ready to go !");
 
 		System.out.print("Starting TCP Server.............");
 		IniTCP.iniTCP();
@@ -36,11 +41,6 @@ public class Main {
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
 		System.out.println("Ok");
-		
-		System.out.print("Enslaving innocent threads......");
-		Slaver.initialize();
-		System.out.println("Ok");
-		System.out.println("All set and ready to go !");
 
 		int port = 5656 ;
 		int tailleBuffer = 100 ;
