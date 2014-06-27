@@ -40,7 +40,7 @@ public class Global {
 	
 	
 	
-	public static String FIRST_IP;
+	public static String FIRST_IP = "127.0.0.1";
 	
 	
 	

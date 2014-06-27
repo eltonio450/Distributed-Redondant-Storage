@@ -1,5 +1,8 @@
 package StartUpRoutine;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import Stockage.Machine;
 import Utilitaires.Global;
 import cli.java.org.apache.commons.cli.CommandLine;
@@ -16,6 +19,17 @@ import cli.java.org.apache.commons.cli.PosixParser;
 public class IniServer {
 	@SuppressWarnings("static-access")
 	public static void iniServer (String [] args) {
+		
+		String ip ="";
+		try {
+			ip = InetAddress.getLocalHost().getHostAddress().toString();
+		}
+		catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Votre IP est : " + ip);
+		
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");
 		options.addOption(OptionBuilder

@@ -243,7 +243,7 @@ public class Donnees {
 					//	System.out.println("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
-					Global.debug(i);
+					//Global.debug(i);
 					temp += (int) b.get(0);
 				}
 				b.clear();
