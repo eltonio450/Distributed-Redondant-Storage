@@ -28,13 +28,9 @@ public class Utilitaires {
 	 * @return resulting string Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
-<<<<<<< HEAD
 
 		String s = new String();
-=======
-		
-	  String s = new String ();
->>>>>>> branch 'master' of https://github.com/eltonio450/modal
+
 		while (b.hasRemaining())
 			s += b.getChar();
 		b.flip();
@@ -89,6 +85,10 @@ public class Utilitaires {
 			sc.close();
 		}
 		return retour;
+	}
+	
+	public static void out(String s){
+		System.out.println("Serveur "+ Global.TCP_PORT+ " : " + s);
 	}
 
 }

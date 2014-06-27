@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Stockage.Donnees;
 import Stockage.Paquet;
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 public class IniDonnees {
 
@@ -28,11 +29,11 @@ public class IniDonnees {
 
 		bufferUnByte.put((byte) 'a');
 
-		System.out.println(System.getProperty("user.dir").toString());
+		//System.out.println(System.getProperty("user.dir").toString());
 		try {
 			myOwnFile = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTOMYDATA), StandardOpenOption.READ, StandardOpenOption.CREATE);
 			Donnees.longueur = myOwnFile.size();
-			System.out.println("Longueur des données :" +Donnees.longueur);
+			Utilitaires.out("Longueur des données :" +Donnees.longueur);
 
 			while (!finDepassee) {
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);

@@ -1,12 +1,11 @@
 
-import StartUpRoutine.IniServer;
 import StartUpRoutine.IniDonnees;
+import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
 import StartUpRoutine.IniUDP;
 import StartUpRoutine.ServerGetter;
-import Stockage.Paquet;
-import Utilitaires.Global;
 import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 
 
 public class Main {
@@ -14,33 +13,33 @@ public class Main {
 	public static void main(String[] args)  {
 
 
-		System.out.println("Modal launched !");
-		System.out.print("Parsing arguments...............");
+		Utilitaires.out("Modal launched !");
+		Utilitaires.out("Parsing arguments...............");
 		IniServer.iniServer(args);
-		System.out.println("Arguments parsed...");
-		System.out.println("Ok");
+		Utilitaires.out("Arguments parsed...");
+		Utilitaires.out("Ok");
 
-		System.out.print("Initializing data...............");
+		Utilitaires.out("Initializing data...............");
 		IniDonnees.iniDonnees();
-		System.out.println("Data initialized...");
-		System.out.println("Ok");
+		Utilitaires.out("Data initialized...");
+		Utilitaires.out("Ok");
 		
-		System.out.print("Enslaving innocent threads......");
+		Utilitaires.out("Enslaving innocent threads......");
 		Slaver.initialize();
-		System.out.println("Ok");
-		System.out.println("All set and ready to go !");
+		Utilitaires.out("Ok");
+		Utilitaires.out("All set and ready to go !");
 
-		System.out.print("Starting TCP Server.............");
+		Utilitaires.out("Starting TCP Server.............");
 		IniTCP.iniTCP();
-		System.out.println("Ok");
+		Utilitaires.out("Ok");
 
-		System.out.print("Getting server list.............");
+		Utilitaires.out("Getting server list.............");
 		ServerGetter.getServerList();
-		System.out.println("Ok");
+		Utilitaires.out("Ok");
 
-		System.out.print("Starting UDP server.............");
+		Utilitaires.out("Starting UDP server.............");
 		IniUDP.iniUDP();
-		System.out.println("Ok");
+		Utilitaires.out("Ok");
 
 		int port = 5656 ;
 		int tailleBuffer = 100 ;
@@ -52,7 +51,7 @@ public class Main {
 		thread2.start();
 
 
-		System.out.println("Serveurs lancés") ;
+		Utilitaires.out("Serveurs lancés") ;
 		new Thread(new ThreadClient()).start();
    
 	}

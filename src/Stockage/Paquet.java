@@ -73,7 +73,7 @@ public class Paquet {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Erreur lors de l'ouverture du fichier.");
+			Utilitaires.out("Erreur lors de l'ouverture du fichier.");
 			e.printStackTrace();
 		}
 		System.out.println("Fichier généré : "+pathOnDisk());
@@ -195,9 +195,7 @@ public class Paquet {
 
 
 
-	public void unlock(){
-		isUsed.unlock();
-	}
+
 	/**
 	 * 
 	 * @author Antoine
@@ -208,6 +206,7 @@ public class Paquet {
 	 */
 
 	public boolean askForlock(){
+		lock();
 		isAskingTheLock = true;
 		int resultat = 0;
 		int i = 0;
@@ -220,6 +219,7 @@ public class Paquet {
 		}
 		switch(resultat){
 		case 0:
+			unlock();
 			return true;
 		default:
 			return false;				
@@ -289,8 +289,13 @@ public class Paquet {
 
 
 	public void lock(){
-		isUsed.lock();	  
+		lockLogique = true;	  
 	}
+	
+	public void unlock(){
+		lockLogique = false;	  
+	}
+
 
 	public void spreadUnlock(){
 		
@@ -300,29 +305,7 @@ public class Paquet {
 		return lockLogique;		
 	}
 
-	/*public boolean nextByteBuffer(ByteBuffer aRemplir){
 
-	  int n = aRemplir.capacity();
-	  int i = 0;
-
-	  aRemplir.clear();
-
-	  byte car = 'a';
-	  while(i<n && car != -1)
-	  {
-		  try {
-			car = (byte) input.read();
-		} catch (IOException e) {
-			System.out.println("Cela n'arrivera jamais...");
-			e.printStackTrace();
-		}
-		  if(car == -1)
-			  return false;
-		  i++;
-	  }
-	  aRemplir.flip();
-	  return true;
-  }*/
 	public void remettrePositionZero()
 	{
 		
