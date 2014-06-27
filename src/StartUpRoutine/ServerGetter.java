@@ -65,6 +65,9 @@ public class ServerGetter {
 		
 		Donnees.putServer(Global.MYSELF.ipAdresse, Global.MYSELF.port);
 		
+		// DEBUG
+		Donnees.putServer("127.0.0.1", 5000);
+		
 		Stockage.Donnees.fillingServers(false);
 	}
 }
