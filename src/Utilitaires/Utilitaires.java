@@ -27,10 +27,11 @@ public class Utilitaires {
 	 * Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
+		b.flip();
 		String s = new String ();
 		while (b.hasRemaining())
 			s += b.getChar();
-		b.flip();
+		//b.flip();
 		return s;
 	}
 
@@ -44,35 +45,33 @@ public class Utilitaires {
 		String retour = "";
 		String m;
 		String token;
+		int i = 0 ;
 		boolean continuer = true;
-
-		while (continuer) {
-<<<<<<< HEAD
-      if (s.read(b) == -1) continuer = false;
+		while (continuer && i<100) {
+      if (s.read(b) == -1) {
+      continuer = false ; 
+      }
+		  i++ ;
+		  s.read(b) ;
+      
       b.flip();
       m = buffToString(b);
       
       retour += m;
       b.clear();
-=======
-			if (s.read(b) == -1) continuer = false;
-			b.flip();
-			m = buffToString(b);
-			
-			retour += m;
-			b.clear();
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
-			
+      
 			Scanner sc = new Scanner (m);
+			
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
 				for (String w : finalWords) {
 					if (token.equals(w)) {
 						continuer = false;
+					  //System.out.println(i) ;
 						break;
 					}
 				}
-			}
+			} sc.close(); 
 		}
 		return retour;
 	}

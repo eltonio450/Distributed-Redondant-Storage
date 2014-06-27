@@ -51,8 +51,9 @@ public class taskWarnHostChanged implements Runnable {
               String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
               buffer = Utilitaires.stringToBuffer(s) ;
               clientSocket.write(buffer) ; 
-              System.out.println(s) ;
+              System.out.println("Envoyé : " + s) ;
             }
+            
           }
           catch(IOException e){
             //TODO : on a pas pu prï¿½venir m !

@@ -30,14 +30,17 @@ public class taskHostHasChanged implements Runnable {
 			Machine newHost = Machine.otherMachineFromSocket(socket) ;
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
+		
 			String[] t = new String[1] ;
 			t[0] = Message.END_ENVOI ;
 			String msg = Utilitaires.getAFullMessage(t, socket);
-			System.out.println(msg);
+			System.out.println("a recu : " + msg);
+			
 			Scanner scan2 = new Scanner(msg) ;
 			String Id = scan2.next() ;
 			int place = scan2.nextInt() ;
 			Donnees.changeHostForPaquet(Id, place, newHost);
+			
 		}
 		catch(Exception e){
 			//TODO : what can we do ???

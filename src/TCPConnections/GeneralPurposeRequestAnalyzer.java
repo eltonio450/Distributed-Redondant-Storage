@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Task.taskLockPacket;
+import Task.taskSendRequestedPaquet;
 import Utilitaires.Message;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
@@ -123,6 +124,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 			}
 			
+			else if(token.equals(Message.DEMANDE_PAQUET)){
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				Slaver.giveTask(new taskSendRequestedPaquet(r.socket), 1);
+			}
+			
 			
 			else if (token.equals(Message.NEW_SERVER)) {
 				if (scan.hasNext()) {
@@ -156,13 +163,15 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			
 			else if (token.equals(Message.GET_LIST)) {
 				r.socket.configureBlocking(true);
-				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);			
+				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);	
+				aEnlever.add(r) ;
 			}
 			
 			
 			else if (token.equals(Message.HOST_CHANGED)) {
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
+				aEnlever.add(r) ;
 			}
 			
 			
