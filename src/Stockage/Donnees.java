@@ -209,6 +209,7 @@ public class Donnees {
 	public static void addHost(Machine m) {
 		myHostsLock.lock();
 		myHosts.add(m);
+		System.out.println(m.ipAdresse + ":" + m.port + " added.");
 		myHostsLock.unlock();
 	}
 
@@ -291,6 +292,7 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			index++;
+			if (allServeur.isEmpty()) return null;
 			index %= allServeur.size();
 			Machine m = allServeur.get(index);
 			if (m.ipAdresse.equals(Global.MYSELF.ipAdresse) && m.port == Global.MYSELF.port) return null;

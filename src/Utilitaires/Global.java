@@ -34,6 +34,7 @@ public class Global {
 	public static int SERVERPRPORT; // ClientPRPort +1
 	public static int TCP_PORT; // ClientPRPort +2
 	public static int FIRST_PORT = 5000;
+	public static String NO_FIRST_SERVER = "none#";
 	//public static String MY_IP = "127.0.0.1";
 	public static Machine MYSELF;
 	
