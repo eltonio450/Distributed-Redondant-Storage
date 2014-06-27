@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import Stockage.Donnees;
 import Stockage.Machine;
+import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
@@ -29,25 +30,9 @@ public class taskHostHasChanged implements Runnable {
 			Machine newHost = Machine.otherMachineFromSocket(socket) ;
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
-			buffer.clear() ;
-			socket.read(buffer) ;
-			buffer.flip() ;
-			String msg = "" ;
-			String s = Utilitaires.buffToString(buffer) ;
-			int i = 0 ;
-			Scanner scan = new Scanner(s) ;
-			while(i != 2){
-				if(scan.hasNext()){
-					i++ ;
-					msg = msg + scan.next() ;
-				}
-				else {
-					Thread.sleep(Message.TIME_TO_SLEEP_1);
-					buffer.clear();
-					socket.read(buffer) ;
-					s = s + Utilitaires.buffToString(buffer) ;
-				}
-			}
+			String[] t = new String[1] ;
+			t[0] = Message.END_ENVOI ;
+			String msg = Utilitaires.getAFullMessage(t, socket);
 			System.out.println(msg);
 			Scanner scan2 = new Scanner(msg) ;
 			String Id = scan2.next() ;

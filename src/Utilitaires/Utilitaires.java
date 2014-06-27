@@ -29,11 +29,7 @@ public class Utilitaires {
 	public static String buffToString(ByteBuffer b) {
 		String s = new String ();
 		while (b.hasRemaining())
-<<<<<<< HEAD
 			s += b.getChar();
-=======
-			s += (char) b.getChar();
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 		b.flip();
 		return s;
 	}
@@ -44,18 +40,19 @@ public class Utilitaires {
 	}	
 
 	public static String getAFullMessage (String[] finalWords, SocketChannel s) throws IOException {
-		ByteBuffer b = ByteBuffer.allocateDirect(5000);
+	  ByteBuffer b = ByteBuffer.allocateDirect(5000);
 		String retour = "";
 		String m;
 		String token;
 		boolean continuer = true;
 
 		while (continuer) {
-			if (s.read(b) == -1) throw new IOException ();
-			b.flip();
-			m = buffToString(b);
-			retour += m;
-			b.clear();
+      if (s.read(b) == -1) continuer = false;
+      b.flip();
+      m = buffToString(b);
+      
+      retour += m;
+      b.clear();
 			
 			Scanner sc = new Scanner (m);
 			while (sc.hasNext() && continuer) {

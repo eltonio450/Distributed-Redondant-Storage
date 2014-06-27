@@ -48,8 +48,10 @@ public class taskWarnHostChanged implements Runnable {
             buffer.flip() ;
             String response = Utilitaires.buffToString(buffer) ;
             if(response.equals(Message.OK)){
-              buffer = Utilitaires.stringToBuffer(id +" " + placeToModify) ;
+              String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
+              buffer = Utilitaires.stringToBuffer(s) ;
               clientSocket.write(buffer) ; 
+              System.out.println(s) ;
             }
           }
           catch(IOException e){
