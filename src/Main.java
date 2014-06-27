@@ -41,6 +41,11 @@ public class Main {
 		IniUDP.iniUDP();
 		Utilitaires.out("Ok");
 
+	}
+		
+		/*
+>>>>>>> 9c7c8f3 Bladiboulga
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 		int port = 5656 ;
 		int tailleBuffer = 100 ;
 
@@ -51,8 +56,11 @@ public class Main {
 		thread2.start();
 
 
-		Utilitaires.out("Serveurs lancés") ;
+		System.out.println("Serveurs lanc�s") ;
 		new Thread(new ThreadClient()).start();
-   
+	
 	}
+
+>>>>>>> 345af8a Wah
+*/
 }

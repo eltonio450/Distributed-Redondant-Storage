@@ -19,7 +19,7 @@ public class ThreadClient implements Runnable {
         for(int i = 0 ; i< 5 ; i++) {
           aEnvoyer.otherHosts.add(i, Global.MYSELF);
         }
-        Machine correspondant = new Machine("localhost",5656) ;
+        Machine correspondant = new Machine("198.168.153.1",5656) ;
         //init connection
         InetSocketAddress local = new InetSocketAddress(0); 
         clientSocket.bind(local); 
@@ -30,9 +30,9 @@ public class ThreadClient implements Runnable {
         ByteBuffer buffer = Utilitaires.stringToBuffer(Message.EXCHANGE) ;
         clientSocket.write(buffer) ;
         buffer.clear() ;
-        System.out.println("Client attend réponse") ;
+        System.out.println("Client attend rï¿½ponse") ;
         clientSocket.read(buffer) ;
-        System.out.println("Client a reçu réponse") ;
+        System.out.println("Client a reï¿½u rï¿½ponse") ;
         buffer.flip() ;
         String s = Utilitaires.buffToString(buffer) ;
         System.out.println(s) ;
@@ -43,7 +43,7 @@ public class ThreadClient implements Runnable {
 
         buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
         clientSocket.write(buffer) ;
-        System.out.println("Client a envoyé") ;
+        System.out.println("Client a envoyï¿½") ;
         buffer = ByteBuffer.allocate(100) ;
         buffer.clear() ;
         clientSocket.read(buffer) ;
@@ -54,7 +54,7 @@ public class ThreadClient implements Runnable {
         if (true){
           //exchange can begin : send its package
           aEnvoyer.envoyerPaquet(clientSocket);
-          System.out.println("Client a envoyé Paquet") ;
+          System.out.println("Client a envoyï¿½ Paquet") ;
           /*if(recoitPaquet(clientSocket)){
             aEnvoyer.removePaquet();
             System.out.println(true) ;
