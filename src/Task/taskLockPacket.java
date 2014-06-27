@@ -46,7 +46,7 @@ public class taskLockPacket implements Callable
 		 	
 		 *
 		 */
-			then 
+			//then 
 		//Etpae 4 : répondre que le lock a bien été effectué
 
 	}

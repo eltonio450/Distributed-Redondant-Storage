@@ -44,9 +44,9 @@ public class IniServer {
 			CommandLine cmd = parser.parse(options, args);
 
 			if (cmd.hasOption("p")) {
-				Global.CLIENTPRPORT = Integer.parseInt((cmd.getOptionValue("p")));
+				Global.TCP_PORT = Integer.parseInt((cmd.getOptionValue("p")));
+				Global.CLIENTPRPORT = Global.TCP_PORT + 1;
 				Global.SERVERPRPORT = Global.CLIENTPRPORT + 1;
-				Global.TCP_PORT = Global.SERVERPRPORT + 1;
 			}
 			if (cmd.hasOption("t")){
 				Global.FIRST_IP="none#";
@@ -64,6 +64,7 @@ public class IniServer {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp("Server", options);
 			}
+			
 		}
 		catch (MissingOptionException e) {
 			// vérifie si l'option -h est présente
@@ -102,7 +103,8 @@ public class IniServer {
 		// Attention : a supprimer pour avoir la vraie IP à l'initiatisation :
 		try{
 			 //String currentDir = System.getProperty("user.dir");
-				Global.MYSELF = new Machine(InetAddress.getLocalHost().getHostAddress().toString(), Global.CLIENTPRPORT);
+			//System.out.println("YOUUUUUUUUUUUUUUUUUUU" + Global.FIRST_IP+" "+Global.FIRST_PORT);
+			Global.MYSELF = new Machine("127.0.0.1", Global.TCP_PORT);
 
 		}
 		catch (Exception e) {

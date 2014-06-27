@@ -30,12 +30,11 @@ public class Global {
 	public static boolean DEBUG = false;
 
 	// CONFIGURATION AU LANCEMENT
-	public static int CLIENTPRPORT;
-	public static int SERVERPRPORT; // ClientPRPort +1
-	public static int TCP_PORT; // ClientPRPort +2
+	public static int CLIENTPRPORT = 5001;// TCP + 1
+	public static int SERVERPRPORT = 5002; // TCP +2
+	public static int TCP_PORT = 5000; 
 	public static int FIRST_PORT = 5000;
 	public static String NO_FIRST_SERVER = "none#";
-	//public static String MY_IP = "127.0.0.1";
 	public static Machine MYSELF;
 	
 	

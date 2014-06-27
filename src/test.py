@@ -21,7 +21,7 @@ print(ligne)
 
 while (i < nombreDeServeur-1) :
     i=i+1
-    ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 129.104.22.137" + " -P 5000" 
+    ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 127.0.0.1" + " -P 5000" 
     os.system("fuser -fk " + str(5000+4*i)+"/udp")
     #os.system("fuser -fk " + str(5000+4*i)+"/tcp")
     
