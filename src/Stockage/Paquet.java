@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class Paquet {
 	//otherHosts est la liste des host : Attention, les indices correspondent au numero du paquet !
 	public ArrayList<Machine> otherHosts ;
 
-	public Machine owner ;
+	Machine owner ;
 
 	//boolean dernierSignificatif; //si le paquet contient la "fin" de l'information
 	//long dernierePositionSignificative; //la position de la "fin" de l'information
@@ -80,7 +81,7 @@ public class Paquet {
 	
 	public String pathOnDisk()
 	{
-		return Global.PATHTODATA+Global.MYSELF.toString()+"-"+ idInterne+".txt";
+		return Global.PATHTODATA+owner.toString()+"-"+ idInterne+".txt";
 	}
 
 	public void putPower(int p){
@@ -109,6 +110,7 @@ public class Paquet {
 		isUsed.lock();
 		try {
 			fichier.transferTo(0, Global.PAQUET_SIZE, s) ;
+			System.out.println("transfer done") ;
 		}
 		finally {
 			isUsed.unlock();
@@ -117,9 +119,9 @@ public class Paquet {
 
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
-
+	  
 		String s = idMachine + " " + owner.ipAdresse + " " + owner.port ;
-		for (int i = 0 ; i < 5 ; i++){
+		for (int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
 		}
@@ -130,18 +132,21 @@ public class Paquet {
 	public static Paquet createPaquetFromBuffer(ByteBuffer b){
 		//buffer is flipped
 		String s = Utilitaires.buffToString(b);
+		//System.out.println("Paquet recu: " + s) ;
+		//s = "1 169.254.51.70 1 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0" ; 
 		Scanner scan = new Scanner(s) ; 
 
 		int id = scan.nextInt() ;
 		String IpAdresse = scan.next() ;
 		int port = scan.nextInt() ;
+		System.out.println(id + " - " + IpAdresse + " - " + port) ;
 		Machine owner = new Machine(IpAdresse,port) ;
 
-		ArrayList<Machine> hosts = new ArrayList<Machine>(5) ;
-		for(int i = 0 ; i<5;i++){
+		ArrayList<Machine> hosts = new ArrayList<Machine>(Global.NOMBRESOUSPAQUETS) ;
+		for(int i = 0; i<Global.NOMBRESOUSPAQUETS;i++){
 			String ip = scan.next() ;
 			int p = scan.nextInt() ;
-			hosts.set(i, new Machine(ip,p)) ;
+			hosts.add(i, new Machine(ip,p)) ;
 		}
 
 		Paquet paq = new Paquet(id,owner) ;

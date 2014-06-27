@@ -1,23 +1,19 @@
 
-import java.nio.ByteBuffer;
-
-import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
+import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniTCP;
 import StartUpRoutine.IniUDP;
 import StartUpRoutine.ServerGetter;
+import Stockage.Paquet;
+import Utilitaires.Global;
 
 
 public class Main {
 
 
 	public static void main(String[] args)  {
+	  
 		System.out.println("Modal launched !");
-		
-		System.out.println("Enslaving innocent threads....");
-		Utilitaires.Slaver.initialize();
-		System.out.println("Ok");
-		
 		System.out.print("Parsing arguments...............");
 		IniServer.iniServer(args);
 		System.out.println("Arguments parsed...");
@@ -39,7 +35,20 @@ public class Main {
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
 		System.out.println("Ok");
-		
 		System.out.println("All set and ready to go !");
-	}
+	
+  int port = 5656 ;
+  int tailleBuffer = 100 ;
+ 
+  
+  
+   Thread thread2 = new Thread( 
+      new ThreadTcpServer(port,tailleBuffer),"TcpServer"); 
+     thread2.start();
+        
+
+   System.out.println("Serveurs lancés") ;
+   new Thread(new ThreadClient()).start();
+   
+}
 }
