@@ -1,6 +1,7 @@
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 
 import Stockage.Machine;
 import Stockage.Paquet;
@@ -14,9 +15,10 @@ public class ThreadClient implements Runnable {
   public void run() { 
     try { 
       try (SocketChannel clientSocket = SocketChannel.open()) {
-        System.out.println("coucou") ;
         Paquet aEnvoyer = new Paquet(1,Global.MYSELF) ;
-        System.out.println("coucou2") ;
+        for(int i = 0 ; i< 5 ; i++) {
+          aEnvoyer.otherHosts.add(i, Global.MYSELF);
+        }
         Machine correspondant = new Machine("localhost",5656) ;
         //init connection
         InetSocketAddress local = new InetSocketAddress(0); 
@@ -40,19 +42,19 @@ public class ThreadClient implements Runnable {
         }
 
         buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
-        buffer.flip() ;
         clientSocket.write(buffer) ;
+        System.out.println("Client a envoyé") ;
+        buffer = ByteBuffer.allocate(100) ;
         buffer.clear() ;
         clientSocket.read(buffer) ;
         buffer.flip() ;
-        s = Utilitaires.buffToString(buffer) ;
-        System.out.println(s) ;
+        System.out.println("client : " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
         
 
-        if (s.equals(Message.REPONSE_EXCHANGE)){
+        if (true){
           //exchange can begin : send its package
           aEnvoyer.envoyerPaquet(clientSocket);
-
+          System.out.println("Client a envoyé Paquet") ;
           /*if(recoitPaquet(clientSocket)){
             aEnvoyer.removePaquet();
             System.out.println(true) ;
@@ -61,7 +63,7 @@ public class ThreadClient implements Runnable {
         }
 
         else {
-         
+         System.out.println("Echec") ;
         }
       }
       catch(Exception e){

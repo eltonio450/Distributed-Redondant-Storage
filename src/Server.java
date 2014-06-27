@@ -8,6 +8,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
+import Stockage.Donnees;
+import Stockage.Machine;
 import Stockage.Paquet;
 import Utilitaires.Global;
 import Utilitaires.Message;
@@ -43,21 +45,30 @@ public class Server {
     socket.bind(local); 
     try (SocketChannel client = socket.accept()) { 
     //for (int i = 0 ; i<5 ; i++) {
-      ByteBuffer buffer = ByteBuffer.allocate(tailleBuffer
-          //serverSocket.getOption(StandardSocketOptions.SO_RCVBUF)
-          );
+      ByteBuffer buffer = ByteBuffer.allocate(tailleBuffer);
       buffer.clear() ;
       client.read(buffer) ;
       buffer.flip() ;
       System.out.println("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
-      client.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
+      buffer = Utilitaires.stringToBuffer(Message.DEMANDE_ID) ;
+      client.write(buffer) ;
       System.out.println("Serveur : demande envoyée") ;
-      /*buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
+      buffer = ByteBuffer.allocate(Message.BUFFER_LENGTH) ;
       buffer.clear() ;
-      client.read(buffer) ;
+      int i = client.read(buffer) ;
       buffer.flip() ;
-      String s = Utilitaires.buffToString(buffer) ;
-      System.out.println(s) ;*/
+      if( true ) {System.out.println("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ; }
+      if(true){
+        buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
+        client.write(buffer) ;
+        System.out.println("Serveur pret à recevoir Paquet") ;
+        Paquet receivedPaquet = Paquet.recoitPaquet(client) ;
+        System.out.println("Serveur a reçu Paquet") ;
+        Machine otherMachine = Machine.otherMachineFromSocket(client) ;
+        Donnees.receptionPaquet(otherMachine, receivedPaquet);
+        
+       
+      }
     //}
     } 
     }

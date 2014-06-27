@@ -132,8 +132,8 @@ public class Paquet {
 	public static Paquet createPaquetFromBuffer(ByteBuffer b){
 		//buffer is flipped
 		String s = Utilitaires.buffToString(b);
-		//System.out.println("Paquet recu: " + s) ;
-		//s = "1 169.254.51.70 1 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0" ; 
+		System.out.println("Paquet recu: " + s) ;
+		s = "1 169.254.51.70 1 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0 169.254.51.70 0" ; 
 		Scanner scan = new Scanner(s) ; 
 
 		int id = scan.nextInt() ;
