@@ -42,7 +42,6 @@ public class Main {
 		IniUDP.iniUDP();
 		System.out.println("Ok");
 
-
 		int port = 5656 ;
 		int tailleBuffer = 100 ;
 
@@ -57,5 +56,4 @@ public class Main {
 		new Thread(new ThreadClient()).start();
    
 	}
-
 }
