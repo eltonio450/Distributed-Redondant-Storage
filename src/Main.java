@@ -16,6 +16,7 @@ public class Main {
 		
 		System.out.println("Enslaving innocent threads....");
 		Utilitaires.Slaver.initialize();
+		System.out.println("Ok");
 		
 		System.out.print("Parsing arguments...............");
 		IniServer.iniServer(args);

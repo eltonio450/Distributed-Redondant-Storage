@@ -57,7 +57,6 @@ public class ServerGetter {
 						try {
 							Donnees.putServer(sc.next(), Integer.parseInt(sc.next()));
 						} catch (Exception e) {
-							System.out.println("Wapitit");
 							// Parsing error - Nobody cares
 						}
 					}
