@@ -36,7 +36,7 @@ public class Paquet {
 
 	String pathOnDisk;
 
-	FileChannel fichier;
+	public FileChannel fichier;
 
 	//il va falloir protéger cette variable vis-à-vis de la concurrence je pense
 	//otherHosts est la liste des host : Attention, les indices correspondent au numero du paquet !
@@ -83,7 +83,7 @@ public class Paquet {
 	}
 	public String pathOnDisk()
 	{
-		return Global.PATHTODATA+"/"+Global.MYSELF.toString()+"-"+idGlobal+".txt";
+		return Global.PATHTODATA+Global.MYSELF.toString()+"-"+ idInterne+".txt";
 	}
 
 	public void putPower(int p){
