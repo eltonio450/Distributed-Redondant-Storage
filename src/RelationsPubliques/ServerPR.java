@@ -39,6 +39,7 @@ public class ServerPR extends Thread{
 	}
 
 	public void run () {
+		System.out.println("UDP Server on port " + Utilitaires.Global.SERVERPRPORT);
 		while (true) {
 			try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
@@ -72,7 +73,7 @@ public class ServerPR extends Thread{
 		String token = sc.next();
 		
 		if (token.equals(Utilitaires.Message.PREFIXE_BONJOUR)) {
-			System.out.println("Contact making sure we're still alive.");
+			System.out.println(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
 			// On dit au client de répondre au serveur de l'hôte distant
 			Utilitaires.Global.clientPR.sendMessage(new Message (Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
