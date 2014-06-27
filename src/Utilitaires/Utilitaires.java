@@ -1,6 +1,9 @@
 package Utilitaires;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.Scanner;
 
 public class Utilitaires {
 	/**
@@ -35,4 +38,34 @@ public class Utilitaires {
 		String s = Integer.valueOf(id).toString();
 		return stringToBuffer(s);
 	}	
+
+	public static String getAFullMessage (String[] finalWord, SocketChannel s) throws IOException {
+		ByteBuffer b = ByteBuffer.allocateDirect(5000);
+		String retour = "";
+		String m;
+		String token;
+		boolean continuer = true;
+
+		while (continuer) {
+			if (s.read(b) == -1) throw new IOException ();
+			b.flip();
+			m = buffToString(b);
+			b.clear();
+
+			Scanner sc = new Scanner (m);
+			while (sc.hasNext() && continuer) {
+				token = sc.next();
+				retour += token;
+				for (String w : finalWord) {
+					if (token.equals(w)) {
+						continuer = false;
+						break;
+					}
+				}
+			}
+		}
+
+		System.out.println(retour);
+		return retour;
+	}
 }

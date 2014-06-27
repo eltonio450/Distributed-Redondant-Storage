@@ -4,21 +4,26 @@ package StartUpRoutine;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import Stockage.Donnees;
+import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
-import Utilitaires.Global;
 
 public class ServerGetter {
 	public static void getServerList() {
 		if (Global.FIRST_IP.equals(Global.NO_FIRST_SERVER)) {
 			return; // premier serveur
 		}
-		
+
 		Stockage.Donnees.fillingServers(true);
 		
+		String [] fins = new String [2];
+		fins[0] = Message.END_ENVOI;
+		fins[1] = Message.NEXT_BUFFER;
+
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
 			InetSocketAddress local = new InetSocketAddress(0); 
 			clientSocket.bind(local); 
@@ -28,22 +33,22 @@ public class ServerGetter {
 			clientSocket.write(Utilitaires.stringToBuffer(Message.GET_LIST));
 
 			ByteBuffer b = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
-			String message, token;
+			String token;
+			String liste;
 			boolean continuer = true;
 
 			while (continuer) {
-				clientSocket.read(b);
-				message = Utilitaires.buffToString(b);
-				b.clear();
-				System.out.println(message);
-				Scanner sc = new Scanner(message);
+				
+				liste = Utilitaires.getAFullMessage(fins, clientSocket);
+				
+				Scanner sc = new Scanner (liste);
 				while (sc.hasNext()) {
 					token = sc.next();
 					if (token.equals(Message.END_ENVOI)) {
 						continuer = false;
 						break;
 					}
-					
+
 					if (token.equals(Message.NEXT_BUFFER)) {
 						break;
 					}
@@ -64,12 +69,12 @@ public class ServerGetter {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		Donnees.putServer(Global.MYSELF.ipAdresse, Global.MYSELF.port);
-		
+
 		// DEBUG
 		Donnees.putServer("127.0.0.1", 5000);
-		
+
 		Stockage.Donnees.fillingServers(false);
 	}
 }
