@@ -47,25 +47,25 @@ public class Donnees {
 	  myOwnData = mesPaquets ;
 	}*/
 
-  public static boolean acceptePaquet(String s) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-  
-  public static LinkedList<String> hasPaquetLike(String ID){
-    Scanner s = new Scanner(ID) ;
-    s.useDelimiter("-") ;
-    final String newId = s.next() + "-" + s.next() +"-" ;
-    long n = s.nextLong() ;
-    long a = n/Global.NOMBRESOUSPAQUETS ;
-    long b = n%Global.NOMBRESOUSPAQUETS ;
-    LinkedList<String> res = new LinkedList<String>() ;
-    for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
-      String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
-      if (myData.containsKey(testId)){ res.add(testId) ; }
-    }
-    return res ;
-  }
+	public static boolean acceptePaquet(String s) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static LinkedList<String> hasPaquetLike(String ID){
+		Scanner s = new Scanner(ID) ;
+		s.useDelimiter("-") ;
+		final String newId = s.next() + "-" + s.next() +"-" ;
+		long n = s.nextLong() ;
+		long a = n/Global.NOMBRESOUSPAQUETS ;
+		long b = n%Global.NOMBRESOUSPAQUETS ;
+		LinkedList<String> res = new LinkedList<String>() ;
+		for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
+			String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
+			if (myData.containsKey(testId)){ res.add(testId) ; }
+		}
+		return res ;
+	}
 
 	public static void receptionPaquet(Machine m, Paquet p){
 		addInterestServeur(m) ;
@@ -73,7 +73,7 @@ public class Donnees {
 		SendPaquet.prevenirHostChanged(p.idGlobal) ; //TODO : faire une t�che et l� donner � un slave
 	}
 
-	
+
 	// TODO : implement this and put it in an other place
 	public static Boolean verifieMort(Machine m){
 		//envoie un message � m pour v�rifier qu'il est bien mort
@@ -84,10 +84,10 @@ public class Donnees {
 	public static void changeHostForPaquet(String Id, int place, Machine newHost){
 		myDataLock.lock();
 		try{
-		  LinkedList<String> paquets = hasPaquetLike(Id) ;
-		  for(String s : paquets){
-		    myData.get(Id).otherHosts.set(place, newHost) ;
-		  }
+			LinkedList<String> paquets = hasPaquetLike(Id) ;
+			for(String s : paquets){
+				myData.get(Id).otherHosts.set(place, newHost) ;
+			}
 		}
 		finally{
 			myDataLock.unlock();
@@ -95,22 +95,30 @@ public class Donnees {
 	}
 
 	public static void traiteUnMort(Machine m){
-		if(myHosts.contains(m)){
-			if(verifieMort(m)){
+		myHostsLock.lock();
+		try {
+			if(myHosts.contains(m)){
 				myHosts.remove(m) ;
-			}
-		}
-		if (interestServeur.contains(m) && verifieMort(m)){
-			interestServeur.remove(m) ;
-			for (Paquet p : myData.values()) {
-				for(Machine n : p.otherHosts){
-					if(m==n) {
-						//check avec p.power si on doit intervenir ou non
-						//�ventuellement, r�tablir le paquet
+			} 
+		} finally {myHostsLock.unlock();}
+		interestServeurLock.lock();
+		try {
+			if (interestServeur.contains(m)){
+				interestServeur.remove(m) ;
+				for (Paquet p : myData.values()) {
+					for(Machine n : p.otherHosts){
+						if(m==n) {
+							//check avec p.power si on doit intervenir ou non
+							//�ventuellement, r�tablir le paquet
+						}
 					}
 				}
 			}
-		}
+		} finally {interestServeurLock.unlock();}
+		allServeurLock.lock();
+		try {
+			allServeur.remove(m);
+		} finally {allServeurLock.unlock();}
 	}
 
 	public static LinkedList<Machine> getAllServeurs () {
@@ -151,25 +159,25 @@ public class Donnees {
 	}
 
 	public static Paquet choosePaquetToSend(){
-	  if(toSendASAP.isEmpty()){
-	    return (Paquet) myData.values().toArray()[0] ;
-	  }
-	  else{
-	    return(myData.get(toSendASAP.getFirst()) ) ;
-	  }
+		if(toSendASAP.isEmpty()){
+			return (Paquet) myData.values().toArray()[0] ;
+		}
+		else{
+			return(myData.get(toSendASAP.getFirst()) ) ;
+		}
 	}
-	
-  public static LinkedList<String> chooseManyPaquetToSend1() {
-      return toSendASAP ;
-  }
-  
-  public static LinkedList<String> chooseManyPaquetToSend2() {
-    return new LinkedList<String>(myData.keySet()) ;
- }
-  
-  public static Paquet getPaquet(String id){
-    return myData.get(id) ;
-  }
+
+	public static LinkedList<String> chooseManyPaquetToSend1() {
+		return toSendASAP ;
+	}
+
+	public static LinkedList<String> chooseManyPaquetToSend2() {
+		return new LinkedList(myData.keySet()) ;
+	}
+
+	public static Paquet getPaquet(String id){
+		return myData.get(id) ;
+	}
 
 	public static void addInterestServeur(Machine m){
 		interestServeurLock.lock();
@@ -206,7 +214,7 @@ public class Donnees {
 		FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
 		Paquet p = new Paquet(tableau.get(0).id+Global.NOMBRESOUSPAQUETS-1,0,Global.MYSELF);
 		tableau.add(Global.NOMBRESOUSPAQUETS-1, p);
-		
+
 		for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
 			try {
 				fichier[i] = FileChannel.open(FileSystems.getDefault().getPath(tableau.get(i).pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
