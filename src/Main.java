@@ -52,7 +52,7 @@ public class Main {
 		thread2.start();
 
 
-		System.out.println("Serveurs lanc�s") ;
+		System.out.println("Serveurs lancés") ;
 		new Thread(new ThreadClient()).start();
    
 	}
