@@ -14,7 +14,7 @@ public class Message {
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static int BUFFER_LENGTH = 1000 ;
-		public static final String DEMANDE_ID = "id_pleas#";
+		public static final String DEMANDE_ID = "id_please#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";
 		public static String ANNULE_ENVOI = "stop#" ;
 		public static String DO_NOT_ACCEPT = "non#" ;
