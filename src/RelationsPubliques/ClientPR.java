@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import Stockage.Donnees;
 import Utilitaires.Global;
 
 public class ClientPR extends Thread{
