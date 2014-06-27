@@ -55,35 +55,18 @@ public class Donnees {
 		return false;
 	}
 
-
-	public static LinkedList<String> hasPaquetLike(String ID){
-		Scanner s = new Scanner(ID) ;
-		s.useDelimiter("-") ;
-		final String newId = s.next() + "-" + s.next() +"-" ;
-		long n = s.nextLong() ;
-		long a = n/Global.NOMBRESOUSPAQUETS ;
-		long b = n%Global.NOMBRESOUSPAQUETS ;
-		LinkedList<String> res = new LinkedList<String>() ;
-		for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
-			String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
-			if (myData.containsKey(testId)){ res.add(testId) ; }
-		}
-		return res ;
-	}
-
-	public static void receptionPaquet(Machine m, Paquet p){
-		addInterestServeur(m) ;
-		putNewPaquet(p) ;
-		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
-	}
-
-	public static void changeHostForPaquet(String Id, int place, Machine newHost){
-		myDataLock.lock();
-		try{
-			LinkedList<String> paquets = hasPaquetLike(Id) ;
-			for(String s : paquets){
-				myData.get(Id).otherHosts.set(place, newHost) ;
-
+	public static LinkedList<String> hasPaquetLike(String ID) {
+		Scanner s = new Scanner(ID);
+		s.useDelimiter("-");
+		final String newId = s.next() + "-" + s.next() + "-";
+		long n = s.nextLong();
+		long a = n / Global.NOMBRESOUSPAQUETS;
+		long b = n % Global.NOMBRESOUSPAQUETS;
+		LinkedList<String> res = new LinkedList<String>();
+		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
+			if (myData.containsKey(testId)) {
+				res.add(testId);
 			}
 		}
 		return res;
@@ -94,6 +77,9 @@ public class Donnees {
 		putNewPaquet(p);
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 	}
+
+	
+
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 		myDataLock.lock();
@@ -247,25 +233,25 @@ public class Donnees {
 		tableau.add(Global.NOMBRESOUSPAQUETS - 1, p);
 
 		try {
-		int temp = 0;
-		ByteBuffer b = ByteBuffer.allocate(1);
-		for (long j = 0; j < Global.PAQUET_SIZE; j++) {
-			for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
+			int temp = 0;
+			ByteBuffer b = ByteBuffer.allocate(1);
+			for (long j = 0; j < Global.PAQUET_SIZE; j++) {
+				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 
+					b.clear();
+					tableau.get(i).fichier.read(b);
+					b.flip();
+					Global.debug(i);
+					temp += (int) b.get(0);
+				}
 				b.clear();
-				tableau.get(i).fichier.read(b);
+				temp %= 256;
+				b.put((byte) temp);
 				b.flip();
-				Global.debug(i);
-				temp += (int) b.get(0);
-			}
-			b.clear();
-			temp %= 256;
-			b.put((byte) temp);
-			b.flip();
-			
+
 				tableau.get(Global.NOMBRESOUSPAQUETS - 1).fichier.write(b);
 			}
-			
+
 		}
 		catch (IOException e) {
 			e.printStackTrace();
