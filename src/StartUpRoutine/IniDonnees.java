@@ -91,12 +91,11 @@ public class IniDonnees {
 
 	public static void iniPaths() {
 		if (Global.DEBUG) {
-			;
-
-			// pathToMyData dépend du mode : si le mode debug est activé, un
-			// dossier prefixe avec l'id du programme est créé. Sinon elle est
-			// juste dans myOwnData/
-
+			System.out.println(System.getProperty("user.dir"));
+			
+			Global.PATHTOMYDATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/myOwnData/fichier.txt";
+			Global.PATHTODATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/data/";
+			
 		}
 		else {
 			Global.PATHTOMYDATA = "myOwnData/fichier.txt";
