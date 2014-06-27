@@ -36,7 +36,7 @@ public class IniDonnees {
 
 			while (!finDepassee) {
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);
-				System.out.println("Blah !2");
+				//System.out.println("Blah !2");
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 					paquetTemp = new Paquet(id, Global.MYSELF);
 					onDisk = paquetTemp.fichier;
@@ -67,6 +67,7 @@ public class IniDonnees {
 					
 					id++;
 					paquetsEnConstruction.add(paquetTemp);
+					paquetTemp.remettrePositionZero();
 
 
 				}

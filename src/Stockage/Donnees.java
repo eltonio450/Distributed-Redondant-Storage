@@ -239,6 +239,8 @@ public class Donnees {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 
 					b.clear();
+					//if(tableau.get(i).fichier.isOpen())
+					//	System.out.println("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
 					Global.debug(i);
@@ -251,6 +253,9 @@ public class Donnees {
 
 				tableau.get(Global.NOMBRESOUSPAQUETS - 1).fichier.write(b);
 			}
+			
+			for(int i=0;i<Global.NOMBRESOUSPAQUETS;i++)
+				tableau.get(i).remettrePositionZero();
 
 		}
 		catch (IOException e) {
@@ -300,4 +305,6 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
+	
+	
 }

@@ -34,8 +34,6 @@ public class Paquet {
 	public int power ;
 	//boolean enLecture;
 
-	String pathOnDisk;
-
 	public FileChannel fichier;
 
 	//il va falloir protéger cette variable vis-à-vis de la concurrence je pense
@@ -66,8 +64,6 @@ public class Paquet {
 		power = idInterne ;
 		owner = proprio ;
 
-		pathOnDisk=Global.PATHTODATA ;
-
 		otherHosts = new ArrayList<Machine> (Global.NOMBRESOUSPAQUETS) ;
 		otherHosts.add(Global.MYSELF);
 
@@ -79,6 +75,7 @@ public class Paquet {
 			System.out.println("Erreur lors de l'ouverture du fichier.");
 			e.printStackTrace();
 		}
+		System.out.println("Fichier généré : "+pathOnDisk());
 	}
 	
 	public String pathOnDisk()
@@ -321,6 +318,15 @@ public class Paquet {
 	  aRemplir.flip();
 	  return true;
   }*/
-
+	public void remettrePositionZero()
+	{
+		
+				try {
+					fichier.position(0);
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+	}
 
 }
