@@ -32,7 +32,7 @@ public class IniDonnees {
 		try {
 			myOwnFile = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTOMYDATA), StandardOpenOption.READ, StandardOpenOption.CREATE);
 			Donnees.longueur = myOwnFile.size();
-			System.out.println(Donnees.longueur);
+			System.out.println("Longueur des données :" +Donnees.longueur);
 
 			while (!finDepassee) {
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);
@@ -64,9 +64,10 @@ public class IniDonnees {
 							onDisk.write(bufferUnByte);
 						}
 					}
+					
 					id++;
 					paquetsEnConstruction.add(paquetTemp);
-					onDisk.close();
+
 
 				}
 				

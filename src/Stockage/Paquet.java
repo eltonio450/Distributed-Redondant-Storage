@@ -74,13 +74,13 @@ public class Paquet {
 		try {
 			fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Erreur lors de l'ouverture du fichier.");
 			e.printStackTrace();
 		}
 	}
+	
 	public String pathOnDisk()
 	{
 		return Global.PATHTODATA+Global.MYSELF.toString()+"-"+ idInterne+".txt";
@@ -175,7 +175,7 @@ public class Paquet {
 	}
 	
 	public void deleteData() {
-	  //TODO : vérifier que cette suppression fonctionne bien et ensuite l'utiliser
+	  //TODO : vï¿½rifier que cette suppression fonctionne bien et ensuite l'utiliser
 	  //ie pour l'instant on ne supprime rien du disque
 	  /*
 		isUsed.lock();
@@ -207,7 +207,7 @@ public class Paquet {
 
 	public boolean askForlock(){
 		isUsed.lock();
-		hasAskedForALock = true;
+		//hasAskedForALock = true;
 		int resultat = 0;
 		int i = 0;
 

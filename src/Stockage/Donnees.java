@@ -1,4 +1,3 @@
-
 package Stockage;
 
 import java.io.IOException;
@@ -17,107 +16,108 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
 
-
 public class Donnees {
 
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
-	static private HashMap<String,Paquet> myData = new HashMap<String,Paquet>();
+	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
 
-	//longueur de la data primaire en bits (ou bytes ?)
+	// longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
 
 	static private boolean filling = true;
-	static private LinkedList<Machine> toRemove = new LinkedList<Machine> ();
+	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
 
-	//passage en public (cf la remarque sur le lock)
-	static public LinkedList<String> myOwnData = new LinkedList<String>() ;
+	// passage en public (cf la remarque sur le lock)
+	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
 	static public LinkedList<String> toSendASAP = new LinkedList<String>();
 
+	static private ReentrantLock allServeurLock = new ReentrantLock();
+	static private ReentrantLock interestServeurLock = new ReentrantLock();
+	static private ReentrantLock myHostsLock = new ReentrantLock();
+	static private ReentrantLock myDataLock = new ReentrantLock();
 
-	static private ReentrantLock allServeurLock = new ReentrantLock ();
-	static private ReentrantLock interestServeurLock= new ReentrantLock ();
-	static private ReentrantLock myHostsLock= new ReentrantLock ();
-	static private ReentrantLock myDataLock= new ReentrantLock ();
-
-	//(Antoine) : le lock est inutile, la liste de mes propres paquets est initialisée au début une bonne fois pour toute.
-	//static private ReentrantLock myOwnDataLock= new ReentrantLock ();
-	//deprecated
+	// (Antoine) : le lock est inutile, la liste de mes propres paquets est
+	// initialisée au début une bonne fois pour toute.
+	// static private ReentrantLock myOwnDataLock= new ReentrantLock ();
+	// deprecated
 	/*
-
-	public static void initializeData(LinkedList<String> mesPaquets){
-	  myOwnData = mesPaquets ;
-	}*/
+	 * 
+	 * public static void initializeData(LinkedList<String> mesPaquets){
+	 * myOwnData = mesPaquets ; }
+	 */
 
 	public static boolean acceptePaquet(String s) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public static LinkedList<String> hasPaquetLike(String ID){
-		Scanner s = new Scanner(ID) ;
-		s.useDelimiter("-") ;
-		final String newId = s.next() + "-" + s.next() +"-" ;
-		long n = s.nextLong() ;
-		long a = n/Global.NOMBRESOUSPAQUETS ;
-		long b = n%Global.NOMBRESOUSPAQUETS ;
-		LinkedList<String> res = new LinkedList<String>() ;
-		for(int i =0 ; i< Global.NOMBRESOUSPAQUETS ; i++){
-			String testId = newId + (a*Global.NOMBRESOUSPAQUETS + i) ;
-			if (myData.containsKey(testId)){ res.add(testId) ; }
-		}
-		return res ;
-	}
-
-	public static void receptionPaquet(Machine m, Paquet p){
-		addInterestServeur(m) ;
-		putNewPaquet(p) ;
-		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged(""+ p.idGlobal), 1);
-	}
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
-
-	public static void changeHostForPaquet(String Id, int place, Machine newHost){
-		myDataLock.lock();
-		try{
-			LinkedList<String> paquets = hasPaquetLike(Id) ;
-			for(String s : paquets){
-				myData.get(Id).otherHosts.set(place, newHost) ;
+	public static LinkedList<String> hasPaquetLike(String ID) {
+		Scanner s = new Scanner(ID);
+		s.useDelimiter("-");
+		final String newId = s.next() + "-" + s.next() + "-";
+		long n = s.nextLong();
+		long a = n / Global.NOMBRESOUSPAQUETS;
+		long b = n % Global.NOMBRESOUSPAQUETS;
+		LinkedList<String> res = new LinkedList<String>();
+		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
+			if (myData.containsKey(testId)) {
+				res.add(testId);
 			}
 		}
-		finally{
+		return res;
+	}
+
+	public static void receptionPaquet(Machine m, Paquet p) {
+		addInterestServeur(m);
+		putNewPaquet(p);
+		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
+	}
+
+	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
+		myDataLock.lock();
+		try {
+			LinkedList<String> paquets = hasPaquetLike(Id);
+			for (String s : paquets) {
+				myData.get(Id).otherHosts.set(place, newHost);
+			}
+		}
+		finally {
 			myDataLock.unlock();
 		}
 	}
 
-	public static void traiteUnMort(Machine m){
+	public static void traiteUnMort(Machine m) {
 		myHostsLock.lock();
 		try {
-			if(myHosts.contains(m)){
-				myHosts.remove(m) ;
-			} 
-		} finally {myHostsLock.unlock();}
+			if (myHosts.contains(m)) {
+				myHosts.remove(m);
+			}
+		}
+		finally {
+			myHostsLock.unlock();
+		}
 		interestServeurLock.lock();
 		try {
-			if (interestServeur.contains(m)){
-				interestServeur.remove(m) ;
+			if (interestServeur.contains(m)) {
+				interestServeur.remove(m);
 				for (Paquet p : myData.values()) {
-					for(Machine n : p.otherHosts){
-						if(m==n) {
-							//check avec p.power si on doit intervenir ou non
-							//�ventuellement, r�tablir le paquet
+					for (Machine n : p.otherHosts) {
+						if (m == n) {
+							// check avec p.power si on doit intervenir ou non
+							// �ventuellement, r�tablir le paquet
 						}
 					}
 				}
 			}
-		} finally {interestServeurLock.unlock();}
+		}
+		finally {
+			interestServeurLock.unlock();
+		}
 		allServeurLock.lock();
 		try {
 			if (!filling)
@@ -127,88 +127,92 @@ public class Donnees {
 					toRemove.add(m);
 				}
 			}
-		} finally {allServeurLock.unlock();}
-	}
-
-	public static LinkedList<Machine> getAllServeurs () {
-		allServeurLock.lock();
-		try {
-			LinkedList<Machine> buff = new LinkedList<Machine> ();
-			buff.addAll(allServeur);
-			return buff;
-		} finally {
+		}
+		finally {
 			allServeurLock.unlock();
 		}
 	}
 
-	
-	public static Machine chooseMachine(){
-	  return allServeur.peek() ;
+	public static LinkedList<Machine> getAllServeurs() {
+		allServeurLock.lock();
+		try {
+			LinkedList<Machine> buff = new LinkedList<Machine>();
+			buff.addAll(allServeur);
+			return buff;
+		}
+		finally {
+			allServeurLock.unlock();
+		}
 	}
-	
-	public static void putServer (String ip, int port) {
+
+	public static Machine chooseMachine() {
+		return allServeur.peek();
+	}
+
+	public static void putServer(String ip, int port) {
 		allServeurLock.lock();
 		try {
 			allServeur.add(new Machine(ip, port));
-		} finally {
+		}
+		finally {
 			allServeurLock.unlock();
 		}
 	}
 
-	public static void actualiseAllServeur(LinkedList<Machine> l){
+	public static void actualiseAllServeur(LinkedList<Machine> l) {
 		allServeurLock.lock();
-		allServeur = l ;
+		allServeur = l;
 		allServeurLock.unlock();
 	}
 
-	public static void removeServer (Machine m) {
+	public static void removeServer(Machine m) {
 		allServeurLock.lock();
 		allServeur.remove(m);
 		allServeurLock.unlock();
 
-		// TODO : Gerer la perte d'un voisin etc. 
+		// TODO : Gerer la perte d'un voisin etc.
 		// PB. : il faut se reprendre un voisin quand on en perd un
-		// 		 il faut gerer la recuperation si c'est un interestServeur
-		//		 etc.
+		// il faut gerer la recuperation si c'est un interestServeur
+		// etc.
 	}
 
-	public static Paquet choosePaquetToSend(){
-		if(toSendASAP.isEmpty()){
-			return (Paquet) myData.values().toArray()[0] ;
+	public static Paquet choosePaquetToSend() {
+		if (toSendASAP.isEmpty()) {
+			return (Paquet) myData.values().toArray()[0];
 		}
-		else{
-			return(myData.get(toSendASAP.getFirst()) ) ;
+		else {
+			return (myData.get(toSendASAP.getFirst()));
 		}
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend1() {
-		return toSendASAP ;
+		return toSendASAP;
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend2() {
-		return new LinkedList(myData.keySet()) ;
+		return new LinkedList(myData.keySet());
 	}
 
-	public static Paquet getPaquet(String id){
-		return myData.get(id) ;
+	public static Paquet getPaquet(String id) {
+		return myData.get(id);
 	}
 
-	public static void addInterestServeur(Machine m){
+	public static void addInterestServeur(Machine m) {
 		interestServeurLock.lock();
-		interestServeur.add(m) ;
+		interestServeur.add(m);
 		interestServeurLock.unlock();
 	}
 
-	public static void addHost(Machine m){
+	public static void addHost(Machine m) {
 		myHostsLock.lock();
-		myHosts.add(m) ;
+		myHosts.add(m);
 		myHostsLock.unlock();
 	}
 
-	public static Paquet getHostedPaquet(String id){
+	public static Paquet getHostedPaquet(String id) {
 		myDataLock.lock();
-		try{
-			return myData.get(id) ;
+		try {
+			return myData.get(id);
 		}
 		finally {
 			myDataLock.unlock();
@@ -217,67 +221,53 @@ public class Donnees {
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
-		myData.put(p.idGlobal, p) ;
+		myData.put(p.idGlobal, p);
 		myDataLock.unlock();
 	}
 
+	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
+		Paquet p = new Paquet(tableau.get(0).idMachine + Global.NOMBRESOUSPAQUETS - 1, Global.MYSELF);
+		tableau.add(Global.NOMBRESOUSPAQUETS - 1, p);
 
-
-	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau)
-	{
-		FileChannel[] fichier = new FileChannel[Global.NOMBRESOUSPAQUETS];
-		Paquet p = new Paquet(tableau.get(0).idMachine+Global.NOMBRESOUSPAQUETS-1,Global.MYSELF);
-		tableau.add(Global.NOMBRESOUSPAQUETS-1, p);
-
-		for(int i = 0;i<Global.NOMBRESOUSPAQUETS;i++){
-				System.out.println(tableau.get(i).pathOnDisk());
-				fichier[i] = tableau.get(i).fichier;
-
-		}
+		try {
 		int temp = 0;
 		ByteBuffer b = ByteBuffer.allocate(1);
-		for(long j = 0;j<Global.PAQUET_SIZE;j++)
-		{
-			for(int i = 0;i<Global.NOMBRESOUSPAQUETSSIGNIFICATIFS;i++){
+		for (long j = 0; j < Global.PAQUET_SIZE; j++) {
+			for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
+
 				b.clear();
-				try {
-					fichier[i].read(b);
-				} catch (IOException e) {
-					System.out.println("Problème lors de la génération des paquets de sécurité !");
-					e.printStackTrace();
-				}
+				tableau.get(i).fichier.read(b);
 				b.flip();
-				//System.out.println("Blah !");
+				Global.debug(i);
 				temp += (int) b.get(0);
-				//System.out.println("Blah 2");
 			}
 			b.clear();
-			temp%=256;
+			temp %= 256;
 			b.put((byte) temp);
 			b.flip();
-			try {
-				fichier[Global.NOMBRESOUSPAQUETS-1].write(b);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
+				tableau.get(Global.NOMBRESOUSPAQUETS - 1).fichier.write(b);
 			}
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
 
+	public static void removePaquet(String ID) {
+		myDataLock.lock();
+		try {
+			myData.remove(ID);
+			toSendASAP.remove(ID);
+		}
+		finally {
+			myDataLock.unlock();
+		}
+	}
 
-  public static void removePaquet(String ID) {
-    myDataLock.lock();
-    try{
-      myData.remove(ID) ;
-      toSendASAP.remove(ID);
-    }
-    finally{
-      myDataLock.unlock();
-    }
-  }
-
-  public static void fillingServers(boolean flag) {
+	public static void fillingServers(boolean flag) {
 		filling = flag;
 		if (flag = false) {
 			synchronized (toRemove) {
@@ -289,20 +279,22 @@ public class Donnees {
 		}
 	}
 
-	public static InetSocketAddress getRemote () {
+	public static InetSocketAddress getRemote() {
 		allServeurLock.lock();
 		try {
-			index ++;
+			index++;
 
 			if (allServeur.isEmpty()) {
 				index %= allServeur.size();
 				Machine m = allServeur.get(index);
-				return new InetSocketAddress(m.ipAdresse, m.port + 2); // Port du serveur UDP
+				return new InetSocketAddress(m.ipAdresse, m.port + 2);
 			}
 			else {
 				return null;
 			}
-		} finally {allServeurLock.unlock();}
+		}
+		finally {
+			allServeurLock.unlock();
+		}
 	}
 }
-
