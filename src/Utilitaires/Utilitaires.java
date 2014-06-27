@@ -8,11 +8,12 @@ import java.util.Scanner;
 public class Utilitaires {
 	/**
 	 * 
-	 * @param s string to convert
+	 * @param s
+	 *            string to convert
 	 * @return FLIPPED buffer
 	 */
 	public static ByteBuffer stringToBuffer(String s) {
-		ByteBuffer buff = ByteBuffer.allocateDirect(s.length()*4);
+		ByteBuffer buff = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
 		for (char c : s.toCharArray()) {
 			buff.putChar(c);
 		}
@@ -22,13 +23,13 @@ public class Utilitaires {
 
 	/**
 	 * 
-	 * @param b buffer to convert (already flipped !)
-	 * @return resulting string
-	 * Le buffer est flippé
+	 * @param b
+	 *            buffer to convert (already flipped !)
+	 * @return resulting string Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
-		
-		String s = new String ();
+
+		String s = new String();
 		while (b.hasRemaining())
 			s += b.getChar();
 		b.flip();
@@ -38,31 +39,33 @@ public class Utilitaires {
 	public static ByteBuffer stringToBuffer(int id) {
 		String s = Integer.valueOf(id).toString();
 		return stringToBuffer(s);
-	}	
+	}
 
-	public static String getAFullMessage (String[] finalWords, SocketChannel s) throws IOException {
-	  ByteBuffer b = ByteBuffer.allocateDirect(5000);
+	public static String getAFullMessage(String finalWord, SocketChannel s) throws IOException {
+		String[] arg = new String[1];
+		arg[0] = finalWord;
+		return getAFullMessage(arg, s);
+
+	}
+
+	public static String getAFullMessage(String[] finalWords, SocketChannel s) throws IOException {
+		ByteBuffer b = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
 		String retour = "";
 		String m;
 		String token;
 		boolean continuer = true;
 
 		while (continuer) {
-      if (s.read(b) == -1) continuer = false;
-      b.flip();
-      m = buffToString(b);
-      
-      retour += m;
-      b.clear();
-
-			if (s.read(b) == -1) continuer = false;
+			
+			if (s.read(b) == -1)
+				continuer = false;
 			b.flip();
 			m = buffToString(b);
-			
+
 			retour += m;
 			b.clear();
 
-			Scanner sc = new Scanner (m);
+			Scanner sc = new Scanner(m);
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
 				for (String w : finalWords) {
@@ -75,4 +78,5 @@ public class Utilitaires {
 		}
 		return retour;
 	}
+
 }

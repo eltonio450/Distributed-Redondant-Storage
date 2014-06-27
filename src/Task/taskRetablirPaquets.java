@@ -53,7 +53,7 @@ public class taskRetablirPaquets implements Runnable {
 					clientSocket[i].write(Utilitaires.stringToBuffer(Message.DEMANDE_PAQUET));
 
 					//Etape 2 : attendre que le monsieur réponde qu'il veut bien nous envoyer le paquet
-					//Il faut utiliser la super fonction de simon.
+					Utilitaires.getAFullMessage(Message.OK,clientSocket[i]);
 
 
 					//Etape 3 : Envoyer le numero du paquet
@@ -67,7 +67,7 @@ public class taskRetablirPaquets implements Runnable {
 						clientSocket[i].read(b[i]);
 					b[i].flip();
 
-
+					clientSocket[i].close();
 					//Etape 5 : remercier
 					//nan en fait on s'en fout
 					//clientSocket[i].write(Utilitaires.stringToBuffer(Message.OK));
@@ -79,10 +79,21 @@ public class taskRetablirPaquets implements Runnable {
 				}
 			}
 		}
+		
+		try {
+			frere.fichier.read(b[frere.idInterne]);
+		}
+		catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		frere.remettrePositionZero();
+		
+		
 		for(int j = 0;j<Global.PAQUET_SIZE;j++)
 		{
 
-			//temp est le buffer temporaire qui contient le byte qui va être écrit réellement.
+			
 			b[reconstruit.idInterne].clear();
 
 			if(numeroMort>=Global.NOMBRESOUSPAQUETSSIGNIFICATIFS)
@@ -116,6 +127,7 @@ public class taskRetablirPaquets implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
 
 

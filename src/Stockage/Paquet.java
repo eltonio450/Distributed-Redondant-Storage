@@ -208,8 +208,7 @@ public class Paquet {
 	 */
 
 	public boolean askForlock(){
-		isUsed.lock();
-		//hasAskedForALock = true;
+		isAskingTheLock = true;
 		int resultat = 0;
 		int i = 0;
 
@@ -222,14 +221,6 @@ public class Paquet {
 		switch(resultat){
 		case 0:
 			return true;
-		case 1:
-			lockLogique = true;
-			return false;
-		case 2:
-			//là, il y a un problème dans otherHosts... il s'agit de retrouver le paquet...
-			//retrouverOtherHosts();
-			//spreadUnlock();
-			return false;
 		default:
 			return false;				
 		}
@@ -249,7 +240,7 @@ public class Paquet {
 	 */
 
 	public int sendAskForLock(Machine m, String idGlobal){
-
+		String reponse = "";
 		try (SocketChannel clientSocket = SocketChannel.open()) 
 		{ 
 
@@ -264,11 +255,12 @@ public class Paquet {
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
 			buffer.flip() ;
 			clientSocket.write(buffer) ;
-			buffer.clear();
+			
 
 			//Etpae 3 : Reception du la confirmation de la connexion
-
-
+			reponse = Utilitaires.getAFullMessage(Message.OK, clientSocket);
+			
+			
 			//Etape 4 : envoie du paquet incriminé.
 
 			buffer.clear();
@@ -278,7 +270,15 @@ public class Paquet {
 
 			//Etape 5 : reception de la confirmation
 			
-			return 0;
+			reponse = Utilitaires.getAFullMessage(Message.END_ENVOI, clientSocket);
+			clientSocket.close();
+			Scanner scan = new Scanner(reponse);
+			if(scan.next()==Message.OK)
+				return 0;
+			
+			else
+				return 1;
+		
 
 
 		}

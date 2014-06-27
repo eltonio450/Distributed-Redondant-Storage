@@ -6,6 +6,7 @@ public class Message {
 	  public static String HOST_CHANGED = "host-changed#" ;
 		public static String EXCHANGE = "exchange#" ;
 		public static String REPONSE_EXCHANGE = "ok-exchange#" ;
+		public static String FAIL ="fail#";
 		public static String MONITOR = "monitor#";
 		public static String END_ENVOI = "fin#" ;
 		public static String NEXT_BUFFER = "NEXT#";
