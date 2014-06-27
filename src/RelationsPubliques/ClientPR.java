@@ -21,6 +21,7 @@ public class ClientPR extends Thread{
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
 		this.buffBonjour = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.PREFIXE_BONJOUR);
 		this.buffDebout = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.SELF_WAKE_UP);
+		this.toSend = new ConcurrentLinkedQueue<Message> ();
 	}
 
 	public void run () {

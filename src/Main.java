@@ -1,4 +1,6 @@
 
+import java.nio.ByteBuffer;
+
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
@@ -33,6 +35,10 @@ public class Main {
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
 		System.out.println("Ok");
+		
+		System.out.println("Enslaving innocent threads....");
+		Utilitaires.Slaver.initialize();
+		
 		System.out.println("All set and ready to go !");
 	}
 }

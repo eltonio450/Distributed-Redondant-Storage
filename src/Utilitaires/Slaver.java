@@ -14,7 +14,7 @@ public class Slaver {
 	static final int NB_FASTSLAVES = 20;
 	static SlaveThread [] slowSlaves, fastSlaves;
 	
-	static final void initialize () {
+	public static final void initialize () {
 		slowSlaves = new SlaveThread[NB_SLOWSLAVES];
 		fastSlaves = new SlaveThread[NB_FASTSLAVES];
 		for (int i=0; i<NB_SLOWSLAVES; i++) {

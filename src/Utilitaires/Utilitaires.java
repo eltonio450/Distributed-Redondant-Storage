@@ -39,7 +39,7 @@ public class Utilitaires {
 		return stringToBuffer(s);
 	}	
 
-	public static String getAFullMessage (String[] finalWord, SocketChannel s) throws IOException {
+	public static String getAFullMessage (String[] finalWords, SocketChannel s) throws IOException {
 		ByteBuffer b = ByteBuffer.allocateDirect(5000);
 		String retour = "";
 		String m;
@@ -52,12 +52,11 @@ public class Utilitaires {
 			m = buffToString(b);
 			retour += m;
 			b.clear();
-			System.out.println(retour);
 			
 			Scanner sc = new Scanner (m);
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
-				for (String w : finalWord) {
+				for (String w : finalWords) {
 					if (token.equals(w)) {
 						continuer = false;
 						break;
@@ -65,8 +64,6 @@ public class Utilitaires {
 				}
 			}
 		}
-
-		System.out.println(retour);
 		return retour;
 	}
 }

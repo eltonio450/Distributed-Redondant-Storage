@@ -54,7 +54,6 @@ public class ServerGetter {
 					}
 
 					if (token.equals(Message.BEGIN)) {
-						System.out.println("FUCK BITCH");
 						try {
 							Donnees.putServer(sc.next(), Integer.parseInt(sc.next()));
 						} catch (Exception e) {
