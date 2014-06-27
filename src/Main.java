@@ -34,7 +34,6 @@ public class Main {
 		IniTCP.iniTCP();
 		System.out.println("Ok");
 
-		/*
 		System.out.print("Getting server list.............");
 		ServerGetter.getServerList();
 		System.out.println("Ok");
@@ -42,14 +41,19 @@ public class Main {
 		System.out.print("Starting UDP server.............");
 		IniUDP.iniUDP();
 		System.out.println("Ok");
-*/
 
-		/*Thread thread2 = new Thread( 
+		int port = 5656 ;
+		int tailleBuffer = 100 ;
+
+
+
+		Thread thread2 = new Thread( 
 				new ThreadTcpServer(port,tailleBuffer),"TcpServer"); 
-		thread2.start();*/
+		thread2.start();
 
 
 		System.out.println("Serveurs lancés") ;
 		new Thread(new ThreadClient()).start();
+   
 	}
 }

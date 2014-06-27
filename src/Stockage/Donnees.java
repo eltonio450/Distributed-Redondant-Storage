@@ -84,6 +84,7 @@ public class Donnees {
 
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
+	  System.out.println("Change host !") ;
 		myDataLock.lock();
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);

@@ -28,8 +28,13 @@ public class Utilitaires {
 	 * @return resulting string Le buffer est flippé
 	 */
 	public static String buffToString(ByteBuffer b) {
+<<<<<<< HEAD
 
 		String s = new String();
+=======
+		
+	  String s = new String ();
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal
 		while (b.hasRemaining())
 			s += b.getChar();
 		b.flip();
@@ -53,12 +58,16 @@ public class Utilitaires {
 		String retour = "";
 		String m;
 		String token;
+		int i = 0;
 		boolean continuer = true;
 
-		while (continuer) {
-			
-			if (s.read(b) == -1)
+		while (continuer && i < Global.BUFFER_LENGTH) {
+			if (s.read(b) == -1) {
 				continuer = false;
+			}
+			i++;
+			s.read(b);
+
 			b.flip();
 			m = buffToString(b);
 
@@ -66,15 +75,18 @@ public class Utilitaires {
 			b.clear();
 
 			Scanner sc = new Scanner(m);
+
 			while (sc.hasNext() && continuer) {
 				token = sc.next();
 				for (String w : finalWords) {
 					if (token.equals(w)) {
 						continuer = false;
+						// System.out.println(i) ;
 						break;
 					}
 				}
 			}
+			sc.close();
 		}
 		return retour;
 	}
