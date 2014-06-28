@@ -11,6 +11,7 @@ import Task.taskLockPacket;
 import Utilitaires.Message;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
+import Utilitaires.Global;
 /**
  * 
  * @author Simon
@@ -61,10 +62,19 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
-				try {
-					traiter(r);
-				} catch (Exception e) {
-
+				
+				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
+					try {
+						r.socket.close();
+					} catch (IOException e) {
+						// Nope, still don't care.
+					}
+					aEnlever.add(r);
+				}
+				else {
+					try {
+						traiter(r);
+					} catch (Exception e) {}
 				}
 			}
 
@@ -74,6 +84,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			lock.unlock();
 			for (Requester r : aEnlever) {
 				aTraiter.remove(r);
+			}
+
+			try {
+				Thread.sleep(5);	// Evite de tourner trop à vide quand une connexion se tait.
+			} catch (InterruptedException e) {
+				// Nobody cares
 			}
 		}
 	}

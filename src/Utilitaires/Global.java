@@ -25,6 +25,7 @@ public class Global {
 
 	// GestionnaireMort
 	public static int DEATH_TIMEOUT = 10000;
+	public static long SOCKET_TIMEOUT = 30000;
 
 	//RP de debug
 	public static boolean DEBUG = false;
