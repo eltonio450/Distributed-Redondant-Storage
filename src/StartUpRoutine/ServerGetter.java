@@ -65,11 +65,11 @@ public class ServerGetter {
 			}
 			clientSocket.close();
 		} catch (Exception e) {
-			System.out.println("Fatal error in getServerList");
+			Utilitaires.out("Fatal error in getServerList");
 			e.printStackTrace();
 			System.exit(-1);
 		}
-
+		Donnees.printServerList();
 		Stockage.Donnees.fillingServers(false);
 	}
 }

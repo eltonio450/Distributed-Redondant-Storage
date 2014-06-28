@@ -1,5 +1,7 @@
 package Utilitaires;
 
+import java.net.InetSocketAddress;
+
 public class Message {
 	
     // TCP Connections
@@ -30,4 +32,12 @@ public class Message {
 		public static String VERIFY_DEATH = "YOUDEADBRO?#";
 		public static String NOT_DEAD = "NOPE#";
 		public static String IS_DEAD = "ILESTMORT#";
+		
+		public String body;
+		public InetSocketAddress dest;
+
+		public Message (String body, InetSocketAddress dest) {
+			this.body = body;
+			this.dest = dest;
+		}
 }

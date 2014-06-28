@@ -30,40 +30,40 @@ public class ThreadClient implements Runnable {
         ByteBuffer buffer = Utilitaires.stringToBuffer(Message.EXCHANGE) ;
         clientSocket.write(buffer) ;
         buffer.clear() ;
-        System.out.println("Client attend r�ponse") ;
+        Utilitaires.out("Client attend r�ponse") ;
         clientSocket.read(buffer) ;
-        System.out.println("Client a re�u r�ponse") ;
+        Utilitaires.out("Client a re�u r�ponse") ;
         buffer.flip() ;
         String s = Utilitaires.buffToString(buffer) ;
-        System.out.println(s) ;
+        Utilitaires.out(s) ;
     
         if(!s.equals(Message.DEMANDE_ID)){
-          System.out.println(false) ;
+          Utilitaires.out(false) ;
         }
 
         buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
         clientSocket.write(buffer) ;
-        System.out.println("Client a envoy�") ;
+        Utilitaires.out("Client a envoy�") ;
         buffer = ByteBuffer.allocate(100) ;
         buffer.clear() ;
         clientSocket.read(buffer) ;
         buffer.flip() ;
-        System.out.println("client : " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
+        Utilitaires.out("client : " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
         
 
         if (true){
           //exchange can begin : send its package
           aEnvoyer.envoyerPaquet(clientSocket);
-          System.out.println("Client a envoy� Paquet") ;
+          Utilitaires.out("Client a envoy� Paquet") ;
           /*if(recoitPaquet(clientSocket)){
             aEnvoyer.removePaquet();
-            System.out.println(true) ;
+            Utilitaires.out(true) ;
           }
           else {} */
         }
 
         else {
-         System.out.println("Echec") ;
+         Utilitaires.out("Echec") ;
         }
       }
       catch(Exception e){

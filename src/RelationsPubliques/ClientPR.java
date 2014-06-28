@@ -7,6 +7,8 @@ import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Utilitaires.Global;
+import Utilitaires.Message;
+import Utilitaires.Utilitaires;
 
 public class ClientPR extends Thread{
 	
@@ -19,8 +21,8 @@ public class ClientPR extends Thread{
 	public ClientPR () throws IOException{
 		this.channel = DatagramChannel.open();
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
-		this.buffBonjour = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.PREFIXE_BONJOUR);
-		this.buffDebout = Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.SELF_WAKE_UP);
+		this.buffBonjour = Utilitaires.stringToBuffer(Message.PREFIXE_BONJOUR);
+		this.buffDebout = Utilitaires.stringToBuffer(Message.SELF_WAKE_UP);
 		this.toSend = new ConcurrentLinkedQueue<Message> ();
 	}
 
@@ -42,7 +44,7 @@ public class ClientPR extends Thread{
 				// On envoie bonjour au serveur de l'hôte distant
 				channel.send(buffBonjour, remote);
 				// On dit au serveur d'attendre une réponse du client de l'hôte distant
-				Global.serverPR.expectMessage(new ExpectedMessage(Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+				Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 				// Réveille le serveur si personne d'autre ne lui parle
 				channel.send(buffDebout, new InetSocketAddress("localhost", Global.SERVERPRPORT));
 
@@ -52,7 +54,7 @@ public class ClientPR extends Thread{
 				// Envoie ce qu'on lui a demandé d'envoyer
 				for (int i=0; !toSend.isEmpty() && i<100; i++) {
 					message = toSend.poll();
-					channel.send(Utilitaires.Utilitaires.stringToBuffer(message.body), message.dest);
+					channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
 				}
 
 				if (toSend.isEmpty()) {
@@ -63,7 +65,7 @@ public class ClientPR extends Thread{
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("ClientPR Thread just crashed");
+				Utilitaires.out("ClientPR Thread just crashed");
 				System.exit(-1); 
 			}
 		}
@@ -71,7 +73,7 @@ public class ClientPR extends Thread{
 
 	public void sendMessage (Message message) {
 		toSend.add(message);
-		System.out.println("Going to send " + message.body + " to " + message.dest);
+		Utilitaires.out("Going to send " + message.body + " to " + message.dest);
 		this.interrupt();
 	}
 }

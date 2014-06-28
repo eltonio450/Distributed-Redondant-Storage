@@ -62,6 +62,6 @@ public class Global {
 	
 	public static void debug(int i)
 	{
-		System.out.println("Débuggage "+i);
+		Utilitaires.out("Débuggage "+i);
 	}
 }

@@ -30,7 +30,7 @@ public class Server {
             );
         InetSocketAddress remote = (InetSocketAddress) serverSocket.receive(buffer) ;
         buffer.flip() ;
-        System.out.println("UDPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
+        Utilitaires.out("UDPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
         buffer.clear();
         buffer.putChar('O');
         buffer.putChar('k');
@@ -52,28 +52,28 @@ public class Server {
       client.read(buffer) ;
       buffer.flip() ;
       String s = Utilitaires.buffToString(buffer);
-      System.out.println(s) ;
+      Utilitaires.out(s) ;
       if (s.equals(Message.SendOne)){
         Runnable task = new taskServeurReceiveOnePaquet(client) ;
         task.run() ;
       }
       
       /*
-      System.out.println("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
+      Utilitaires.out("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ;
       buffer = Utilitaires.stringToBuffer(Message.DEMANDE_ID) ;
       client.write(buffer) ;
-      System.out.println("Serveur : demande envoyée") ;
+      Utilitaires.out("Serveur : demande envoyï¿½e") ;
       buffer = ByteBuffer.allocate(Message.BUFFER_LENGTH) ;
       buffer.clear() ;
       int i = client.read(buffer) ;
       buffer.flip() ;
-      if( true ) {System.out.println("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ; }
+      if( true ) {Utilitaires.out("TCPServer a recu: " + new String(buffer.array(),StandardCharsets.UTF_16BE)) ; }
       if(true){
         buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
         client.write(buffer) ;
-        System.out.println("Serveur pret à recevoir Paquet") ;
+        Utilitaires.out("Serveur pret ï¿½ recevoir Paquet") ;
         Paquet receivedPaquet = Paquet.recoitPaquet(client) ;
-        System.out.println("Serveur a reçu Paquet") ;
+        Utilitaires.out("Serveur a reï¿½u Paquet") ;
         Machine otherMachine = Machine.otherMachineFromSocket(client) ;
         Donnees.receptionPaquet(otherMachine, receivedPaquet);
         
@@ -96,7 +96,7 @@ public class Server {
        thread2.start();
           
 
-     System.out.println("Serveurs lancés") ;
+     Utilitaires.out("Serveurs lancï¿½s") ;
      new Thread(new ThreadClient()).start();
      
   }

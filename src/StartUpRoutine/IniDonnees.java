@@ -28,7 +28,7 @@ public class IniDonnees {
 		iniPaths();
 		bufferUnByte.put((byte) 'a');
 
-		//System.out.println(System.getProperty("user.dir").toString());
+		//Utilitaires.out(System.getProperty("user.dir").toString());
 		try {
 			myOwnFile = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTOMYDATA), StandardOpenOption.READ, StandardOpenOption.CREATE);
 			Donnees.longueur = myOwnFile.size();
@@ -36,7 +36,7 @@ public class IniDonnees {
 
 			while (!finDepassee) {
 				paquetsEnConstruction = new ArrayList<Paquet>(Global.NOMBRESOUSPAQUETS);
-				//System.out.println("Blah !2");
+				//Utilitaires.out("Blah !2");
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 					paquetTemp = new Paquet(id, Global.MYSELF);
 					onDisk = paquetTemp.fichier;
@@ -83,7 +83,7 @@ public class IniDonnees {
 
 		}
 		catch (IOException e) {
-			System.out.println("Il n'y a pas de fichier à l'endroit correct");
+			Utilitaires.out("Il n'y a pas de fichier à l'endroit correct");
 			e.printStackTrace();
 		}
 
@@ -91,7 +91,7 @@ public class IniDonnees {
 
 	public static void iniPaths() {
 		if (Global.DEBUG) {
-			System.out.println(System.getProperty("user.dir"));
+			Utilitaires.out(System.getProperty("user.dir"));
 			
 			Global.PATHTOMYDATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/myOwnData/fichier.txt";
 			Global.PATHTODATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/data/";

@@ -100,7 +100,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		try {
 			requester.socket.configureBlocking(false);
 		} catch (IOException e) {
-			System.out.println("Problème de changement Blocking / Non blocking");
+			Utilitaires.out("Problème de changement Blocking / Non blocking");
 			return;
 		}
 		lock.lock();
@@ -115,7 +115,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 	private void traiter (Requester r) {
 		Scanner scan = new Scanner (r.recu);
-		System.out.println(r.recu);
+		Utilitaires.out(r.recu);
 		String token = scan.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
@@ -147,7 +147,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							// Remove the requester (won't get any better
 							// Warn
 							aEnlever.add(r);
-							System.out.println("Corrupted message : " + r.recu);
+							Utilitaires.out("Corrupted message : " + r.recu);
 							scan.close();
 							return;
 						} 
@@ -179,7 +179,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							// Remove the requester (won't get any better
 							// Warn
 							aEnlever.add(r);
-							System.out.println("Corrupted message : " + r.recu);
+							Utilitaires.out("Corrupted message : " + r.recu);
 							scan.close();
 							return;
 						} 

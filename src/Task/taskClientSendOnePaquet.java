@@ -40,7 +40,7 @@ public class taskClientSendOnePaquet implements Runnable {
       buffer.flip() ;
       String s = Utilitaires.buffToString(buffer) ;
       
-      //System.out.println(s) ;
+      //Utilitaires.out(s) ;
       
       if(!s.equals(Message.DEMANDE_ID)){
         clientSocket.close();

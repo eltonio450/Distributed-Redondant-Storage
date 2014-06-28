@@ -37,7 +37,7 @@ public class Slaver {
 			}
 		}
 		if (!best.doThat(r, estimatedLoad)) {
-			System.out.println("System overloaded : no more slave thread available.");
+			Utilitaires.out("System overloaded : no more slave thread available.");
 			System.exit(-3);
 		}
 	}
@@ -52,7 +52,7 @@ public class Slaver {
 			}
 		}
 		if (!best.doThat(r, estimatedLoad)) {
-			System.out.println("System overloaded : no more slave thread available.");
+			Utilitaires.out("System overloaded : no more slave thread available.");
 			System.exit(-3);
 		}
 	}
