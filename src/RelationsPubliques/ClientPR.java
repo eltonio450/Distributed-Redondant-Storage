@@ -73,7 +73,6 @@ public class ClientPR extends Thread{
 
 	public void sendMessage (Message message) {
 		toSend.add(message);
-		Utilitaires.out("Going to send " + message.body + " to " + message.dest);
 		this.interrupt();
 	}
 }

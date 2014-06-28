@@ -46,14 +46,14 @@ public class ServerPR extends Thread{
 		while (true) {
 			try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
-				receivedMessage.flip();
+				receivedMessage.flip(); 
 
 				try {
 					traiter (Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {}
-				
+
 				receivedMessage.clear();
-				
+
 				checkExpectedMessages();
 
 			} catch (IOException e) {
@@ -66,42 +66,49 @@ public class ServerPR extends Thread{
 
 	public void expectMessage (ExpectedMessage message) {
 		expectedMessagesLock.lock();
-			expectedMessages.add(message);
+		expectedMessages.add(message);
 		expectedMessagesLock.unlock();
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
+		Utilitaires.out("On UDP Server from " + sender + " <== " + message);
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
-		
+
 		if (token.equals(Message.PREFIXE_BONJOUR)) {
 			Utilitaires.out(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
 			// On dit au client de répondre au serveur de l'hôte distant
 			Global.clientPR.sendMessage(new Message (Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
-			// On met à jour l'attente de bonjour du client
-			expectedMessages.remove(new ExpectedMessage(Message.PREFIXE_BONJOUR, sender, 0));
-			expectedMessages.add(new ExpectedMessage(Message.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT));
 		}
 		else if (token.equals(Message.PREFIXE_REPONSE_BONJOUR)) {
 			// On a eu une réponse au bonjour
+			int i = expectedMessages.size();
+			if (i==0){
+				Utilitaires.out("Reply received while non was expected :/");
+				return;
+			}
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
+			if (i == expectedMessages.size())
+				Utilitaires.out("Didnt remove :/");
+
 		}
 		sc.close();
 	}
-	
+
 	private void checkExpectedMessages() {
 		long t = System.currentTimeMillis();
 		expectedMessagesLock.lock();
 		for (ExpectedMessage m : expectedMessages) {
 			if (m.timeOut < t) {
 				dead.add(m.sender);
+				expectedMessages.remove(m);
 			}
 		}
 		expectedMessagesLock.unlock();
-		
+
 		while (!dead.isEmpty()) {
 			InetSocketAddress toCheck = dead.removeFirst();
-			
+
 			Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
 	}

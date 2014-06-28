@@ -62,6 +62,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
+				if (buff.hasRemaining())
+					Utilitaires.out("On TCP from : " + r.socket.socket().getInetAddress() + ":" + r.socket.socket().getPort() + " <== " + r.recu);
 
 				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {

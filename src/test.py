@@ -7,11 +7,11 @@ i = 0
 #os.system("killall java")
 # d : identifiant debug
 # p : port du serveur
-# t : signifie qu'il est la tête de réseau
-# I : première ip à contacter
-# P : premier port à contacter
+# t : signifie qu'il est la tete de reseau
+# I : premieOkre ip a contacter
+# P : premier port a contacter
 
-#Le premier serveur est une tête du serveur.
+#Le premier serveur est une tete du serveur.
 os.system("fuser -fk " + str(5000)+"/tcp")
 os.system("fuser -fk " + str(5000)+"/udp")
 
