@@ -37,6 +37,25 @@ public class Main {
 		ServerGetter.getServerList();
 		Utilitaires.out("Ok");
 
+
+		//Utilitaires.out("Starting UDP server.............");
+		//IniUDP.iniUDP();
+		//Utilitaires.out("Ok");
+		/*
+		int port = 5656 ;
+		int tailleBuffer = 100 ;
+
+
+
+		Thread thread2 = new Thread( 
+				new ThreadTcpServer(port,tailleBuffer),"TcpServer"); 
+		thread2.start();
+		*/
+
+		//Utilitaires.out("Serveurs lancés") ;
+		//new Thread(new ThreadClient()).start();
+   
+
 		Utilitaires.out("Starting UDP server.............");
 		IniUDP.iniUDP();
 		Utilitaires.out("Ok");

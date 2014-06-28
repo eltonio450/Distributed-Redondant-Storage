@@ -76,7 +76,7 @@ public class Paquet {
 			Utilitaires.out("Erreur lors de l'ouverture du fichier.");
 			e.printStackTrace();
 		}
-		System.out.println("Fichier généré : "+pathOnDisk());
+		Utilitaires.out("Fichier généré : "+pathOnDisk());
 	}
 	
 	public String pathOnDisk()

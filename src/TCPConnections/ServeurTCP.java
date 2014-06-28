@@ -6,12 +6,14 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 public class ServeurTCP extends Thread {
 	
 	public void run () {
 		try {
 			ServerSocketChannel serverSocket = ServerSocketChannel.open();
+			Utilitaires.out("TCP init sur : " + Global.TCP_PORT);
 			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT);
 			serverSocket.bind(local);
 			while (true) {
