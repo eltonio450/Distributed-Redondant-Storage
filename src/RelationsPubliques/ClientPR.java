@@ -6,16 +6,19 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import GestionnaireMort.deathVerifier;
+import Stockage.Donnees;
 import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
 public class ClientPR extends Thread{
-	
+
 	private DatagramChannel channel;
 	private ByteBuffer buffBonjour;
 	private ByteBuffer buffDebout;
 	private ConcurrentLinkedQueue<Message> toSend;
+	private long lastTime;
 
 
 	public ClientPR () throws IOException{
@@ -25,6 +28,7 @@ public class ClientPR extends Thread{
 		this.buffBonjour = Utilitaires.stringToBuffer(Message.PREFIXE_BONJOUR);
 		this.buffDebout = Utilitaires.stringToBuffer(Message.SELF_WAKE_UP);
 		this.toSend = new ConcurrentLinkedQueue<Message> ();
+		this.lastTime = 0;
 	}
 
 	public void run () {
@@ -42,18 +46,21 @@ public class ClientPR extends Thread{
 					}
 					continue;
 				}
-				boolean b = false;
-				
-				
-				for(Message m : toSend)
-				{
-					b = b || (m.dest != remote);
-				}
-				if(!b){
+
+
+				if (System.currentTimeMillis() - lastTime > Global.SLEEPTIME) {
+					try {
+					// On envoie bonjour au serveur de l'hôte distant
 					channel.send(buffBonjour, remote);
-				// On dit au serveur d'attendre une réponse du client de l'hôte distant, seulement si celui-ci n'est pas dans les messages à envoyer.
+					// On dit au serveur d'attendre une réponse du client de l'hôte distant
 					Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+					lastTime = System.currentTimeMillis();
+					} catch (Exception e) {
+						deathVerifier.verifyDeath(new Stockage.Machine(remote));
+					}
 				}
+
+
 				// Réveille le serveur si personne d'autre ne lui parle
 				try{
 					channel.send(buffDebout, new InetSocketAddress("127.0.0.1", Global.SERVERPRPORT));
@@ -68,9 +75,10 @@ public class ClientPR extends Thread{
 				for (int i=0; !toSend.isEmpty() && i<100; i++) {
 					//Utilitaires.out("Taille : " +toSend.size());
 					message = toSend.poll();
-					try{
+					try {
 						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
-					}catch(Exception e){
+					} catch (Exception e) {
+						deathVerifier.verifyDeath(new Stockage.Machine(message.dest));
 						Utilitaires.out("Dernier message crashé !", 1, true);
 					}
 				}
