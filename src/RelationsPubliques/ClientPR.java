@@ -47,11 +47,15 @@ public class ClientPR extends Thread{
 				}
 
 				if (System.currentTimeMillis() - lastTime > Global.SLEEPTIME) {
+					try {
 					// On envoie bonjour au serveur de l'hôte distant
 					channel.send(buffBonjour, remote);
 					// On dit au serveur d'attendre une réponse du client de l'hôte distant
 					Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 					lastTime = System.currentTimeMillis();
+					} catch (Exception e) {
+						deathVerifier.verifyDeath(new Stockage.Machine(remote));
+					}
 				}
 
 				// Réveille le serveur si personne d'autre ne lui parle

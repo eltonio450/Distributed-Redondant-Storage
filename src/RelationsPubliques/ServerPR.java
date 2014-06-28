@@ -28,7 +28,7 @@ public class ServerPR extends Thread{
 	private InetSocketAddress sender;
 
 	private LinkedList<ExpectedMessage> expectedMessages;
-	private LinkedList<InetSocketAddress> dead;
+	private LinkedList<ExpectedMessage> dead;
 	private ReentrantLock expectedMessagesLock;	// Nécessaire pour pouvoir itérer sur expected messages
 
 
@@ -38,7 +38,7 @@ public class ServerPR extends Thread{
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.expectedMessagesLock = new ReentrantLock();
 		this.expectedMessages = new LinkedList<ExpectedMessage>();
-		this.dead = new LinkedList<InetSocketAddress> ();
+		this.dead = new LinkedList<ExpectedMessage> ();
 	}
 
 	public void run () {
@@ -58,6 +58,7 @@ public class ServerPR extends Thread{
 
 			} catch (IOException e) {
 				e.printStackTrace();
+				
 				Utilitaires.out("ServerPR just crashed");
 				System.exit(-2);
 			}
@@ -86,6 +87,7 @@ public class ServerPR extends Thread{
 			int i = expectedMessages.size();
 			if (i==0){
 				Utilitaires.out("WARNING Reply received while non was expected :/");
+				sc.close();
 				return;
 			}
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
@@ -102,14 +104,14 @@ public class ServerPR extends Thread{
 		expectedMessagesLock.lock();
 		for (ExpectedMessage m : expectedMessages) {
 			if (m.timeOut < t) {
-				dead.add(m.sender);
+				dead.add(m);
 			}
 		}
 		expectedMessages.removeAll(dead);
 		expectedMessagesLock.unlock();
 
 		while (!dead.isEmpty()) {
-			InetSocketAddress toCheck = dead.removeFirst();
+			InetSocketAddress toCheck = dead.removeFirst().sender;
 
 			Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
