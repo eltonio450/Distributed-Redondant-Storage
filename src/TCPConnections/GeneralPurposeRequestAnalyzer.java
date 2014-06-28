@@ -64,6 +64,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			for (Requester r : aEnlever) {
 				aTraiter.remove(r);
 			}
+			
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {}
 		}
 	}
 
