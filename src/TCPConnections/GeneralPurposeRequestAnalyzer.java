@@ -63,7 +63,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
 				if (buff.hasRemaining())
-					Utilitaires.out("On TCP from : " + r.socket.socket().getInetAddress() + ":" + r.socket.socket().getPort() + " <== " + r.recu);
+					Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
 
 				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
@@ -117,7 +117,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 	private void traiter (Requester r) {
 		Scanner scan = new Scanner (r.recu);
-		Utilitaires.out("Message recu : "+r.recu);
+		//Utilitaires.out("Message recu : "+r.recu);
 		String token = scan.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
@@ -212,6 +212,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 
 			else if (token.equals(Message.VERIFY_DEATH)) {
+				//Utilitaires.out("OK DEATH");
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new Task.taskReplyStillAlive(r.socket), 1);
@@ -223,6 +224,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new taskLockPacket (r.socket), 2);
+			}
+			else
+			{
+				Utilitaires.out("Chaine non analysée : " +token.toString(),5,true);
 			}
 
 			/**

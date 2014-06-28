@@ -6,7 +6,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import Stockage.Donnees;
-import Utilitaires.*;
+import Utilitaires.Global;
+import Utilitaires.Message;
+import Utilitaires.Utilitaires;
 
 public class deathVerifier implements Runnable {
 	Stockage.Machine m;
@@ -26,17 +28,24 @@ public class deathVerifier implements Runnable {
 	public static boolean verifyDeath (Stockage.Machine m) {
 		Boolean mort = true;
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
+			//Utilitaires.out("Test de la mort 1 : " + m.port);
 			InetSocketAddress local = new InetSocketAddress(0); 
 			clientSocket.bind(local); 
+			//Utilitaires.out("Test de la mort 2 : " + m.port);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
 			clientSocket.connect(remote);
+			//Utilitaires.out("Test de la mort 3 : " + m.port);
 			clientSocket.write(Utilitaires.stringToBuffer(Message.VERIFY_DEATH));
 			clientSocket.socket().setSoTimeout(Global.DEATH_TIMEOUT);
-			if (clientSocket.read(ByteBuffer.allocateDirect(1000)) > 0)
+			//Utilitaires.out("Test de la mort 4 : " + m.port);
+			if (clientSocket.read(ByteBuffer.allocateDirect(1000)) > 0){
 				mort = false;
+				Utilitaires.out(m.port + " is still alive !",4, true);
+			}
+				
 			clientSocket.close();
 		} catch (IOException e) {
-			// Il est mort.
+			Utilitaires.out("Erreur dans le death verifier", 4, true);
 		}
 		return mort;
 	}

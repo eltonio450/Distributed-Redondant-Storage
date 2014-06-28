@@ -15,9 +15,10 @@ public class taskReplyStillAlive implements Runnable {
 	
 	public void run () {
 		try {
+			
 			s.write(Utilitaires.stringToBuffer(Message.NOT_DEAD));
 		} catch (IOException e) {
-			// Nobody cares
+			Utilitaires.out("Problème dans la réponse de 'Je suis vivant'",0,true);
 		}
 	}
 }

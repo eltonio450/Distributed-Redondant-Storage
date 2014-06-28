@@ -94,6 +94,9 @@ public class Utilitaires {
 		if(bold)
 			sortie+="1;";
 		switch(color){
+			case 0:
+				sortie+="30";
+				break;
 			case 1:
 				sortie+="31";
 				break;
