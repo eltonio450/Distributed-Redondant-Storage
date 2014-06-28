@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
@@ -22,6 +23,8 @@ public class Donnees {
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
+	
+	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0) ;
 
 	// longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
@@ -228,7 +231,8 @@ public class Donnees {
 	 public static Paquet removeHostedPaquet(String id) {
 	    myDataLock.lock();
 	    try {
-	      return myData.remove(id) ;
+	      if(myData.containsKey(id)) { return myData.remove(id) ; }
+	      else{ return null ; } 
 	    }
 	    finally {
 	      myDataLock.unlock();
