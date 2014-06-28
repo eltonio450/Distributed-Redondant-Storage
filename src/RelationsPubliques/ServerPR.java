@@ -71,12 +71,12 @@ public class ServerPR extends Thread{
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
-		Utilitaires.out("On UDP Server from " + sender + " <== " + message);
+		Utilitaires.out("from  " + sender.getPort() + " : " + message, 4, false);
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 
 		if (token.equals(Message.PREFIXE_BONJOUR)) {
-			Utilitaires.out(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
+			//Utilitaires.out(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
 			// On dit au client de répondre au serveur de l'hôte distant
 			Global.clientPR.sendMessage(new Message (Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 		}
@@ -103,9 +103,10 @@ public class ServerPR extends Thread{
 		for (ExpectedMessage m : expectedMessages) {
 			if (m.timeOut < t) {
 				dead.add(m.sender);
-				expectedMessages.remove(m);
+				
 			}
 		}
+		expectedMessages.removeAll(dead);
 		expectedMessagesLock.unlock();
 
 		while (!dead.isEmpty()) {

@@ -22,8 +22,8 @@ public class Donnees {
 	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
 	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
-	
-	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0) ;
+
+	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0);
 
 	// longueur de la data primaire en bits (ou bytes ?)
 	static public long longueur;
@@ -36,9 +36,9 @@ public class Donnees {
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
 	static private LinkedList<String> toSendASAP = new LinkedList<String>();
-	static public ReentrantLock toSendASAPLock = new ReentrantLock() ;
-	static public Condition notEmpty =  toSendASAPLock.newCondition() ;
-	
+	static public ReentrantLock toSendASAPLock = new ReentrantLock();
+	static public Condition notEmpty = toSendASAPLock.newCondition();
+
 	static private ReentrantLock allServeurLock = new ReentrantLock();
 	static private ReentrantLock interestServeurLock = new ReentrantLock();
 	static private ReentrantLock myHostsLock = new ReentrantLock();
@@ -77,17 +77,15 @@ public class Donnees {
 	}
 
 	public static void receptionPaquet(Machine m, Paquet p) {
-	  Utilitaires.out("-------------Reception paquet--------------------"); 
+		Utilitaires.out("-------------Reception paquet--------------------");
 		addInterestServeur(m);
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		Utilitaires.out("fin reception"); 
+		Utilitaires.out("fin reception");
 	}
 
-	
-
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-	  Utilitaires.out("Change host !") ;
+		Utilitaires.out("Change host !");
 		myDataLock.lock();
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
@@ -155,7 +153,7 @@ public class Donnees {
 	}
 
 	public static Machine chooseMachine() {
-	  //pour test1 : return(new Machine("127.0.0.1",5004)) ;
+		// pour test1 : return(new Machine("127.0.0.1",5004)) ;
 		return allServeur.peek();
 	}
 
@@ -187,70 +185,64 @@ public class Donnees {
 		// etc.
 	}
 
-	/* plus utile !
-	public static Paquet choosePaquetToSend() {
-		if (toSendASAP.isEmpty()) {
-			return (Paquet) myData.values().toArray()[0];
-		}
-		else {
-			return (myData.get(toSendASAP.getFirst()));
-		}
-	} */
+	/*
+	 * plus utile ! public static Paquet choosePaquetToSend() { if
+	 * (toSendASAP.isEmpty()) { return (Paquet) myData.values().toArray()[0]; }
+	 * else { return (myData.get(toSendASAP.getFirst())); } }
+	 */
 
-	public static boolean toSendAsapEmpty(){
-	  toSendASAPLock.lock() ;
-	  try{
-	    return toSendASAP.isEmpty() ;
-	  }
-	  finally{
-	    toSendASAPLock.unlock() ;
-	  }
+	public static boolean toSendAsapEmpty() {
+		toSendASAPLock.lock();
+		try {
+			return toSendASAP.isEmpty();
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
 	}
-	
-	
-	public static void addPaquetToSendAsap(String id){
-  	toSendASAPLock.lock();
-  	try{
-  	  toSendASAP.add(id) ;
-  	  notEmpty.signalAll();
-  	  }
-  	finally{
-  	  toSendASAPLock.unlock();
-  	}
+
+	public static void addPaquetToSendAsap(String id) {
+		toSendASAPLock.lock();
+		try {
+			toSendASAP.add(id);
+			notEmpty.signalAll();
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
 	}
-	
-	public static void addListToSendAsap(LinkedList<String> listId){
-	  toSendASAPLock.lock();
-	  try{
-	    toSendASAP.addAll(listId) ;
-	    notEmpty.signalAll();
-	    }
-	  finally{
-	    toSendASAPLock.unlock();
-	  }
+
+	public static void addListToSendAsap(LinkedList<String> listId) {
+		toSendASAPLock.lock();
+		try {
+			toSendASAP.addAll(listId);
+			notEmpty.signalAll();
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
 	}
-	
-	
-	public static void removeToSendAsap(String id){
-  	toSendASAPLock.lock();
-    try{
-      toSendASAP.remove(id) ;
-      }
-    finally{
-      toSendASAPLock.unlock();
-    }
-  }
-	
+
+	public static void removeToSendAsap(String id) {
+		toSendASAPLock.lock();
+		try {
+			toSendASAP.remove(id);
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
+	}
+
 	public static LinkedList<String> chooseManyPaquetToSend1() {
-	  //TODO :lock
-	  try{
-	    LinkedList<String> temp = new LinkedList<String>() ;
-	    temp.addAll(toSendASAP) ;
-	    return temp;
-	  }
-	  finally{
-	    //unlock
-	  }
+		// TODO :lock
+		try {
+			LinkedList<String> temp = new LinkedList<String>();
+			temp.addAll(toSendASAP);
+			return temp;
+		}
+		finally {
+			// unlock
+		}
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend2() {
@@ -262,13 +254,12 @@ public class Donnees {
 		interestServeur.add(m);
 		interestServeurLock.unlock();
 	}
-	
 
 	public static void addHost(Machine m) {
-		myHostsLock.lock();
-		myHosts.add(m);
+		allServeurLock.lock();
+		allServeur.add(m);
 		Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
-		myHostsLock.unlock();
+		allServeurLock.unlock();
 	}
 
 	public static Paquet getHostedPaquet(String id) {
@@ -280,17 +271,21 @@ public class Donnees {
 			myDataLock.unlock();
 		}
 	}
-	
-	 public static Paquet removeHostedPaquet(String id) {
-	    myDataLock.lock();
-	    try {
-	      if(myData.containsKey(id)) { return myData.remove(id) ; }
-	      else{ return null ; } 
-	    }
-	    finally {
-	      myDataLock.unlock();
-	    }
-	  }
+
+	public static Paquet removeHostedPaquet(String id) {
+		myDataLock.lock();
+		try {
+			if (myData.containsKey(id)) {
+				return myData.remove(id);
+			}
+			else {
+				return null;
+			}
+		}
+		finally {
+			myDataLock.unlock();
+		}
+	}
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
@@ -309,11 +304,11 @@ public class Donnees {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 
 					b.clear();
-					//if(tableau.get(i).fichier.isOpen())
-					//	Utilitaires.out("Chack !");
+					// if(tableau.get(i).fichier.isOpen())
+					// Utilitaires.out("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
-					//Global.debug(i);
+					// Global.debug(i);
 					temp += (int) b.get(0);
 				}
 				b.clear();
@@ -323,8 +318,8 @@ public class Donnees {
 
 				tableau.get(Global.NOMBRESOUSPAQUETS - 1).fichier.write(b);
 			}
-			
-			for(int i=0;i<Global.NOMBRESOUSPAQUETS;i++)
+
+			for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++)
 				tableau.get(i).remettrePositionZero();
 
 		}
@@ -333,12 +328,12 @@ public class Donnees {
 		}
 
 	}
-	
-	public static void printServerList(){
+
+	public static void printServerList() {
 		Utilitaires.out("Liste des serveurs :", 1, true);
-		for(Machine m : allServeur)
+		for (Machine m : allServeur)
 			Utilitaires.out("s : " + m.toString(), 1, false);
-			
+
 	}
 
 	public static void removePaquet(String ID) {
@@ -350,7 +345,7 @@ public class Donnees {
 		}
 		finally {
 			myDataLock.unlock();
-			toSendASAPLock.unlock() ;
+			toSendASAPLock.unlock();
 		}
 	}
 
@@ -370,10 +365,12 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			index++;
-			if (allServeur.isEmpty()) return null;
+			if (allServeur.isEmpty())
+				return null;
 			index %= allServeur.size();
 			Machine m = allServeur.get(index);
-			if (m.ipAdresse.equals(Global.MYSELF.ipAdresse) && m.port == Global.MYSELF.port) return null;
+			if (m.ipAdresse.equals(Global.MYSELF.ipAdresse) && m.port == Global.MYSELF.port)
+				return null;
 			return new InetSocketAddress(m.ipAdresse, m.port + 2);
 
 		}
@@ -381,6 +378,5 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
-	
-	
+
 }

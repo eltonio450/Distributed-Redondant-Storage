@@ -16,7 +16,7 @@ public class Global {
 	// Relations Publiques
 	
 	public static long TIMEOUT = 60000;
-	public static long SLEEPTIME = 10000;
+	public static int SLEEPTIME = 10000;
 	public static int NOMBRESOUSPAQUETS = 5;
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size

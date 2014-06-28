@@ -45,21 +45,32 @@ public class ClientPR extends Thread{
 				channel.send(buffBonjour, remote);
 				// On dit au serveur d'attendre une réponse du client de l'hôte distant
 				Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+				
 				// Réveille le serveur si personne d'autre ne lui parle
-				channel.send(buffDebout, new InetSocketAddress("localhost", Global.SERVERPRPORT));
+				try{
+					channel.send(buffDebout, new InetSocketAddress("127.0.0.1", Global.SERVERPRPORT));
+				}catch(Exception e){
+					Utilitaires.out("Dernier message crashé !", 1, true);
+				}
 
 				buffDebout.flip();
 				buffBonjour.flip();
 
 				// Envoie ce qu'on lui a demandé d'envoyer
-				for (int i=0; !toSend.isEmpty() && i<100; i++) {
+				for (int i=0; !toSend.isEmpty() && i<4; i++) {
+					Utilitaires.out("Taille : " +toSend.size());
 					message = toSend.poll();
-					channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
+					try{
+						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
+					}catch(Exception e){
+						Utilitaires.out("Dernier message crashé !", 1, true);
+					}
 				}
 
 				if (toSend.isEmpty()) {
+					Utilitaires.out("Essai de dodo");
 					try {
-						Thread.sleep(Global.SLEEPTIME);
+						sleep(Global.SLEEPTIME);
 					} catch (InterruptedException e) {}
 				}
 

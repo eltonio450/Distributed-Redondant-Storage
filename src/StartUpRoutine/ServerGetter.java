@@ -25,7 +25,7 @@ public class ServerGetter {
 		fins[1] = Message.NEXT_BUFFER;
 
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
-			InetSocketAddress local = new InetSocketAddress(0); 
+			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT); 
 			clientSocket.bind(local); 
 			InetSocketAddress remote = new InetSocketAddress(Global.FIRST_IP, Global.FIRST_PORT); 
 			clientSocket.connect(remote); 
