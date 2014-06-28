@@ -45,11 +45,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 		while (true) {
 			while (aTraiter.isEmpty()) {
-				lock.lock(); // Histoire de ne pas se faire insulter en Runtime
+				lock.lock();
 				c.awaitUninterruptibly();
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
-				lock.unlock(); //idem
+				lock.unlock();
 			}
 
 			for (Requester r : aTraiter) {
@@ -128,6 +128,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							// Warn
 							aEnlever.add(r);
 							System.out.println("Corrupted message : " + r.recu);
+							scan.close();
 							return;
 						} 
 
@@ -137,6 +138,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip, port), 1);
 							aEnlever.add(r);
 							r.socket.close();
+							scan.close();
 							return;
 						}
 					}
@@ -158,6 +160,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							// Warn
 							aEnlever.add(r);
 							System.out.println("Corrupted message : " + r.recu);
+							scan.close();
 							return;
 						} 
 
@@ -167,6 +170,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 							Stockage.Donnees.addHost(new Stockage.Machine (ip, port));
 							aEnlever.add(r);
 							r.socket.close();
+							scan.close();
 							return;
 						}
 					}
@@ -207,6 +211,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			 */
 		} catch (IOException e) {
 			aEnlever.add(r);
+			scan.close();
 			return;
 		} catch (Exception e) {
 			// Catch parsing exception etc.
