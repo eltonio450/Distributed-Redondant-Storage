@@ -19,6 +19,7 @@ public class taskSendServerList implements Runnable {
 	public void run () {
 		String message;
 		LinkedList<Stockage.Machine> servers = Donnees.getAllServeurs();
+		servers.add(Global.MYSELF);
 		boolean continuer = true;
 		
 		

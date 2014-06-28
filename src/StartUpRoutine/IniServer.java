@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import Stockage.Machine;
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 import cli.java.org.apache.commons.cli.CommandLine;
 import cli.java.org.apache.commons.cli.CommandLineParser;
 import cli.java.org.apache.commons.cli.GnuParser;
@@ -28,7 +29,7 @@ public class IniServer {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("Votre IP est : " + ip);
+		Utilitaires.out("Votre IP est : " + ip);
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");
 		options.addOption(OptionBuilder.withArgName("serveur").hasArg().withDescription("ip du serveur 0").create("I"));
@@ -50,7 +51,7 @@ public class IniServer {
 			}
 			if (cmd.hasOption("t")){
 				Global.FIRST_IP="none#";
-				System.out.println("Je suis le serveur de base !");
+				Utilitaires.out("Je suis le serveur de base !");
 			}
 			if (cmd.hasOption("I"))
 				Global.FIRST_IP = cmd.getOptionValue("I");
@@ -103,7 +104,7 @@ public class IniServer {
 		// Attention : a supprimer pour avoir la vraie IP à l'initiatisation :
 		try{
 			 //String currentDir = System.getProperty("user.dir");
-			//System.out.println("YOUUUUUUUUUUUUUUUUUUU" + Global.FIRST_IP+" "+Global.FIRST_PORT);
+			//Utilitaires.out("YOUUUUUUUUUUUUUUUUUUU" + Global.FIRST_IP+" "+Global.FIRST_PORT);
 			Global.MYSELF = new Machine("127.0.0.1", Global.TCP_PORT);
 
 		}

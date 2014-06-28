@@ -74,7 +74,7 @@ public class Utilitaires {
 				for (String w : finalWords) {
 					if (token.equals(w)) {
 						continuer = false;
-						// System.out.println(i) ;
+						// Utilitaires.out(i) ;
 						break;
 					}
 				}

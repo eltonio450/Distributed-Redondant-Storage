@@ -10,7 +10,7 @@ import Utilitaires.Global;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
 
-// NB : - dans Donnees il faut décommenter la 1ere ligne de chooseMachine
+// NB : - dans Donnees il faut dï¿½commenter la 1ere ligne de chooseMachine
 //      - dans taskServeurReceiveOnePaquet il faut changer Donnees.accepte(s) en true
 
 public class test1 {
@@ -55,7 +55,7 @@ public class test1 {
             aEnvoyer.otherHosts.add(i,Global.MYSELF);
           }
           Runnable task = new taskClientSendOnePaquet(aEnvoyer) ;
-          System.out.println("machine2 lance la tache") ;
+          Utilitaires.out("machine2 lance la tache") ;
           task.run();
           
           Paquet aEnvoyer2 = new Paquet(3,Global.MYSELF) ;

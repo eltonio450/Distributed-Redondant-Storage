@@ -8,9 +8,12 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
-import Stockage.Machine;
 import GestionnaireMort.deathVerifier;
-
+import Stockage.Machine;
+import Utilitaires.Global;
+import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
+import Utilitaires.Message;
 /**
  * 
  * @author Simon
@@ -31,7 +34,7 @@ public class ServerPR extends Thread{
 
 	public ServerPR () throws IOException{
 		this.channel = DatagramChannel.open();
-		this.channel.bind(new InetSocketAddress("localhost", Utilitaires.Global.SERVERPRPORT));
+		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.expectedMessagesLock = new ReentrantLock();
 		this.expectedMessages = new LinkedList<ExpectedMessage>();
@@ -39,14 +42,14 @@ public class ServerPR extends Thread{
 	}
 
 	public void run () {
-		System.out.println("UDP Server on port " + Utilitaires.Global.SERVERPRPORT);
+		Utilitaires.out("UDP Server on port " + Global.SERVERPRPORT);
 		while (true) {
 			try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
 				receivedMessage.flip();
 
 				try {
-					traiter (Utilitaires.Utilitaires.buffToString(receivedMessage), sender);
+					traiter (Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {}
 				
 				receivedMessage.clear();
@@ -55,7 +58,7 @@ public class ServerPR extends Thread{
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("ServerPR just crashed");
+				Utilitaires.out("ServerPR just crashed");
 				System.exit(-2);
 			}
 		}
@@ -68,19 +71,18 @@ public class ServerPR extends Thread{
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
-		System.out.println(message);
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 		
-		if (token.equals(Utilitaires.Message.PREFIXE_BONJOUR)) {
-			System.out.println(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
+		if (token.equals(Message.PREFIXE_BONJOUR)) {
+			Utilitaires.out(sender.getAddress() + ":" + sender.getPort() +" making sure we're still alive.");
 			// On dit au client de répondre au serveur de l'hôte distant
-			Utilitaires.Global.clientPR.sendMessage(new Message (Utilitaires.Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
+			Global.clientPR.sendMessage(new Message (Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(sender.getHostName(), sender.getPort()+1)));
 			// On met à jour l'attente de bonjour du client
-			expectedMessages.remove(new ExpectedMessage(Utilitaires.Message.PREFIXE_BONJOUR, sender, 0));
-			expectedMessages.add(new ExpectedMessage(Utilitaires.Message.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Utilitaires.Global.TIMEOUT));
+			expectedMessages.remove(new ExpectedMessage(Message.PREFIXE_BONJOUR, sender, 0));
+			expectedMessages.add(new ExpectedMessage(Message.PREFIXE_BONJOUR, sender, System.currentTimeMillis()+Global.TIMEOUT));
 		}
-		else if (token.equals(Utilitaires.Message.PREFIXE_REPONSE_BONJOUR)) {
+		else if (token.equals(Message.PREFIXE_REPONSE_BONJOUR)) {
 			// On a eu une réponse au bonjour
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 		}
@@ -100,7 +102,7 @@ public class ServerPR extends Thread{
 		while (!dead.isEmpty()) {
 			InetSocketAddress toCheck = dead.removeFirst();
 			
-			Utilitaires.Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
+			Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
 	}
 }

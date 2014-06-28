@@ -88,7 +88,7 @@ public class Paquet {
 		power = p ;
 	}
 
-	// TODO : supprimer ça , c'est juste pour test1
+	// TODO : supprimer ï¿½a , c'est juste pour test1
 	public void changeOwner(Machine m){
 	  owner = m ;
 	}
@@ -114,7 +114,7 @@ public class Paquet {
 		isUsed.lock();
 		try {
 			fichier.transferTo(0, Global.PAQUET_SIZE, s) ;
-			System.out.println("transfer done") ;
+			Utilitaires.out("transfer done") ;
 		}
 		finally {
 			isUsed.unlock();
@@ -136,13 +136,13 @@ public class Paquet {
 	public static Paquet createPaquetFromBuffer(ByteBuffer b){
 		//buffer is flipped
 		String s = Utilitaires.buffToString(b);
-		System.out.println("Paquet recu: " + s) ;
+		Utilitaires.out("Paquet recu: " + s) ;
 		Scanner scan = new Scanner(s) ; 
 
 		int id = scan.nextInt() ;
 		String IpAdresse = scan.next() ;
 		int port = scan.nextInt() ;
-		System.out.println(id + " - " + IpAdresse + " - " + port) ;
+		Utilitaires.out(id + " - " + IpAdresse + " - " + port) ;
 		Machine owner = new Machine(IpAdresse,port) ;
 
 		ArrayList<Machine> hosts = new ArrayList<Machine>(Global.NOMBRESOUSPAQUETS) ;

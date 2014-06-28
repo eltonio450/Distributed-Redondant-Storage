@@ -1,6 +1,7 @@
 package StartUpRoutine;
 
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 public class IniUDP {
 	public static void iniUDP () {
@@ -8,7 +9,7 @@ public class IniUDP {
 		Global.clientPR = new RelationsPubliques.ClientPR();
 		Global.serverPR = new RelationsPubliques.ServerPR();
 		} catch (Exception e) {
-			System.out.println("Fatal exception in IniUDP");
+			Utilitaires.out("Fatal exception in IniUDP");
 			e.printStackTrace();
 			System.exit(-1);
 		}
