@@ -3,19 +3,16 @@ package Stockage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.file.FileSystems;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
+import Utilitaires.Utilitaires;
 
 public class Donnees {
 
@@ -36,7 +33,9 @@ public class Donnees {
 	// passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
-	static public LinkedList<String> toSendASAP = new LinkedList<String>();
+	static private LinkedList<String> toSendASAP = new LinkedList<String>();
+	static private ReentrantLock toSendASAPLock = new ReentrantLock() ;
+	//static public Condition =  new toSendASAPLock.Condition() ;
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock();
 	static private ReentrantLock interestServeurLock = new ReentrantLock();
@@ -76,18 +75,17 @@ public class Donnees {
 	}
 
 	public static void receptionPaquet(Machine m, Paquet p) {
-	  System.out.println("-------------Reception paquet--------------------"); 
+	  Utilitaires.out("-------------Reception paquet--------------------"); 
 		addInterestServeur(m);
 		putNewPaquet(p);
 		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		System.out.println("fin reception"); 
+		Utilitaires.out("fin reception"); 
 	}
 
 
 
-
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-	  System.out.println("Change host !") ;
+	  Utilitaires.out("Change host !") ;
 		myDataLock.lock();
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
@@ -160,7 +158,7 @@ public class Donnees {
 	}
 
 	public static void putServer(String ip, int port) {
-		System.out.println("Putting server " + ip + ":" + port);
+		Utilitaires.out("Putting server " + ip + ":" + port);
 		allServeurLock.lock();
 		try {
 			allServeur.add(new Machine(ip, port));
@@ -187,6 +185,7 @@ public class Donnees {
 		// etc.
 	}
 
+	/* plus utile !
 	public static Paquet choosePaquetToSend() {
 		if (toSendASAP.isEmpty()) {
 			return (Paquet) myData.values().toArray()[0];
@@ -194,8 +193,28 @@ public class Donnees {
 		else {
 			return (myData.get(toSendASAP.getFirst()));
 		}
-	}
+	} */
 
+	public static void addPaquetToSendAsap(String id){
+	toSendASAPLock.lock();
+	try{
+	  toSendASAP.add(id) ;
+	  }
+	finally{
+	  toSendASAPLock.unlock();
+	}
+	}
+	
+	public static void removeToSendAsap(String id){
+  	toSendASAPLock.lock();
+    try{
+      toSendASAP.remove(id) ;
+      }
+    finally{
+      toSendASAPLock.unlock();
+    }
+  }
+	
 	public static LinkedList<String> chooseManyPaquetToSend1() {
 	  //TODO :lock
 	  try{
@@ -222,7 +241,7 @@ public class Donnees {
 	public static void addHost(Machine m) {
 		myHostsLock.lock();
 		myHosts.add(m);
-		System.out.println(m.ipAdresse + ":" + m.port + " added.");
+		Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
 		myHostsLock.unlock();
 	}
 
@@ -265,7 +284,7 @@ public class Donnees {
 
 					b.clear();
 					//if(tableau.get(i).fichier.isOpen())
-					//	System.out.println("Chack !");
+					//	Utilitaires.out("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
 					//Global.debug(i);
@@ -288,15 +307,23 @@ public class Donnees {
 		}
 
 	}
+	
+	public static void printServerList(){
+		for(Machine m : allServeur)
+			Utilitaires.out("s : " + m.toString());
+			
+	}
 
 	public static void removePaquet(String ID) {
 		myDataLock.lock();
+		toSendASAPLock.lock();
 		try {
 			myData.remove(ID);
 			toSendASAP.remove(ID);
 		}
 		finally {
 			myDataLock.unlock();
+			toSendASAPLock.unlock() ;
 		}
 	}
 
