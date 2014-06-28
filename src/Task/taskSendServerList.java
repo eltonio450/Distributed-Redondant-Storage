@@ -50,8 +50,8 @@ public class taskSendServerList implements Runnable {
 		} catch (IOException e) {
 			// Nobody cares !
 		}
-				
-		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getPort() + " #", Donnees.getAllServeurs());
-		
+	
+		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getInetAddress().getHostAddress() + " " + s.socket().getPort() + " #", Donnees.getAllServeurs());
+		Donnees.addHost(new Machine (s.socket().getInetAddress().getHostAddress(), s.socket().getPort()));
 	}
 }

@@ -82,14 +82,16 @@ public class ServerPR extends Thread{
 		}
 		else if (token.equals(Message.PREFIXE_REPONSE_BONJOUR)) {
 			// On a eu une réponse au bonjour
+			expectedMessagesLock.lock();
 			int i = expectedMessages.size();
 			if (i==0){
-				Utilitaires.out("Reply received while non was expected :/");
+				Utilitaires.out("WARNING Reply received while non was expected :/");
 				return;
 			}
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 			if (i == expectedMessages.size())
-				Utilitaires.out("Didnt remove :/");
+				Utilitaires.out("WARNING Didnt remove :/");
+			expectedMessagesLock.unlock();
 
 		}
 		sc.close();
