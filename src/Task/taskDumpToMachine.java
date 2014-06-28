@@ -17,12 +17,13 @@ public class taskDumpToMachine implements Runnable {
 	
   private LinkedList<Machine> allServers ;
   
-  public taskDumpToMachine(LinkedList<Machine> serveurs){
-    allServers = serveurs ;
+  public taskDumpToMachine(){
+    allServers = Donnees.getAllServeurs() ;
   }
 	
 	public void run() {
-	  
+	  LinkedList<String> toSendASAP = Donnees.chooseManyPaquetToSend1() ;
+	  dump(toSendASAP) ;
 	}
 	
 	public void dump(LinkedList<String> toSendASAP){

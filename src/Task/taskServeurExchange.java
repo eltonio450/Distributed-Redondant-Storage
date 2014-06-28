@@ -95,8 +95,7 @@ public class taskServeurExchange implements Runnable {
             buffer.flip() ;
             s = Utilitaires.buffToString(buffer) ;
             if(s.equals(Message.REPONSE_EXCHANGE)){
-              Paquet toSend = Donnees.choosePaquetToSend() ;
-              toSend.envoyerPaquet(socket);
+              aEnvoyer.envoyerPaquet(socket);
               ok = true ;
             }
             else{ Donnees.putNewPaquet(aEnvoyer) ; }
