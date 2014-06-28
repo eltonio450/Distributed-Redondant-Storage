@@ -35,7 +35,7 @@ public class Donnees {
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
 	static private LinkedList<String> toSendASAP = new LinkedList<String>();
-	static private ReentrantLock toSendASAPLock = new ReentrantLock() ;
+	static public ReentrantLock toSendASAPLock = new ReentrantLock() ;
 	static public Condition notEmpty =  toSendASAPLock.newCondition() ;
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock();
@@ -208,14 +208,27 @@ public class Donnees {
 	
 	
 	public static void addPaquetToSendAsap(String id){
-	toSendASAPLock.lock();
-	try{
-	  toSendASAP.add(id) ;
+  	toSendASAPLock.lock();
+  	try{
+  	  toSendASAP.add(id) ;
+  	  notEmpty.signalAll();
+  	  }
+  	finally{
+  	  toSendASAPLock.unlock();
+  	}
+	}
+	
+	public static void addListToSendAsap(LinkedList<String> listId){
+	  toSendASAPLock.lock();
+	  try{
+	    toSendASAP.addAll(listId) ;
+	    notEmpty.signalAll();
+	    }
+	  finally{
+	    toSendASAPLock.unlock();
 	  }
-	finally{
-	  toSendASAPLock.unlock();
 	}
-	}
+	
 	
 	public static void removeToSendAsap(String id){
   	toSendASAPLock.lock();

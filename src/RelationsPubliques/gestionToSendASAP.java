@@ -1,13 +1,29 @@
 package RelationsPubliques;
 
 import Stockage.Donnees;
+import Task.taskDumpToMachine;
 
 public class gestionToSendASAP extends Thread {
 	public void run(){
-	  //toSendASAPLock.lock() ;
-	  while(Donnees.toSendAsapEmpty()){
+	  while(true){
 	    
+	    Donnees.toSendASAPLock.lock() ;
+  	  
+	    try{
+  	    while(Donnees.toSendAsapEmpty()){
+          Donnees.notEmpty.awaitUninterruptibly();
+          Runnable task = new taskDumpToMachine() ;
+          Donnees.toSendASAPLock.unlock();
+          task.run();
+        }
+  	  }
+  	  
+  	  finally{
+  	    Donnees.toSendASAPLock.unlock();
+  	  }
+  	  
 	  }
+	  
 	}
 	
 	
