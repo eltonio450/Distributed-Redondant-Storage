@@ -47,7 +47,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		while (true) {
 			while (aTraiter.isEmpty()) {
 				lock.lock();
-				c.awaitUninterruptibly();
+				c.awaitUninterruptibly();	// On patiente si la liste des sockets à écouter est vide
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
 				lock.unlock();
