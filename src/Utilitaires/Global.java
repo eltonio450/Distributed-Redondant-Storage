@@ -11,8 +11,7 @@ import Stockage.Machine;
 public class Global {
 	
 	//TCP
-	
-	public static int BUFFER_LENGTH = 1000 ;
+  public static int BUFFER_LENGTH = 1000 ;
 	
 	// Relations Publiques
 	
@@ -22,6 +21,9 @@ public class Global {
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
+
+	// Dumping paquets in toSendASAP
+	public static final long TIME_TO_SLEEP_Dumping = 2000; //TODO 
 
 	// GestionnaireMort
 	public static int DEATH_TIMEOUT = 10000;

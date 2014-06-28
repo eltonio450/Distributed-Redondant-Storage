@@ -201,15 +201,12 @@ public class Donnees {
 		return new LinkedList(myData.keySet());
 	}
 
-	public static Paquet getPaquet(String id) {
-		return myData.get(id);
-	}
-
 	public static void addInterestServeur(Machine m) {
 		interestServeurLock.lock();
 		interestServeur.add(m);
 		interestServeurLock.unlock();
 	}
+	
 
 	public static void addHost(Machine m) {
 		myHostsLock.lock();
