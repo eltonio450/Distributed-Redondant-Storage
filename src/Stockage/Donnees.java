@@ -266,9 +266,13 @@ public class Donnees {
 
 	public static void addHost(Machine m) {
 		myHostsLock.lock();
-		myHosts.add(m);
-		Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
-		myHostsLock.unlock();
+		try{
+		  myHosts.add(m);
+		  Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
+		}
+		finally{
+		  myHostsLock.unlock();
+		}
 	}
 
 	public static Paquet getHostedPaquet(String id) {
