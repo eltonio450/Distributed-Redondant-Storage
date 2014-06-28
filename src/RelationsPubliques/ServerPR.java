@@ -90,7 +90,7 @@ public class ServerPR extends Thread{
 			}
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));
 			if (i == expectedMessages.size())
-				Utilitaires.out("WARNING Didnt remove :/");
+				Utilitaires.out("WARNING Didnt remove expected message :/");
 			expectedMessagesLock.unlock();
 
 		}
@@ -103,7 +103,6 @@ public class ServerPR extends Thread{
 		for (ExpectedMessage m : expectedMessages) {
 			if (m.timeOut < t) {
 				dead.add(m.sender);
-				
 			}
 		}
 		expectedMessages.removeAll(dead);

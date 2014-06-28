@@ -6,6 +6,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import GestionnaireMort.deathVerifier;
+import Stockage.Donnees;
 import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
@@ -60,9 +62,10 @@ public class ClientPR extends Thread{
 				for (int i=0; !toSend.isEmpty() && i<4; i++) {
 					Utilitaires.out("Taille : " +toSend.size());
 					message = toSend.poll();
-					try{
+					try {
 						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
-					}catch(Exception e){
+					} catch (Exception e) {
+						deathVerifier.verifyDeath(new Stockage.Machine(message.dest));
 						Utilitaires.out("Dernier message crashé !", 1, true);
 					}
 				}
