@@ -62,7 +62,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
-				
+
 				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
 						r.socket.close();
@@ -123,14 +123,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				aEnlever.add(r);
 				Slaver.giveTask(new Task.taskServeurExchange(r.socket), 20);
 			}
-			
+
 			else if(token.equals(Message.SendOne)){
-			  r.socket.configureBlocking(true);
-        aEnlever.add(r);
-        Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket), 20);
-			}
-			else if (token.equals(Message.MONITOR)){
-				// Suite
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket), 20);
 			}
 
 
@@ -200,13 +197,21 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 			else if (token.equals(Message.GET_LIST)) {
 				r.socket.configureBlocking(true);
-				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);			
+				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);		
+				aEnlever.add(r);
 			}
 
 
 			else if (token.equals(Message.HOST_CHANGED)) {
 				r.socket.configureBlocking(true);
 				Slaver.giveTask(new Task.taskHostHasChanged(r.socket), 10);
+				aEnlever.add(r);
+			}
+
+			else if (token.equals(Message.VERIFY_DEATH)) {
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				Slaver.giveUrgentTask(new Task.taskReplyStillAlive(r.socket), 1);
 			}
 
 

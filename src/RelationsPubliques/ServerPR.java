@@ -71,7 +71,6 @@ public class ServerPR extends Thread{
 	}
 
 	private void traiter (String message, InetSocketAddress sender) throws Exception {
-		Utilitaires.out(message);
 		Scanner sc = new Scanner (message);
 		String token = sc.next();
 		
