@@ -256,10 +256,16 @@ public class Donnees {
 	}
 
 	public static void addHost(Machine m) {
-		allServeurLock.lock();
-		allServeur.add(m);
-		Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
-		allServeurLock.unlock();
+
+		myHostsLock.lock();
+		try{
+		  myHosts.add(m);
+		  Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
+		}
+		finally{
+		  myHostsLock.unlock();
+		}
+
 	}
 
 	public static Paquet getHostedPaquet(String id) {
