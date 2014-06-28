@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
@@ -35,7 +36,7 @@ public class Donnees {
 
 	static private LinkedList<String> toSendASAP = new LinkedList<String>();
 	static private ReentrantLock toSendASAPLock = new ReentrantLock() ;
-	//static public Condition =  new toSendASAPLock.Condition() ;
+	static public Condition notEmpty =  toSendASAPLock.newCondition() ;
 	
 	static private ReentrantLock allServeurLock = new ReentrantLock();
 	static private ReentrantLock interestServeurLock = new ReentrantLock();
@@ -82,7 +83,7 @@ public class Donnees {
 		Utilitaires.out("fin reception"); 
 	}
 
-
+	
 
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 	  Utilitaires.out("Change host !") ;
@@ -195,6 +196,17 @@ public class Donnees {
 		}
 	} */
 
+	public static boolean toSendAsapEmpty(){
+	  toSendASAPLock.lock() ;
+	  try{
+	    return toSendASAP.isEmpty() ;
+	  }
+	  finally{
+	    toSendASAPLock.unlock() ;
+	  }
+	}
+	
+	
 	public static void addPaquetToSendAsap(String id){
 	toSendASAPLock.lock();
 	try{
