@@ -22,6 +22,10 @@ public class taskDumpToMachine implements Runnable {
   }
 	
 	public void run() {
+	  
+	}
+	
+	public void dump(LinkedList<String> toSendASAP){
 	  boolean continuer = true;
 	  while(continuer){
 	    
@@ -29,34 +33,24 @@ public class taskDumpToMachine implements Runnable {
 	      if(m != Global.MYSELF){
 	      SocketChannel socket = init(m) ;
 	      if(socket != null){
-	        
-	        boolean iLikeThisMachine = true ;
-	        String toSend = Donnees.toSendASAP.peekFirst() ;
-	        
-	        while(!toSend.equals(null) && iLikeThisMachine){ 
-	          Paquet aEnvoyer = Donnees.getHostedPaquet(toSend) ;
+
+	        boolean changeMachine = false ;
+
+	        while(!toSendASAP.isEmpty() && !changeMachine){
+	          Paquet aEnvoyer = Donnees.getHostedPaquet(toSendASAP.poll()) ;
 	          if(aEnvoyer != null ){
-  	          if(envoiePaquet(aEnvoyer,m,socket)){
-  	            toSend = Donnees.toSendASAP.peekFirst() ;
-  	          }
-  	          else {
+  	          if(!envoiePaquet(aEnvoyer,m,socket)){
   	            Donnees.putNewPaquet(aEnvoyer);
-  	            Donnees.toSendASAP.addLast(toSend) ;
-  	            iLikeThisMachine = false ;
   	          }
+  	          changeMachine = true ;
 	          }
 	        }
 	        
-	        if(iLikeThisMachine){ //means toSendASAP is empty
+	        if(toSendASAP.isEmpty()){
 	          continuer = false ;
 	        }
 	        
 	      }
-	        //we have finished with Machine m
-  	      try {
-            socket.close();
-          } catch (IOException e) {
-          }
 	     }
 	    }
 	    
@@ -96,6 +90,7 @@ public class taskDumpToMachine implements Runnable {
        String s = Utilitaires.buffToString(buffer) ;
 
        if(!s.equals(Message.DEMANDE_ID)){
+         clientSocket.close();
          return false ;
        }
        
@@ -119,6 +114,7 @@ public class taskDumpToMachine implements Runnable {
          }
    
          else {
+           clientSocket.close();
            return false ;
          }
        }
@@ -148,6 +144,7 @@ public class taskDumpToMachine implements Runnable {
          s = Utilitaires.buffToString(buffer) ;
        }
        if(s.equals(Message.ANNULE_ENVOI)) {
+         clientSocket.close();
          return false ;
        }
        else {
@@ -158,6 +155,7 @@ public class taskDumpToMachine implements Runnable {
          Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
          Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
          Donnees.receptionPaquet(otherMachine, receivedPaquet);
+         clientSocket.close();
          return true ;
        }
      }
