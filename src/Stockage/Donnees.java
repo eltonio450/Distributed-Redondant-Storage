@@ -34,7 +34,7 @@ public class Donnees {
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
 	static public LinkedList<String> toSendASAP = new LinkedList<String>();
-
+	
 	static private ReentrantLock allServeurLock = new ReentrantLock();
 	static private ReentrantLock interestServeurLock = new ReentrantLock();
 	static private ReentrantLock myHostsLock = new ReentrantLock();
@@ -194,7 +194,15 @@ public class Donnees {
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend1() {
-		return toSendASAP;
+	  //TODO :lock
+	  try{
+	    LinkedList<String> temp = new LinkedList<String>() ;
+	    temp.addAll(toSendASAP) ;
+	    return temp;
+	  }
+	  finally{
+	    //unlock
+	  }
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend2() {
