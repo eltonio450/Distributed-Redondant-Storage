@@ -54,7 +54,7 @@ public class taskSendServerList implements Runnable {
 
 	
 		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getInetAddress().getHostAddress() + " " + s.socket().getPort() + " #", Donnees.getAllServeurs());
-		Donnees.addHost(new Machine (s.socket().getInetAddress().getHostAddress(), s.socket().getPort()));
+		Donnees.addHost(new Machine (s.socket().getInetAddress().getHostAddress(), s.socket().getPort()-10));
 		Donnees.printServerList();
 	}
 }
