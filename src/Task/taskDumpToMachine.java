@@ -35,12 +35,15 @@ public class taskDumpToMachine implements Runnable {
 	        
 	        while(!toSend.equals(null) && iLikeThisMachine){ 
 	          Paquet aEnvoyer = Donnees.getHostedPaquet(toSend) ;
-	          if(envoiePaquet(aEnvoyer,m,socket)){
-	            toSend = Donnees.toSendASAP.peekFirst() ;
-	          }
-	          else {
-	            Donnees.toSendASAP.addLast(toSend) ;
-	            iLikeThisMachine = false ;
+	          if(aEnvoyer != null ){
+  	          if(envoiePaquet(aEnvoyer,m,socket)){
+  	            toSend = Donnees.toSendASAP.peekFirst() ;
+  	          }
+  	          else {
+  	            Donnees.putNewPaquet(aEnvoyer);
+  	            Donnees.toSendASAP.addLast(toSend) ;
+  	            iLikeThisMachine = false ;
+  	          }
 	          }
 	        }
 	        

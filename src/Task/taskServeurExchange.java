@@ -56,7 +56,7 @@ public class taskServeurExchange implements Runnable {
     socket.read(buffer) ;
     buffer.flip() ;
     String s = Utilitaires.buffToString(buffer) ;
-    Paquet sentPaquet = null ;
+    Paquet aEnvoyer = null ;
     
     if(s.equals(Message.END_ENVOI)){
       boolean ok = false ;
@@ -65,18 +65,19 @@ public class taskServeurExchange implements Runnable {
       LinkedList<String> paquets1 = Donnees.chooseManyPaquetToSend1() ;
       
       while(!ok && !paquets1.isEmpty()){
-        Paquet aEnvoyer = Donnees.getPaquet(paquets1.pop()) ;
-        buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
-        socket.write(buffer) ;
-        buffer.clear() ;
-        socket.read(buffer) ;
-        buffer.flip() ;
-        s = Utilitaires.buffToString(buffer) ;
-        if(s.equals(Message.REPONSE_EXCHANGE)){
-          Paquet toSend = Donnees.choosePaquetToSend() ;
-          toSend.envoyerPaquet(socket);
-          ok = true ;
-          sentPaquet = toSend ;
+        aEnvoyer = Donnees.getHostedPaquet(paquets1.pop()) ;
+        if(aEnvoyer != null) {
+          buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
+          socket.write(buffer) ;
+          buffer.clear() ;
+          socket.read(buffer) ;
+          buffer.flip() ;
+          s = Utilitaires.buffToString(buffer) ;
+          if(s.equals(Message.REPONSE_EXCHANGE)){
+            aEnvoyer.envoyerPaquet(socket);
+            ok = true ;
+          }
+          else{ Donnees.putNewPaquet(aEnvoyer) ; }
         }
       }
       
@@ -85,38 +86,40 @@ public class taskServeurExchange implements Runnable {
         LinkedList<String> paquets2 = Donnees.chooseManyPaquetToSend2() ;
         
         while(!ok && !paquets2.isEmpty()){
-          Paquet aEnvoyer = Donnees.getPaquet(paquets2.pop()) ;
-          buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
-          socket.write(buffer) ;
-          buffer.clear() ;
-          socket.read(buffer) ;
-          buffer.flip() ;
-          s = Utilitaires.buffToString(buffer) ;
-          if(s.equals(Message.REPONSE_EXCHANGE)){
-            Paquet toSend = Donnees.choosePaquetToSend() ;
-            toSend.envoyerPaquet(socket);
-            ok = true ;
-            sentPaquet = toSend ;
+          aEnvoyer = Donnees.getHostedPaquet(paquets2.pop()) ;
+          if(aEnvoyer != null) {
+            buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
+            socket.write(buffer) ;
+            buffer.clear() ;
+            socket.read(buffer) ;
+            buffer.flip() ;
+            s = Utilitaires.buffToString(buffer) ;
+            if(s.equals(Message.REPONSE_EXCHANGE)){
+              Paquet toSend = Donnees.choosePaquetToSend() ;
+              toSend.envoyerPaquet(socket);
+              ok = true ;
+            }
+            else{ Donnees.putNewPaquet(aEnvoyer) ; }
           }
         }
         
         if(!ok){
           buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
           socket.write(buffer) ;
-          return sentPaquet ;
+          return aEnvoyer ;
         }
         else {
-          return sentPaquet;
+          return aEnvoyer;
         }
         
       }
       else{
-        return sentPaquet ;
+        return aEnvoyer ;
       }
        
     }
     else {
-      return sentPaquet ;
+      return aEnvoyer ;
     }
   }
   

@@ -224,6 +224,16 @@ public class Donnees {
 			myDataLock.unlock();
 		}
 	}
+	
+	 public static Paquet removeHostedPaquet(String id) {
+	    myDataLock.lock();
+	    try {
+	      return myData.remove(id) ;
+	    }
+	    finally {
+	      myDataLock.unlock();
+	    }
+	  }
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
