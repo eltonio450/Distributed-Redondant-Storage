@@ -1,7 +1,7 @@
 #!/bin/python
 
 import os
-nombreDeServeur = 4
+nombreDeServeur = 3
 i = 0
 
 #os.system("killall java")

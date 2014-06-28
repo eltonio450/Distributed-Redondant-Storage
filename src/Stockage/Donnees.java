@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
 import Utilitaires.Utilitaires;
+import Utilitaires.Slaver;
 
 public class Donnees {
 
@@ -79,7 +80,7 @@ public class Donnees {
 	  Utilitaires.out("-------------Reception paquet--------------------"); 
 		addInterestServeur(m);
 		putNewPaquet(p);
-		Utilitaires.Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
+		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 		Utilitaires.out("fin reception"); 
 	}
 
@@ -321,8 +322,9 @@ public class Donnees {
 	}
 	
 	public static void printServerList(){
+		Utilitaires.out("Liste des serveurs :", 1, true);
 		for(Machine m : allServeur)
-			Utilitaires.out("s : " + m.toString());
+			Utilitaires.out("s : " + m.toString(), 1, false);
 			
 	}
 

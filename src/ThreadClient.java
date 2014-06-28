@@ -38,7 +38,7 @@ public class ThreadClient implements Runnable {
         Utilitaires.out(s) ;
     
         if(!s.equals(Message.DEMANDE_ID)){
-          Utilitaires.out(false) ;
+          Utilitaires.out(Boolean.valueOf(false).toString()) ;
         }
 
         buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;

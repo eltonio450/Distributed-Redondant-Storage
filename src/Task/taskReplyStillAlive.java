@@ -3,6 +3,9 @@ package Task;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
+import Utilitaires.Message;
+import Utilitaires.Utilitaires;
+
 public class taskReplyStillAlive implements Runnable {
 	SocketChannel s;
 	
@@ -12,7 +15,7 @@ public class taskReplyStillAlive implements Runnable {
 	
 	public void run () {
 		try {
-			s.write(Utilitaires.Utilitaires.stringToBuffer(Utilitaires.Message.NOT_DEAD));
+			s.write(Utilitaires.stringToBuffer(Message.NOT_DEAD));
 		} catch (IOException e) {
 			// Nobody cares
 		}

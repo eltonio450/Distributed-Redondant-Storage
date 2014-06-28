@@ -20,6 +20,7 @@ public class taskSendServerList implements Runnable {
 		String message;
 		LinkedList<Stockage.Machine> servers = Donnees.getAllServeurs();
 		servers.add(Global.MYSELF);
+		//Donnees.addHost();
 		boolean continuer = true;
 		
 		
@@ -50,8 +51,8 @@ public class taskSendServerList implements Runnable {
 		} catch (IOException e) {
 			// Nobody cares !
 		}
-				
+		Donnees.addHost(new Machine(s.socket().getInetAddress().toString(),s.socket().getPort()));	
 		RelationsPubliques.BroadcastAll.broadcastTCP(Message.NEW_SERVER + " " + s.socket().getRemoteSocketAddress() + " " + s.socket().getPort() + " #", Donnees.getAllServeurs());
-		
+		Donnees.printServerList();
 	}
 }

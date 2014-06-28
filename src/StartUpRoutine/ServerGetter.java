@@ -70,6 +70,6 @@ public class ServerGetter {
 			System.exit(-1);
 		}
 		Donnees.printServerList();
-		Stockage.Donnees.fillingServers(false);
+		Donnees.fillingServers(false);
 	}
 }

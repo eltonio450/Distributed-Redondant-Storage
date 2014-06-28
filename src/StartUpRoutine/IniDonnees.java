@@ -76,7 +76,8 @@ public class IniDonnees {
 				id++;
 
 				for (int i = 0; i < paquetsEnConstruction.size(); i++)
-					Donnees.toSendASAP.push(paquetsEnConstruction.get(i).idGlobal);
+					Donnees.addPaquetToSendAsap(paquetsEnConstruction.get(i).idGlobal);
+					//.push(paquetsEnConstruction.get(i).idGlobal);
 
 			}
 			myOwnFile.close();

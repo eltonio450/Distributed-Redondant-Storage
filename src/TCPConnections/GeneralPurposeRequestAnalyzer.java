@@ -117,7 +117,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 	private void traiter (Requester r) {
 		Scanner scan = new Scanner (r.recu);
-		Utilitaires.out(r.recu);
+		Utilitaires.out("Message recu : "+r.recu);
 		String token = scan.next();
 		try {
 			if (token.equals(Message.EXCHANGE)) {
@@ -199,6 +199,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 			else if (token.equals(Message.GET_LIST)) {
 				r.socket.configureBlocking(true);
+				
 				Slaver.giveTask(new Task.taskSendServerList(r.socket), 2);		
 				aEnlever.add(r);
 			}

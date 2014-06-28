@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import Stockage.Donnees;
 import Stockage.Paquet;
 import Utilitaires.Global;
 import Utilitaires.Message;
@@ -122,6 +123,7 @@ public class taskRetablirPaquets implements Runnable {
 		try {
 			reconstruit.fichier.write(b[numeroMort]);
 			reconstruit.remettrePositionZero();
+			Donnees.addPaquetToSendAsap(reconstruit.idGlobal);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
