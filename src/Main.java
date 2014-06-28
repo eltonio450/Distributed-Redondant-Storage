@@ -29,13 +29,16 @@ public class Main {
 		Utilitaires.out("Ok");
 		Utilitaires.out("All set and ready to go !");
 
+		Utilitaires.out("Getting server list.............");
+		ServerGetter.getServerList();
+		Utilitaires.out("Ok");
+		
 		Utilitaires.out("Starting TCP Server.............");
 		IniTCP.iniTCP();
 		Utilitaires.out("Ok");
 
-		Utilitaires.out("Getting server list.............");
-		ServerGetter.getServerList();
-		Utilitaires.out("Ok");
+		
+		
 
 
 		//Utilitaires.out("Starting UDP server.............");

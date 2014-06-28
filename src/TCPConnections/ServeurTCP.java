@@ -12,6 +12,7 @@ public class ServeurTCP extends Thread {
 	
 	public void run () {
 		try {
+			
 			ServerSocketChannel serverSocket = ServerSocketChannel.open();
 			Utilitaires.out("TCP init sur : " + Global.TCP_PORT);
 			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT);

@@ -257,13 +257,13 @@ public class Donnees {
 
 	public static void addHost(Machine m) {
 
-		myHostsLock.lock();
+		allServeurLock.lock();
 		try{
-		  myHosts.add(m);
+		  allServeur.add(m);
 		  Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
 		}
 		finally{
-		  myHostsLock.unlock();
+		  allServeurLock.unlock();
 		}
 
 	}

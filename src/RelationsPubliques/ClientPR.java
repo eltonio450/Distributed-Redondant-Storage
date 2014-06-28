@@ -21,6 +21,7 @@ public class ClientPR extends Thread{
 	public ClientPR () throws IOException{
 		this.channel = DatagramChannel.open();
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
+		this.channel.socket().setSoTimeout(0);
 		this.buffBonjour = Utilitaires.stringToBuffer(Message.PREFIXE_BONJOUR);
 		this.buffDebout = Utilitaires.stringToBuffer(Message.SELF_WAKE_UP);
 		this.toSend = new ConcurrentLinkedQueue<Message> ();
@@ -41,11 +42,18 @@ public class ClientPR extends Thread{
 					}
 					continue;
 				}
-				// On envoie bonjour au serveur de l'hôte distant
-				channel.send(buffBonjour, remote);
-				// On dit au serveur d'attendre une réponse du client de l'hôte distant
-				Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+				boolean b = false;
 				
+				
+				for(Message m : toSend)
+				{
+					b = b || (m.dest != remote);
+				}
+				if(!b){
+					channel.send(buffBonjour, remote);
+				// On dit au serveur d'attendre une réponse du client de l'hôte distant, seulement si celui-ci n'est pas dans les messages à envoyer.
+					Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
+				}
 				// Réveille le serveur si personne d'autre ne lui parle
 				try{
 					channel.send(buffDebout, new InetSocketAddress("127.0.0.1", Global.SERVERPRPORT));
@@ -57,8 +65,8 @@ public class ClientPR extends Thread{
 				buffBonjour.flip();
 
 				// Envoie ce qu'on lui a demandé d'envoyer
-				for (int i=0; !toSend.isEmpty() && i<4; i++) {
-					Utilitaires.out("Taille : " +toSend.size());
+				for (int i=0; !toSend.isEmpty() && i<100; i++) {
+					//Utilitaires.out("Taille : " +toSend.size());
 					message = toSend.poll();
 					try{
 						channel.send(Utilitaires.stringToBuffer(message.body), message.dest);
@@ -68,7 +76,7 @@ public class ClientPR extends Thread{
 				}
 
 				if (toSend.isEmpty()) {
-					Utilitaires.out("Essai de dodo");
+					//Utilitaires.out("Essai de dodo");
 					try {
 						sleep(Global.SLEEPTIME);
 					} catch (InterruptedException e) {}
