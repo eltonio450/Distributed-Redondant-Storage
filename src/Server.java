@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
+import Task.taskServeurExchange;
 import Task.taskServeurReceiveOnePaquet;
 import Utilitaires.Global;
 import Utilitaires.Message;
@@ -46,7 +47,7 @@ public class Server {
     socket.bind(local); 
     try (SocketChannel client = socket.accept()) { 
       client.configureBlocking(true) ;
-    for (int i = 0 ; i<11 ; i ++) {
+    for (int i = 0 ; i<100; i ++) {
       ByteBuffer buffer = ByteBuffer.allocate(tailleBuffer);
       buffer.clear() ;
       client.read(buffer) ;
@@ -54,7 +55,13 @@ public class Server {
       String s = Utilitaires.buffToString(buffer);
       Utilitaires.out(s) ;
       if (s.equals(Message.SendOne)){
+        client.configureBlocking(true);
         Runnable task = new taskServeurReceiveOnePaquet(client) ;
+        task.run() ;
+      }
+      else if(s.equals(Message.EXCHANGE)){
+        client.configureBlocking(true) ;
+        Runnable task = new taskServeurExchange(client) ;
         task.run() ;
       }
       
