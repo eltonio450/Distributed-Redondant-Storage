@@ -22,7 +22,7 @@ import Utilitaires.Slaver;
 
 /**
  *
- * Cette classe représente les données stockées sur le disque d'une machine
+ * Cette classe reprï¿½sente les donnï¿½es stockï¿½es sur le disque d'une machine
  * 
  * 
  * @author SebastienD
@@ -34,7 +34,7 @@ public class Donnees {
   /**
    * La liste de toutes les machines.
    * 
-   * Cette liste est protégée par un verrou.
+   * Cette liste est protï¿½gï¿½e par un verrou.
    * @see allServeurLock
    * @see putServer
    * @see removeServeur
@@ -45,26 +45,26 @@ public class Donnees {
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
 	
 	/**
-	 * La liste des machines qui hébergent un paquet d'un même groupe qu'un de ses paquets.
+	 * La liste des machines qui hï¿½bergent un paquet d'un mï¿½me groupe qu'un de ses paquets.
 	 * 
-	 * Cette liste est protgée par un verrou.
+	 * Cette liste est protgï¿½e par un verrou.
 	 * @see interestServeurLock
 	 * @see addInterestServeur
 	 */
 	static private LinkedList<Machine> interestServeur = new LinkedList<Machine>();
 	
 	/**
-	 * Table de hashage des machines qui hébergent de de ses paquets.
-	 * La clé correspond à l'identifiant du paquet concernée, la valeur étant l'hôte.
-	 * Cette table est protégée par un verrou
+	 * Table de hashage des machines qui hï¿½bergent de de ses paquets.
+	 * La clï¿½ correspond ï¿½ l'identifiant du paquet concernï¿½e, la valeur ï¿½tant l'hï¿½te.
+	 * Cette table est protï¿½gï¿½e par un verrou
 	 * @see myHostsLock
 	 */
 	static private HashMap<String, Machine> myHosts = new HashMap<String,Machine>();
 	
 	/**
-	 * Table de hashage des données que la machine héberge.
-	 * La clé correspond à l'identifiant du paquet.
-	 * Cette table est protégée par un verrou.
+	 * Table de hashage des donnï¿½es que la machine hï¿½berge.
+	 * La clï¿½ correspond ï¿½ l'identifiant du paquet.
+	 * Cette table est protï¿½gï¿½e par un verrou.
 	 * @see myDataLock
 	 * @see removePaquet
 	 * @see removeTemporarlyPaquet 
@@ -74,9 +74,9 @@ public class Donnees {
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
 	
 	/**
-	 * Liste des paquets à envoyer dès que possible.
+	 * Liste des paquets ï¿½ envoyer dï¿½s que possible.
 	 * On stocke ici seulement les identifiants des paquets.
-	 * Cette liste est protégée par un verrou.
+	 * Cette liste est protï¿½gï¿½e par un verrou.
 	 * @see toSendASAPLock
 	 * @see notEmpty
 	 * @see addPaquetToSendAsap
@@ -87,7 +87,7 @@ public class Donnees {
 
 	
 	/**
-	 * Le nombre de paquet en trop par rapport à la moyenne
+	 * Le nombre de paquet en trop par rapport ï¿½ la moyenne
 	 */
 	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0);
 
@@ -99,7 +99,7 @@ public class Donnees {
 	static private int index = 0;
 
 	/**
-	 * La liste des paquets dont je suis propriétaire.
+	 * La liste des paquets dont je suis propriï¿½taire.
 	 * On stocke seulement l'identifiant des paquets.
 	 */
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
@@ -124,7 +124,7 @@ public class Donnees {
 	 */
 
 	/**
-	 * Décide si l'on peut ou non héberger un paquet. 
+	 * Dï¿½cide si l'on peut ou non hï¿½berger un paquet. 
 	 * 
 	 * @param id
 	 *         L'identifiant du paquet
@@ -143,11 +143,11 @@ public class Donnees {
 	}
 
 	/**
-	 * Retourne la liste des paquets présents dans myData et qui sont du même groupe que ce paquet.
+	 * Retourne la liste des paquets prï¿½sents dans myData et qui sont du mï¿½me groupe que ce paquet.
 	 * 
 	 * @param ID
 	 *       L'identifiant du paquet
-	 * @return La liste des paquets du même groupe
+	 * @return La liste des paquets du mï¿½me groupe
 	 */
 	public static LinkedList<String> hasPaquetLike(String ID) {
 		Scanner s = new Scanner(ID);
@@ -167,10 +167,10 @@ public class Donnees {
 	}
 
 	/**
-	 * Réceptionne un paquet :
-	 * ajoute le paquet dans myData, ajoute les serveurs d'intérêt et lance tackWarnHostHasChanged.
+	 * Rï¿½ceptionne un paquet :
+	 * ajoute le paquet dans myData, ajoute les serveurs d'intï¿½rï¿½t et lance tackWarnHostHasChanged.
 	 * @param p
-	 *         Le paquet à réceptionner
+	 *         Le paquet ï¿½ rï¿½ceptionner
 	 */
 	public static void receptionPaquet(Paquet p) {
 		//Utilitaires.out("-------------Reception paquet--------------------");
@@ -185,13 +185,13 @@ public class Donnees {
 	}
 
 	/**
-	 * Change l'hôte d'un paquet du groupe du paquet d'identifiant <b>Id</b>. Il s'agit du paquet du groupe ayant comme idInterne <b>place</b>. 
+	 * Change l'hï¿½te d'un paquet du groupe du paquet d'identifiant <b>Id</b>. Il s'agit du paquet du groupe ayant comme idInterne <b>place</b>. 
 	 * @param Id
 	 *       Le paquet sur lequel il faut effectuer le changement
 	 * @param place
-	 *       L'idInterne du paquet du groupe qui a subi un changement d'hôte
+	 *       L'idInterne du paquet du groupe qui a subi un changement d'hï¿½te
 	 * @param newHost
-	 *       Le nouvel hôte
+	 *       Le nouvel hï¿½te
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 		Utilitaires.out("Change host !");
@@ -214,7 +214,7 @@ public class Donnees {
 
 	/**
 	 * Adapte les listes allServeur, interestServeurs et myHosts du fait de la mort de la machine m. 
-	 * Si on le doit, lance la tâche de reconstruction de paquet.
+	 * Si on le doit, lance la tï¿½che de reconstruction de paquet.
 	 * 
 	 * @param m
 	 *       La machine qui est morte
@@ -553,5 +553,13 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
-
+	public static void waitForSomethingInToSendASAP(){
+		try {
+			toSendASAP.put(toSendASAP.take());
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

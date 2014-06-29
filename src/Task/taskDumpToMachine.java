@@ -45,7 +45,7 @@ public class taskDumpToMachine implements Runnable {
 							if (aEnvoyer != null) {
 								Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
 								if (aEnvoyer.askForlock()) {
-									// Utilitaires.out("Test 4");
+									//Utilitaires.out("La demande de lock a réussi pour "+aEnvoyer.idGlobal, 1, true);
 									if (!envoiePaquet(aEnvoyer, m, socket)) {
 										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString(), 1, true);
 										Donnees.putNewPaquet(aEnvoyer);

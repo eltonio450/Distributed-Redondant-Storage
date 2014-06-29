@@ -224,8 +224,9 @@ public class Paquet {
 		int resultat = 0;
 		int i = 0;
 		//int j = idGlobal-idInterne;
+		Utilitaires.out("Demande de lock formulée par "+idGlobal, 5, true);
 		while (i < Global.NOMBRESOUSPAQUETS) {
-			Utilitaires.out("Test 0", 6, true);
+			
 			if (i != idInterne && resultat == 0) {
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine-idInterne+i), this.idInterne);
 			}
@@ -234,8 +235,12 @@ public class Paquet {
 		switch (resultat) {
 			case 0:
 				unlock();
+				isAskingTheLock = false;
+				Utilitaires.out("La demande de lock formulée par "+idGlobal+" a réussi.",5,true);
 				return true;
 			default:
+				isAskingTheLock = false;
+				Utilitaires.out("La demande de lock formulée par "+idGlobal+" a échoué.",5,true);
 				return false;
 		}
 
@@ -260,7 +265,7 @@ public class Paquet {
 		try (SocketChannel clientSocket = SocketChannel.open()) {
 
 			// Etape 1 : Initialisation de la connexion
-			//Utilitaires.out("Test 1", 6, true);
+			Utilitaires.out("Envoie de la demande de lock à "+m.port, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
@@ -271,7 +276,7 @@ public class Paquet {
 			//buffer.flip();
 			clientSocket.write(buffer);
 
-			Utilitaires.out("Test 3", 6, true);
+			//Utilitaires.out("Test 3", 6, true);
 
 			// Etpae 3 : Reception du la confirmation de la connexion
 			buffer.clear();
@@ -286,7 +291,7 @@ public class Paquet {
 				clientSocket.write(buffer);
 
 				// Etape 5 : reception de la confirmation
-				Utilitaires.out("Test 5", 6, true);
+				//Utilitaires.out("Test 5", 6, true);
 				buffer.clear();
 				clientSocket.read(buffer);
 				clientSocket.close();
