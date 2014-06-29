@@ -15,12 +15,13 @@ i = 0
 #Le premier serveur est une tete du serveur.
 os.system("fuser -fk " + str(5000)+"/tcp")
 os.system("fuser -fk " + str(5000)+"/udp")
-time.sleep(1)
+time.sleep(0.1)
 ligne = " -d " + str(0) + " -p " + str(5000) + " -t "
 os.chdir("../bin")
-os.system("java Main " + ligne +"&")
+os.system("java Main " + ligne +"&\n")
 #print(ligne)
 #sleep(1)
+time.sleep(1)
 
 while (i < nombreDeServeur-1) :
    
@@ -29,7 +30,7 @@ while (i < nombreDeServeur-1) :
     os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
     os.system("fuser -fk " + str(5000+4*i+2)+"/udp")
     os.system("fuser -fk " + str(5000+4*i)+"/tcp")
-    time.sleep(1)
-    os.system("java Main " + ligne +"&")
+   
+    os.system("java Main " + ligne +"&\n")
     #os.system("pwd")
     #print(ligne)

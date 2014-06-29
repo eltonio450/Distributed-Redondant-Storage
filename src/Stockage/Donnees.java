@@ -254,6 +254,8 @@ public class Donnees {
 		finally {
 			toSendASAPLock.unlock();
 		}
+		//for(String s : toSendASAP)
+			//Utilitaires.out("Paquet dans toSendASAP : " + s);
 	}
 
 	public static void addListToSendAsap(LinkedList<String> listId) {

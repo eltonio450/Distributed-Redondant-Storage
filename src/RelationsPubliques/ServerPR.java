@@ -35,6 +35,7 @@ public class ServerPR extends Thread{
 	public ServerPR () throws IOException{
 		this.channel = DatagramChannel.open();
 		this.channel.bind(new InetSocketAddress("localhost", Global.SERVERPRPORT));
+		this.channel.socket().setSoTimeout(0);
 		this.receivedMessage = ByteBuffer.allocateDirect(10000);
 		this.expectedMessagesLock = new ReentrantLock();
 		this.expectedMessages = new LinkedList<ExpectedMessage>();

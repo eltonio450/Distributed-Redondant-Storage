@@ -2,13 +2,14 @@ package RelationsPubliques;
 
 import Stockage.Donnees;
 import Task.taskDumpToMachine;
+import Utilitaires.Utilitaires;
 
 public class gestionToSendASAP extends Thread {
 	public void run(){
 	  while(true){
-	    
+	    //Utilitaires.out("Blah 1");
 	    Donnees.toSendASAPLock.lock() ;
-  	  
+  	  	//Utilitaires.out("Blah2");
 	    try{
   	    while(Donnees.toSendAsapEmpty()){
           Donnees.notEmpty.awaitUninterruptibly();

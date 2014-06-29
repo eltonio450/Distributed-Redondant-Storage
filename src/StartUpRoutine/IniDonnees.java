@@ -75,8 +75,13 @@ public class IniDonnees {
 				Donnees.genererPaquetsSecurite(paquetsEnConstruction);
 				id++;
 
-				for (int i = 0; i < paquetsEnConstruction.size(); i++)
+				for (int i = 0; i < paquetsEnConstruction.size(); i++){
+					Utilitaires.out("Ajout à toSendAsap",0,true);
 					Donnees.addPaquetToSendAsap(paquetsEnConstruction.get(i).idGlobal);
+					
+					
+				}
+					
 					//.push(paquetsEnConstruction.get(i).idGlobal);
 
 			}

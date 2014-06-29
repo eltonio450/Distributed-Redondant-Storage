@@ -1,6 +1,7 @@
 package GestionnaireMort;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -44,8 +45,13 @@ public class deathVerifier implements Runnable {
 			}
 				
 			clientSocket.close();
-		} catch (IOException e) {
+		}catch (ConnectException e){
+			Utilitaires.out(m.port + " est mort.");
+			return true;
+		}
+		catch (IOException e) {
 			Utilitaires.out("Erreur dans le death verifier", 4, true);
+			e.printStackTrace();
 		}
 		return mort;
 	}

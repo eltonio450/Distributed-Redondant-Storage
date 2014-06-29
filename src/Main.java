@@ -1,4 +1,5 @@
 
+import RelationsPubliques.gestionToSendASAP;
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
@@ -33,10 +34,15 @@ public class Main {
 		ServerGetter.getServerList();
 		Utilitaires.out("Ok");
 		
+		
+		
 		Utilitaires.out("Starting TCP Server.............");
 		IniTCP.iniTCP();
 		Utilitaires.out("Ok");
 
+		Utilitaires.out("Début de toSendASAP.............");
+		(new gestionToSendASAP()).start();
+		Utilitaires.out("OK");
 		
 		
 
