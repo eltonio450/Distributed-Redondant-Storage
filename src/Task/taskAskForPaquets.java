@@ -74,7 +74,7 @@ public class taskAskForPaquets implements Runnable {
         clientSocket.write(buffer) ;
 
         //now receive the package in exchange
-        Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
+        Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket) ;
         Donnees.receptionPaquet(receivedPaquet);
         clientSocket.close();
         return true ;

@@ -8,6 +8,7 @@ public class Machine {
 	public String ipAdresse ;
 	public int port;
 
+	
 	public Machine(String addr, int port){
 		ipAdresse = addr ;
 		this.port = port;

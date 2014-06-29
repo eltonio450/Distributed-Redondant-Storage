@@ -9,7 +9,7 @@ import Stockage.Donnees;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
-public class taskLockPacket implements Runnable {
+public class taskUnlockPacket implements Runnable {
 	SocketChannel s;
 
 	/**
@@ -26,7 +26,7 @@ public class taskLockPacket implements Runnable {
 	 * 
 	 */
 
-	public taskLockPacket(SocketChannel socket) {
+	public taskUnlockPacket(SocketChannel socket) {
 		s = socket;
 	}
 
@@ -39,37 +39,24 @@ public class taskLockPacket implements Runnable {
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
 
 		try {
-			Utilitaires.out("Demande de lock reçue.",4,true);
 			s.write(b);
 
 			// Etape 2 : attendre de recevoir l'identifiant du paquet qui
 			// demande le lock
-			b.clear();
-			s.read(b);
-			b.flip();
-			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
-			String chaine = Utilitaires.buffToString(b);
-			Utilitaires.out("Le lock est demandé sur "+chaine,4,true);
-			Scanner scan = new Scanner(chaine);
+			temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
+			Scanner scan = new Scanner(temp);
 			id = scan.next();
 			power = Integer.parseInt(scan.next());
-			Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
+
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
-			Utilitaires.out(id,4,true);
-			Donnees.printHostedDataList();
-			//Utilitaires.out(Donnees.getHostedPaquet(id).toString());
-			
-			if (!Donnees.getHostedPaquet(id).isAskingTheLock 
-					|| power < Donnees.getHostedPaquet(id).idInterne) {
+			if (!Donnees.getHostedPaquet(id).isAskingTheLock || power < Donnees.getHostedPaquet(id).idInterne) {
 				Donnees.getHostedPaquet(id).lock();
-				Utilitaires.out("Demande de lock acceptée.",4,true);
-				b = Utilitaires.stringToBuffer(Message.OK);
+				b = Utilitaires.stringToBuffer(Message.OK + " " + Message.END_ENVOI);
 				s.write(b);
 			}
 			else {
-				Utilitaires.out("Demande de lock refusée.",4,true);
-				b = Utilitaires.stringToBuffer(Message.FAIL);
+				b = Utilitaires.stringToBuffer(Message.FAIL + " " + Message.END_ENVOI);
 				s.write(b);
 			}
 

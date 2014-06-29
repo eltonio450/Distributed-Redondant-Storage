@@ -7,23 +7,17 @@ import Utilitaires.Utilitaires;
 public class gestionToSendASAP extends Thread {
 	public void run(){
 	  while(true){
-	    //Utilitaires.out("Blah 1");
-	    Donnees.toSendASAPLock.lock() ;
-  	  	//Utilitaires.out("Blah2");
-	    try{
-  	    while(Donnees.toSendAsapEmpty()){
-          Donnees.notEmpty.awaitUninterruptibly();
+	    
+  	    
+          Donnees.waitForSomethingInToSendASAP();
           Runnable task = new taskDumpToMachine() ;
-          Donnees.toSendASAPLock.unlock();
+          
           task.run();
-        }
+        
   	  }
+  	 
   	  
-  	  finally{
-  	    Donnees.toSendASAPLock.unlock();
-  	  }
-  	  
-	  }
+	  
 	  
 	}
 	

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -352,22 +353,18 @@ public class Donnees {
 		}
 	}
 
-public static void waitForSomethingInToSendASAP(){
-    
-    try {
-      toSendASAP.put(toSendASAP.take());
-    }
-    catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-  public static void addPaquetToSendAsap(String id) {
-    
-      toSendASAP.add(id);
-      //for(String s : toSendASAP)
-      //Utilitaires.out("Paquet dans toSendASAP : " + s);
-  }
+	public static void addPaquetToSendAsap(String id) {
+		toSendASAPLock.lock();
+		try {
+			toSendASAP.add(id);
+			notEmpty.signalAll();
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
+		//for(String s : toSendASAP)
+			//Utilitaires.out("Paquet dans toSendASAP : " + s);
+	}
 
 	public static void addListToSendAsap(LinkedList<String> listId) {
 		toSendASAPLock.lock();
@@ -380,11 +377,15 @@ public static void waitForSomethingInToSendASAP(){
 		}
 	}
 
-public static void removeToSendAsap(String id) {
-    
-    toSendASAP.remove(id);
-    
-  }
+	public static void removeToSendAsap(String id) {
+		toSendASAPLock.lock();
+		try {
+			toSendASAP.remove(id);
+		}
+		finally {
+			toSendASAPLock.unlock();
+		}
+	}
 
 	public static LinkedList<String> chooseManyPaquetToSend1() {
 		// TODO :lock
@@ -425,45 +426,30 @@ public static void removeToSendAsap(String id) {
 	}
 
 	
-	public static void printHostedDataList(){
-    for(String s : myData.keySet())
-      Utilitaires.out(s,1,true);
-  }
-  
-  public static Paquet getHostedPaquet(String id) {
-    myDataLock.lock();
-    try {
-      Paquet res = myData.get(id);
-      if(res!=null)
-        return res;
-      else{
-        Utilitaires.out("Le paquet n'est pas présent sur le serveur");
-        return null;
-      }
-    }
-    finally {
-      myDataLock.unlock();
-    }
-  } 
+	public static Paquet getHostedPaquet(String id) {
+		myDataLock.lock();
+		try {
+			return myData.get(id);
+		}
+		finally {
+			myDataLock.unlock();
+		}
+	} 
 
-  public static Paquet removeTemporarlyPaquet(String id) {
-    myDataLock.lock();
-    try {
-      if (myData.containsKey(id)) {
-        Paquet temp = myData.get(id);
-        myData.remove(id);
-        //Utilitaires.out("Paquet choisi pour l'envoi : " +temp.idGlobal);
-        return temp;
-      }
-      else {
-        Utilitaires.out("Paquet non trouvé.");
-        return null;
-      }
-    }
-    finally {
-      myDataLock.unlock();
-    }
-  }
+	public static Paquet removeTemporarlyPaquet(String id) {
+		myDataLock.lock();
+		try {
+			if (myData.containsKey(id)) {
+				return myData.remove(id);
+			}
+			else {
+				return null;
+			}
+		}
+		finally {
+			myDataLock.unlock();
+		}
+	}
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
@@ -567,12 +553,5 @@ public static void removeToSendAsap(String id) {
 			allServeurLock.unlock();
 		}
 	}
-	
-	 public static void addPaquetToMyData(String idGlobal, Paquet paquet) {
-	    myDataLock.lock();
-	    myData.put(idGlobal, paquet);
-	    myDataLock.unlock();
-	    
-	  }
 
 }

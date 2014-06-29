@@ -53,7 +53,7 @@ public class ThreadClient implements Runnable {
 
         if (true){
           //exchange can begin : send its package
-          aEnvoyer.envoyerPaquet(clientSocket);
+          aEnvoyer.envoyerPaquetReellement(clientSocket);
           Utilitaires.out("Client a envoy� Paquet") ;
           /*if(recoitPaquet(clientSocket)){
             aEnvoyer.removePaquet();
