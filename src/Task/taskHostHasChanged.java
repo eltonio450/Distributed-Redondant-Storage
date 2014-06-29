@@ -41,8 +41,14 @@ public class taskHostHasChanged implements Runnable {
 			Scanner scan2 = new Scanner(msg) ;
 			String Id = scan2.next() ;
 			int place = scan2.nextInt() ;
-			Donnees.changeHostForPaquet(Id, place, newHost);
 			
+			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propriétaire du paquet
+			  Donnees.changeHostForPaquet(Id, place, newHost);
+			}
+			else{  //nous sommes le propriétaire du paquet
+			  Donnees.addHost(Id, newHost) ;
+			}
+			socket.close();
 		}
 		catch(Exception e){
 			//TODO : what can we do ???

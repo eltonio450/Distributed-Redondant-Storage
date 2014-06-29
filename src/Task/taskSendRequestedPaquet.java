@@ -38,7 +38,7 @@ public class taskSendRequestedPaquet implements Runnable{
 		
 		//Etape 3 : on envoit le paquet
 		try {
-			Donnees.getHostedPaquet(id).envoyerPaquet(s);
+			Donnees.getHostedPaquet(id).envoyerPaquet(s);  //est-ce réellement getHostedPaquet que l'on souhaite utiliser ?
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block

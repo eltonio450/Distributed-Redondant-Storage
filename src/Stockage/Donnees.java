@@ -19,8 +19,8 @@ import Utilitaires.Slaver;
 public class Donnees {
 
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
-	static private HashSet<Machine> interestServeur = new HashSet<Machine>();
-	static private LinkedList<Machine> myHosts = new LinkedList<Machine>();
+	static private LinkedList<Machine> interestServeur = new LinkedList<Machine>();
+	static private HashMap<String, Machine> myHosts = new HashMap<String,Machine>();
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
 
 	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0);
@@ -76,9 +76,13 @@ public class Donnees {
 		return res;
 	}
 
-	public static void receptionPaquet(Machine m, Paquet p) {
+	public static void receptionPaquet(Paquet p) {
 		Utilitaires.out("-------------Reception paquet--------------------");
-		addInterestServeur(m);
+		for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
+		  if(i != p.power){
+		    addInterestServeur(p.otherHosts.get(i)) ;
+		  }
+		}
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 		Utilitaires.out("fin reception");
@@ -87,22 +91,31 @@ public class Donnees {
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 		Utilitaires.out("Change host !");
 		myDataLock.lock();
+		interestServeurLock.lock();
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
 			for (String s : paquets) {
+			  Machine toRemove = myData.get(Id).otherHosts.get(place) ;
+			  interestServeur.remove(toRemove) ;
 				myData.get(Id).otherHosts.set(place, newHost);
+				interestServeur.add(newHost) ;
 			}
 		}
 		finally {
 			myDataLock.unlock();
+			interestServeurLock.unlock();
 		}
 	}
+	
+
 
 	public static void traiteUnMort(Machine m) {
 		myHostsLock.lock();
 		try {
-			if (myHosts.contains(m)) {
-				myHosts.remove(m);
+			for(String id : myHosts.keySet()){
+			  if(myHosts.get(id) == m){
+			    myHosts.remove(id) ;
+			  }
 			}
 		}
 		finally {
@@ -120,6 +133,9 @@ public class Donnees {
 						}
 					}
 				}
+			}
+			while(interestServeur.contains(m)){
+			  interestServeur.remove(m) ;
 			}
 		}
 		finally {
@@ -152,21 +168,33 @@ public class Donnees {
 		}
 	}
 
+	
 	public static Machine chooseMachine() {
 		// pour test1 : return(new Machine("127.0.0.1",5004)) ;
 		return allServeur.peek();
 	}
 
+	
 	public static void putServer(String ip, int port) {
-		Utilitaires.out("Putting server " + ip + ":" + port);
 		allServeurLock.lock();
 		try {
 			allServeur.add(new Machine(ip, port));
+			Utilitaires.out(ip + ":" + port + " added.");
 		}
 		finally {
 			allServeurLock.unlock();
 		}
 	}
+	 public static void putServer(Machine m) {
+	    allServeurLock.lock();
+	    try {
+	      allServeur.add(m);
+	      Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
+	    }
+	    finally {
+	      allServeurLock.unlock();
+	    }
+	  }
 
 	public static void actualiseAllServeur(LinkedList<Machine> l) {
 		allServeurLock.lock();
@@ -176,8 +204,12 @@ public class Donnees {
 
 	public static void removeServer(Machine m) {
 		allServeurLock.lock();
-		allServeur.remove(m);
-		allServeurLock.unlock();
+		try{
+		  allServeur.remove(m);
+		}
+		finally{
+		  allServeurLock.unlock();
+		}
 
 		// TODO : Gerer la perte d'un voisin etc.
 		// PB. : il faut se reprendre un voisin quand on en perd un
@@ -251,23 +283,26 @@ public class Donnees {
 
 	public static void addInterestServeur(Machine m) {
 		interestServeurLock.lock();
-		interestServeur.add(m);
-		interestServeurLock.unlock();
-	}
-
-	public static void addHost(Machine m) {
-
-		allServeurLock.lock();
 		try{
-		  allServeur.add(m);
-		  Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
+		  interestServeur.add(m);
 		}
 		finally{
-		  allServeurLock.unlock();
+		  interestServeurLock.unlock(); 
+		}
+	}
+
+	public static void addHost(String id,Machine m) {
+	  myHostsLock.lock();
+		try{
+		  myHosts.put(id, m) ;
+		}
+		finally{
+		  myHostsLock.unlock();
 		}
 
 	}
 
+	
 	public static Paquet getHostedPaquet(String id) {
 		myDataLock.lock();
 		try {
@@ -276,9 +311,9 @@ public class Donnees {
 		finally {
 			myDataLock.unlock();
 		}
-	}
+	} 
 
-	public static Paquet removeHostedPaquet(String id) {
+	public static Paquet removeTemporarlyPaquet(String id) {
 		myDataLock.lock();
 		try {
 			if (myData.containsKey(id)) {
@@ -295,8 +330,12 @@ public class Donnees {
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
-		myData.put(p.idGlobal, p);
-		myDataLock.unlock();
+		try{
+		  myData.put(p.idGlobal, p);
+		}
+		finally{
+		  myDataLock.unlock();
+		}
 	}
 
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
@@ -342,12 +381,19 @@ public class Donnees {
 
 	}
 
-	public static void removePaquet(String ID) {
-		myDataLock.lock();
+	public static void removePaquet(Paquet p) {
+		//TODO : remove interestServeur
+	  myDataLock.lock();
 		toSendASAPLock.lock();
+		interestServeurLock.lock();
 		try {
-			myData.remove(ID);
-			toSendASAP.remove(ID);
+			myData.remove(p.idGlobal);
+			toSendASAP.remove(p.idGlobal);
+			for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
+			  if(i != p.power){
+			    interestServeur.remove(p.otherHosts.get(i)) ;
+			  }
+			}
 		}
 		finally {
 			myDataLock.unlock();

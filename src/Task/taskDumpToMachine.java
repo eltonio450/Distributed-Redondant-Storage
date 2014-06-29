@@ -38,7 +38,7 @@ public class taskDumpToMachine implements Runnable {
 	        boolean changeMachine = false ;
 
 	        while(!toSendASAP.isEmpty() && !changeMachine){
-	          Paquet aEnvoyer = Donnees.getHostedPaquet(toSendASAP.poll()) ;
+	          Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll()) ;
 	          if(aEnvoyer != null ){
   	          if(!envoiePaquet(aEnvoyer,m,socket)){
   	            Donnees.putNewPaquet(aEnvoyer);
@@ -154,8 +154,7 @@ public class taskDumpToMachine implements Runnable {
 
          //now receive the package in exchange
          Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-         Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
-         Donnees.receptionPaquet(otherMachine, receivedPaquet);
+         Donnees.receptionPaquet(receivedPaquet);
          clientSocket.close();
          return true ;
        }

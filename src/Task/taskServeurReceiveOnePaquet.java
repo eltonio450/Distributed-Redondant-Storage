@@ -38,8 +38,7 @@ public class taskServeurReceiveOnePaquet implements Runnable {
       socket.write(buffer) ;
     
       Paquet receivedPaquet = Paquet.recoitPaquet(socket) ;
-      Machine otherMachine = Machine.otherMachineFromSocket(socket) ;
-      Donnees.receptionPaquet(otherMachine, receivedPaquet);
+      Donnees.receptionPaquet(receivedPaquet);
       //TODO : put the paquet in toSendASAP ??
     }
 

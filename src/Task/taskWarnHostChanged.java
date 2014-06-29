@@ -29,35 +29,39 @@ public class taskWarnHostChanged implements Runnable {
     Paquet p = Donnees.getHostedPaquet(id) ;
     int placeToModify = p.power ;
     for (int i =0 ; i< 5 ; i++) {
+      Machine m ;
       if (i!=placeToModify){
-        Machine m = p.otherHosts.get(i) ;
-        if(m != null) {
-          try (SocketChannel clientSocket = SocketChannel.open()) { 
-            
-            //init connection
-            InetSocketAddress local = new InetSocketAddress(0); 
-            clientSocket.bind(local); 
-            InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
-            clientSocket.connect(remote); 
-            
-            //message
-            ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED) ;
-            clientSocket.write(buffer) ;
-            buffer.clear() ;
-            clientSocket.read(buffer) ;
-            buffer.flip() ;
-            String response = Utilitaires.buffToString(buffer) ;
-            if(response.equals(Message.OK)){
-              String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
-              buffer = Utilitaires.stringToBuffer(s) ;
-              clientSocket.write(buffer) ; 
-              //Utilitaires.out("Envoy� : " + s) ;
-            }
-            
+        m = p.otherHosts.get(i) ;
+      }
+      else {
+        m = p.owner ;
+      }
+      if(m != null) {
+        try (SocketChannel clientSocket = SocketChannel.open()) { 
+          
+          //init connection
+          InetSocketAddress local = new InetSocketAddress(0); 
+          clientSocket.bind(local); 
+          InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
+          clientSocket.connect(remote); 
+          
+          //message
+          ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED) ;
+          clientSocket.write(buffer) ;
+          buffer.clear() ;
+          clientSocket.read(buffer) ;
+          buffer.flip() ;
+          String response = Utilitaires.buffToString(buffer) ;
+          if(response.equals(Message.OK)){
+            String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
+            buffer = Utilitaires.stringToBuffer(s) ;
+            clientSocket.write(buffer) ; 
+            //Utilitaires.out("Envoy� : " + s) ;
           }
-          catch(IOException e){
-            //TODO : on a pas pu pr�venir m !
-          }
+          
+        }
+        catch(IOException e){
+          //TODO : on a pas pu pr�venir m !
         }
       }
     }

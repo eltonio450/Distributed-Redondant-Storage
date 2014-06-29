@@ -186,7 +186,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						if (scan.hasNext()) {
 							// Alors le numéro de port était bien fini
 							// On peut agir
-							Stockage.Donnees.addHost(new Stockage.Machine (ip, port));
+							Stockage.Donnees.putServer(ip, port);
 							aEnlever.add(r);
 							r.socket.close();
 							scan.close();

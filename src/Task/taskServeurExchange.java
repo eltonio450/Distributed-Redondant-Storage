@@ -38,8 +38,7 @@ public class taskServeurExchange implements Runnable {
       socket.write(buffer) ;
     
       Paquet receivedPaquet = Paquet.recoitPaquet(socket) ;
-      Machine otherMachine = Machine.otherMachineFromSocket(socket) ;
-      Donnees.receptionPaquet(otherMachine, receivedPaquet);
+      Donnees.receptionPaquet(receivedPaquet);
       
       Paquet sentPaquet = envoitPaquet() ;
       if(sentPaquet != null){
@@ -65,7 +64,7 @@ public class taskServeurExchange implements Runnable {
       LinkedList<String> paquets1 = Donnees.chooseManyPaquetToSend1() ;
       
       while(!ok && !paquets1.isEmpty()){
-        aEnvoyer = Donnees.getHostedPaquet(paquets1.pop()) ;
+        aEnvoyer = Donnees.removeTemporarlyPaquet(paquets1.pop()) ;
         if(aEnvoyer != null) {
           buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
           socket.write(buffer) ;
@@ -86,7 +85,7 @@ public class taskServeurExchange implements Runnable {
         LinkedList<String> paquets2 = Donnees.chooseManyPaquetToSend2() ;
         
         while(!ok && !paquets2.isEmpty()){
-          aEnvoyer = Donnees.getHostedPaquet(paquets2.pop()) ;
+          aEnvoyer = Donnees.removeTemporarlyPaquet(paquets2.pop()) ;
           if(aEnvoyer != null) {
             buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal) ;
             socket.write(buffer) ;

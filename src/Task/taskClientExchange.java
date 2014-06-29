@@ -103,8 +103,7 @@ public class taskClientExchange implements Runnable {
 
 				//now receive the package in exchange
 				Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
-				Machine otherMachine = Machine.otherMachineFromSocket(clientSocket) ;
-				Donnees.receptionPaquet(otherMachine, receivedPaquet);
+				Donnees.receptionPaquet(receivedPaquet);
 				clientSocket.close();
 				return true ;
 			}

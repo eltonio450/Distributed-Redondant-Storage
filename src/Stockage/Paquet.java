@@ -175,7 +175,7 @@ public class Paquet {
 	}
 
 	public void removePaquet(){
-	  Donnees.removePaquet(idGlobal) ;
+	  Donnees.removePaquet(this) ;
 	  deleteData() ;
 	}
 	
