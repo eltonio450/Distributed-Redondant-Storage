@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,10 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Task.taskGiveMeMyPaquet;
 import Task.taskRetablirPaquets;
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
 import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 
 
 
@@ -539,6 +539,22 @@ public class Donnees {
 		finally{
 		  myDataLock.unlock();
 		}
+	}
+	
+	/**
+	 * Recupere, si possible, ses propres données et les ajoute dans myData
+	 */
+	public static void recupereMyOwnData(){
+	  for(String id : myHosts.keySet()){
+	    myHostsLock.lock();
+	    try{
+	      Machine host = myHosts.get(id);
+	      (new taskGiveMeMyPaquet(id,host)).run() ;
+	    }
+	    finally{
+	      myHostsLock.unlock();
+	    }
+	  }
 	}
 
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
