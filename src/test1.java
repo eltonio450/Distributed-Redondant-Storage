@@ -5,7 +5,9 @@ import StartUpRoutine.IniUDP;
 import StartUpRoutine.ServerGetter;
 import Stockage.Machine;
 import Stockage.Paquet;
+import Task.taskClientExchange;
 import Task.taskClientSendOnePaquet;
+import Task.taskDumpToMachine;
 import Utilitaires.Global;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
@@ -68,7 +70,7 @@ public class test1 {
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          Runnable task2 = new taskClientSendOnePaquet(aEnvoyer2) ;
+          Runnable task2 = new taskDumpToMachine() ;
           task2.run();
           
         }

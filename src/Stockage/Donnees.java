@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Task.taskRetablirPaquets;
 import Utilitaires.Global;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
@@ -133,10 +134,14 @@ public class Donnees {
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
 				for (Paquet p : myData.values()) {
-					for (Machine n : p.otherHosts) {
-						if (m == n) {
-							// check avec p.power si on doit intervenir ou non
-							// �ventuellement, r�tablir le paquet
+					for (int i=0 ; i < Global.NOMBRESOUSPAQUETS ; i++) {
+						if (m == p.otherHosts.get(i)) {
+						  if(p.power == 0) {
+	              (new taskRetablirPaquets(p,i)).run() ;				    
+						  }
+						  else if(p.power== 1 && i==0) {
+						    (new taskRetablirPaquets(p,i)).run() ;  
+						  }
 						}
 					}
 				}
@@ -178,8 +183,8 @@ public class Donnees {
 	
 	public static Machine chooseMachine() {
 		 //pour test1 : 
-	  //return(new Machine("127.0.0.1",5004)) ;
-		return allServeur.peek();
+	  return(new Machine("127.0.0.1",5004)) ;
+		//return allServeur.peek();
 	}
 
 	
@@ -310,6 +315,7 @@ public class Donnees {
 	  myHostsLock.lock();
 		try{
 		  myHosts.put(id, m) ;
+		  //Utilitaires.out("Host added : " + m.toString());
 		}
 		finally{
 		  myHostsLock.unlock();
