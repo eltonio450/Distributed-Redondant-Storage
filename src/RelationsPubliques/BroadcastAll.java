@@ -21,6 +21,7 @@ public class BroadcastAll {
 				InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port); 
 				clientSocket.connect(remote); 
 				clientSocket.write(b);
+				b.flip();
 				clientSocket.close();
 			} catch (Exception e) {
 				//Who cares ?

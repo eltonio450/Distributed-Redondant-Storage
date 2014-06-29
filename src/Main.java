@@ -68,6 +68,6 @@ public class Main {
 		Utilitaires.out("Starting UDP server.............");
 		IniUDP.iniUDP();
 		Utilitaires.out("Ok");
-
+		
 	}
 }
