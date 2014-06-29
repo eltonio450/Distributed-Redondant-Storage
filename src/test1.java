@@ -70,6 +70,7 @@ public class test1 {
           }
           Runnable task2 = new taskClientSendOnePaquet(aEnvoyer2) ;
           task2.run();
+          
         }
         } ;
         
