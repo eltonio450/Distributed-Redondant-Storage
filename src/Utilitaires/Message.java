@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 public class Message {
 	
     // TCP Connections
-	  public static String HOST_CHANGED = "host-changed#" ;
+	  public static String HOST_CHANGED = "host_changed#" ;
 		public static String EXCHANGE = "exchange#" ;
 		public static String REPONSE_EXCHANGE = "ok_exchange#" ;
 		public static String FAIL ="fail#";
