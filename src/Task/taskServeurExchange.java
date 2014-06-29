@@ -51,6 +51,10 @@ public class taskServeurExchange implements Runnable {
     	  Donnees.removePaquet(receivedPaquet);
       }
     }
+    else{
+      buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI) ;
+      socket.write(buffer) ;
+    }
 
   }
   
