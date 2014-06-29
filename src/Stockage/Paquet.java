@@ -269,6 +269,7 @@ public class Paquet {
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
+			Utilitaires.out("Test 2", 6, true);
 			clientSocket.connect(remote);
 			//Utilitaires.out("Test 2", 6, true);
 			// Etape 2 : Envoie du pré-Lock
@@ -276,7 +277,7 @@ public class Paquet {
 			//buffer.flip();
 			clientSocket.write(buffer);
 
-			//Utilitaires.out("Test 3", 6, true);
+			Utilitaires.out("Test 3", 6, true);
 
 			// Etpae 3 : Reception du la confirmation de la connexion
 			buffer.clear();

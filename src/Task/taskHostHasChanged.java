@@ -42,10 +42,10 @@ public class taskHostHasChanged implements Runnable {
 			String Id = scan.next() ;
 			int place = scan.nextInt() ;
 			
-			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propriétaire du paquet
+			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propriï¿½taire du paquet
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 			}
-			else{  //nous sommes le propriétaire du paquet
+			else{  //nous sommes le propriï¿½taire du paquet
 			  Donnees.addHost(Id, newHost) ;
 			}
 			socket.close();

@@ -32,18 +32,23 @@ public class taskServeurExchange implements Runnable {
     
 
     if(Donnees.acceptePaquet(s)){
-    	Utilitaires.out("J'accepte de recevoir le paquet que tu me propores.",1,true);
+    	Utilitaires.out("J'accepte de recevoir le paquet que tu me proposes.",1,true);
       buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
       socket.write(buffer) ;
       //Utilitaires.out("J'ai accepté d'échanger ce paquet",1,true);
       
       Paquet receivedPaquet = Paquet.recoitPaquetReellement(socket) ;
       Utilitaires.out("J'ai bien reçu le paquet que tu me proposais",1,true);
-      Donnees.receptionPaquet(receivedPaquet);
+      
       
       Paquet sentPaquet = envoitPaquet() ;
       if(sentPaquet != null){
+    	Donnees.receptionPaquet(receivedPaquet);
         sentPaquet.removePaquet();
+      }
+      else
+      {
+    	  Donnees.removePaquet(receivedPaquet);
       }
     }
 

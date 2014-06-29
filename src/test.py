@@ -2,7 +2,7 @@
 
 import os
 import time
-nombreDeServeur = 2
+nombreDeServeur = 10
 i = 0
 
 #os.system("killall java")
@@ -21,7 +21,7 @@ os.chdir("../bin")
 os.system("java Main " + ligne +"&\n")
 #print(ligne)
 #sleep(1)
-time.sleep(3)
+time.sleep(1)
 #while(i<10) :
 #   i=i+1
 #   os.system("fuser -fk " + str(5000+4*i+1)+"/udp")

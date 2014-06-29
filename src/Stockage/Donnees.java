@@ -174,6 +174,7 @@ public class Donnees {
 	 */
 	public static void receptionPaquet(Paquet p) {
 		//Utilitaires.out("-------------Reception paquet--------------------");
+		p.lock();
 		for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
 		  if(i != p.power){
 		    addInterestServeur(p.otherHosts.get(i)) ;
@@ -181,7 +182,9 @@ public class Donnees {
 		}
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		Utilitaires.out("fin reception");
+		p.spreadUnlock();
+		//Utilitaires.out("fin reception");
+		
 	}
 
 	/**
@@ -285,8 +288,8 @@ public class Donnees {
 	
 	public static Machine chooseMachine() {
 		 //pour test1 : 
-	  return(new Machine("127.0.0.1",5004)) ;
-		//return allServeur.peek();
+	  //return(new Machine("127.0.0.1",5004)) ;
+		return allServeur.peek();
 	}
 
 	
@@ -428,12 +431,18 @@ public class Donnees {
 	
 	public static Paquet getHostedPaquet(String id) {
 		myDataLock.lock();
+		Paquet temp;
 		try {
-			return myData.get(id);
+			temp = myData.get(id);
+			if(temp!=null)
+				Utilitaires.out("Le paquet "+id+"est bien présent chez moi.",1,true);
+			else
+				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
 		}
 		finally {
 			myDataLock.unlock();
 		}
+		return temp;
 	} 
 
 	public static Paquet removeTemporarlyPaquet(String id) {

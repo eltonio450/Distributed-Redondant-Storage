@@ -53,17 +53,17 @@ public class taskLockPacket implements Runnable {
 			Scanner scan = new Scanner(chaine);
 			id = scan.next();
 			power = Integer.parseInt(scan.next());
+			
 			Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
-			//Utilitaires.out(id,4,true);
-			//Donnees.printHostedDataList();
-			//Utilitaires.out(Donnees.getHostedPaquet(id).toString());
-			
-			if (!Donnees.getHostedPaquet(id).isAskingTheLock 
-					|| power < Donnees.getHostedPaquet(id).idInterne) {
+		
+			//Donnees.getHostedPaquet(id);
+			if (Donnees.getHostedPaquet(id)!=null && (!Donnees.getHostedPaquet(id).isAskingTheLock 
+					|| power > Donnees.getHostedPaquet(id).idInterne)) {
+				Utilitaires.out("Test 8"+power,4,true);
 				Donnees.getHostedPaquet(id).lock();
-				//Utilitaires.out("Demande de lock acceptée.",4,true);
+				Utilitaires.out("Demande de lock acceptée.",4,true);
 				b = Utilitaires.stringToBuffer(Message.OK);
 				s.write(b);
 			}
@@ -77,6 +77,9 @@ public class taskLockPacket implements Runnable {
 
 		}
 		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch(Exception e){
 			e.printStackTrace();
 		}
 

@@ -144,7 +144,7 @@ public class taskDumpToMachine implements Runnable {
 
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						Utilitaires.out("Paquet accepté");
+						Utilitaires.out("Ici tout a fonctionné");
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -204,7 +204,9 @@ public class taskDumpToMachine implements Runnable {
 
 				// now receive the package in exchange
 				Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket);
+				receivedPaquet.lock();
 				Donnees.receptionPaquet(receivedPaquet);
+				//receivedPaquet.spreadUnlock();
 				clientSocket.close();
 				return true;
 			}
