@@ -124,7 +124,7 @@ public class Paquet {
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
 	  
-		String s = idMachine + " " + owner.ipAdresse + " " + owner.port ;
+		String s = idMachine + " " + owner.ipAdresse + " " + owner.port + " " + Message.END_ENVOI;
 		for (int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
@@ -133,11 +133,14 @@ public class Paquet {
 		return buffer;
 	}
 
-	public static Paquet createPaquetFromBuffer(ByteBuffer b){
-		//buffer is flipped
-		String s = Utilitaires.buffToString(b);
-		Utilitaires.out("Paquet recu: " + s) ;
-		Scanner scan = new Scanner(s) ; 
+	public static Paquet createPaquetFromBuffer(SocketChannel socket) throws IOException{
+
+    String[] t = new String[1] ;
+    t[0] = Message.END_ENVOI ;
+    String msg = Utilitaires.getAFullMessage(t, socket);
+    
+		Utilitaires.out("Paquet recu: " + msg) ;
+		Scanner scan = new Scanner(msg) ; 
 
 		int id = scan.nextInt() ;
 		String IpAdresse = scan.next() ;
@@ -159,11 +162,7 @@ public class Paquet {
 
 	public static Paquet recoitPaquet(SocketChannel s) throws IOException{
 		//we assume connection has already started
-		ByteBuffer buffer = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
-		buffer.clear() ;
-		s.read(buffer) ;
-		buffer.flip() ;
-		Paquet p = createPaquetFromBuffer(buffer) ;
+		Paquet p = createPaquetFromBuffer(s) ;
 		p.isUsed.lock() ;
 		try {
 			p.fichier.transferFrom(s,0,Global.PAQUET_SIZE) ;

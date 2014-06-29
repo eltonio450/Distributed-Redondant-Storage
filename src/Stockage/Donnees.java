@@ -55,7 +55,14 @@ public class Donnees {
 	 */
 
 	public static boolean acceptePaquet(String s) {
-		// TODO Auto-generated method stub
+	  Scanner scan = new Scanner(s) ;
+	  scan.useDelimiter("-");
+	  scan.next() ;
+	  if(scan.hasNext()){
+	    if(hasPaquetLike(s).isEmpty()){
+	      return true ;
+	    }
+	  }
 		return false;
 	}
 
@@ -134,7 +141,7 @@ public class Donnees {
 					}
 				}
 			}
-			while(interestServeur.contains(m)){
+			while(interestServeur.contains(m)){  //il peut y avoir plusieurs occurrences
 			  interestServeur.remove(m) ;
 			}
 		}
@@ -185,6 +192,7 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
+	
 	 public static void putServer(Machine m) {
 	    allServeurLock.lock();
 	    try {
@@ -198,8 +206,12 @@ public class Donnees {
 
 	public static void actualiseAllServeur(LinkedList<Machine> l) {
 		allServeurLock.lock();
-		allServeur = l;
-		allServeurLock.unlock();
+		try{
+		  allServeur = l;
+		}
+		finally{
+		  allServeurLock.unlock(); 
+		}
 	}
 
 	public static void removeServer(Machine m) {

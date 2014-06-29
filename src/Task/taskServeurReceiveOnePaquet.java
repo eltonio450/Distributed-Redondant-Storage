@@ -19,8 +19,7 @@ public class taskServeurReceiveOnePaquet implements Runnable {
     socket = s ;
   }
   
-  //when this task is called, the server has already answer to the client with DEMANDE_ID
-  
+
   public void recoitPaquet() throws IOException{
     
     socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));

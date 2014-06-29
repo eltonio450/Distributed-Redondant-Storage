@@ -38,9 +38,9 @@ public class taskHostHasChanged implements Runnable {
 			
 			//Utilitaires.out("a recu : " + msg);
 			
-			Scanner scan2 = new Scanner(msg) ;
-			String Id = scan2.next() ;
-			int place = scan2.nextInt() ;
+			Scanner scan = new Scanner(msg) ;
+			String Id = scan.next() ;
+			int place = scan.nextInt() ;
 			
 			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propriétaire du paquet
 			  Donnees.changeHostForPaquet(Id, place, newHost);
