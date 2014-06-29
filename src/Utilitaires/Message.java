@@ -10,11 +10,11 @@ public class Message {
 		public static String REPONSE_EXCHANGE = "ok_exchange#" ;
 		public static String FAIL ="fail#";
 		public static String MONITOR = "monitor#";
-		public static String END_ENVOI = "fin#" ;
+		public static String END_ENVOI = "FIN#" ;
 		public static String NEXT_BUFFER = "NEXT#";
 		public static String BEGIN = "BEGIN#";
 		public static String GET_LIST = "GET_LIST#";
-		public static String NEW_SERVER = "NEWBROHERE#";
+		public static String NEW_SERVER = "NEW_SERVER#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static String ASK_FOR_UNLOCK = "ASK_FOR_UNLOCK#";
 		public static int BUFFER_LENGTH = 1000 ;
@@ -28,12 +28,12 @@ public class Message {
 		public static String SendOne = "sendOnePaquet" ;
 		
 		//PR
-		public static String PREFIXE_BONJOUR = "WESH#";
-		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
+		public static String PREFIXE_BONJOUR = "PING#";
+		public static String PREFIXE_REPONSE_BONJOUR = "RPING#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
-		public static String VERIFY_DEATH = "YOUDEADBRO?#";
-		public static String NOT_DEAD = "NOPE#";
-		public static String IS_DEAD = "ILESTMORT#";
+		public static String VERIFY_DEATH = "VERIFY_DEATH?#";
+		public static String NOT_DEAD = "IMNOTDEAD!#";
+		public static String IS_DEAD = "DEATH#";
 		
 		public String body;
 		public InetSocketAddress dest;
