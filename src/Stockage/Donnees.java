@@ -17,13 +17,77 @@ import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 import Utilitaires.Slaver;
 
+
+
+/**
+ *
+ * Cette classe représente les données stockées sur le disque d'une machine
+ * 
+ * 
+ * @author SebastienD
+ *
+ */
+
 public class Donnees {
 
+  /**
+   * La liste de toutes les machines.
+   * 
+   * Cette liste est protégée par un verrou.
+   * @see allServeurLock
+   * @see putServer
+   * @see removeServeur
+   * @see actualiseAllServeur
+   * @see getAllServeur
+   * @see chooseMAchine
+   */
 	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
+	
+	/**
+	 * La liste des machines qui hébergent un paquet d'un même groupe qu'un de ses paquets.
+	 * 
+	 * Cette liste est protgée par un verrou.
+	 * @see interestServeurLock
+	 * @see addInterestServeur
+	 */
 	static private LinkedList<Machine> interestServeur = new LinkedList<Machine>();
+	
+	/**
+	 * Table de hashage des machines qui hébergent de de ses paquets.
+	 * La clé correspond à l'identifiant du paquet concernée, la valeur étant l'hôte.
+	 * Cette table est protégée par un verrou
+	 * @see myHostsLock
+	 */
 	static private HashMap<String, Machine> myHosts = new HashMap<String,Machine>();
+	
+	/**
+	 * Table de hashage des données que la machine héberge.
+	 * La clé correspond à l'identifiant du paquet.
+	 * Cette table est protégée par un verrou.
+	 * @see myDataLock
+	 * @see removePaquet
+	 * @see removeTemporarlyPaquet 
+	 * @see putNewPaquet
+	 * @see chooseManyPaquetToSend2
+	 */
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
+	
+	/**
+	 * Liste des paquets à envoyer dès que possible.
+	 * On stocke ici seulement les identifiants des paquets.
+	 * Cette liste est protégée par un verrou.
+	 * @see toSendASAPLock
+	 * @see notEmpty
+	 * @see addPaquetToSendAsap
+	 * @see addListToSendAsap
+	 * @see chosseManyPaquetToSend1
+	 */
+  static private LinkedBlockingQueue<String> toSendASAP = new LinkedBlockingQueue<String>();
 
+	
+	/**
+	 * Le nombre de paquet en trop par rapport à la moyenne
+	 */
 	static public AtomicInteger paquetsEnTrop = new AtomicInteger(0);
 
 	// longueur de la data primaire en bits (ou bytes ?)
@@ -33,10 +97,13 @@ public class Donnees {
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
 
-	// passage en public (cf la remarque sur le lock)
+	/**
+	 * La liste des paquets dont je suis propriétaire.
+	 * On stocke seulement l'identifiant des paquets.
+	 */
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
-	static private LinkedList<String> toSendASAP = new LinkedList<String>();
+
 	static public ReentrantLock toSendASAPLock = new ReentrantLock();
 	static public Condition notEmpty = toSendASAPLock.newCondition();
 
@@ -55,18 +122,32 @@ public class Donnees {
 	 * myOwnData = mesPaquets ; }
 	 */
 
-	public static boolean acceptePaquet(String s) {
-	  Scanner scan = new Scanner(s) ;
+	/**
+	 * Décide si l'on peut ou non héberger un paquet. 
+	 * 
+	 * @param id
+	 *         L'identifiant du paquet
+	 * @return True or False
+	 */
+	public static boolean acceptePaquet(String id) {
+	  Scanner scan = new Scanner(id) ;
 	  scan.useDelimiter("-");
 	  scan.next() ;
 	  if(scan.hasNext()){
-	    if(hasPaquetLike(s).isEmpty()){
+	    if(hasPaquetLike(id).isEmpty()){
 	      return true ;
 	    }
 	  }
 		return false;
 	}
 
+	/**
+	 * Retourne la liste des paquets présents dans myData et qui sont du même groupe que ce paquet.
+	 * 
+	 * @param ID
+	 *       L'identifiant du paquet
+	 * @return La liste des paquets du même groupe
+	 */
 	public static LinkedList<String> hasPaquetLike(String ID) {
 		Scanner s = new Scanner(ID);
 		s.useDelimiter("-");
@@ -84,8 +165,14 @@ public class Donnees {
 		return res;
 	}
 
+	/**
+	 * Réceptionne un paquet :
+	 * ajoute le paquet dans myData, ajoute les serveurs d'intérêt et lance tackWarnHostHasChanged.
+	 * @param p
+	 *         Le paquet à réceptionner
+	 */
 	public static void receptionPaquet(Paquet p) {
-		Utilitaires.out("-------------Reception paquet--------------------");
+		//Utilitaires.out("-------------Reception paquet--------------------");
 		for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
 		  if(i != p.power){
 		    addInterestServeur(p.otherHosts.get(i)) ;
@@ -96,6 +183,15 @@ public class Donnees {
 		Utilitaires.out("fin reception");
 	}
 
+	/**
+	 * Change l'hôte d'un paquet du groupe du paquet d'identifiant <b>Id</b>. Il s'agit du paquet du groupe ayant comme idInterne <b>place</b>. 
+	 * @param Id
+	 *       Le paquet sur lequel il faut effectuer le changement
+	 * @param place
+	 *       L'idInterne du paquet du groupe qui a subi un changement d'hôte
+	 * @param newHost
+	 *       Le nouvel hôte
+	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 		Utilitaires.out("Change host !");
 		myDataLock.lock();
@@ -114,9 +210,14 @@ public class Donnees {
 			interestServeurLock.unlock();
 		}
 	}
-	
 
-
+	/**
+	 * Adapte les listes allServeur, interestServeurs et myHosts du fait de la mort de la machine m. 
+	 * Si on le doit, lance la tâche de reconstruction de paquet.
+	 * 
+	 * @param m
+	 *       La machine qui est morte
+	 */
 	public static void traiteUnMort(Machine m) {
 		myHostsLock.lock();
 		try {
@@ -251,18 +352,22 @@ public class Donnees {
 		}
 	}
 
-	public static void addPaquetToSendAsap(String id) {
-		toSendASAPLock.lock();
-		try {
-			toSendASAP.add(id);
-			notEmpty.signalAll();
-		}
-		finally {
-			toSendASAPLock.unlock();
-		}
-		//for(String s : toSendASAP)
-			//Utilitaires.out("Paquet dans toSendASAP : " + s);
-	}
+public static void waitForSomethingInToSendASAP(){
+    
+    try {
+      toSendASAP.put(toSendASAP.take());
+    }
+    catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  public static void addPaquetToSendAsap(String id) {
+    
+      toSendASAP.add(id);
+      //for(String s : toSendASAP)
+      //Utilitaires.out("Paquet dans toSendASAP : " + s);
+  }
 
 	public static void addListToSendAsap(LinkedList<String> listId) {
 		toSendASAPLock.lock();
@@ -275,15 +380,11 @@ public class Donnees {
 		}
 	}
 
-	public static void removeToSendAsap(String id) {
-		toSendASAPLock.lock();
-		try {
-			toSendASAP.remove(id);
-		}
-		finally {
-			toSendASAPLock.unlock();
-		}
-	}
+public static void removeToSendAsap(String id) {
+    
+    toSendASAP.remove(id);
+    
+  }
 
 	public static LinkedList<String> chooseManyPaquetToSend1() {
 		// TODO :lock
@@ -324,30 +425,45 @@ public class Donnees {
 	}
 
 	
-	public static Paquet getHostedPaquet(String id) {
-		myDataLock.lock();
-		try {
-			return myData.get(id);
-		}
-		finally {
-			myDataLock.unlock();
-		}
-	} 
+	public static void printHostedDataList(){
+    for(String s : myData.keySet())
+      Utilitaires.out(s,1,true);
+  }
+  
+  public static Paquet getHostedPaquet(String id) {
+    myDataLock.lock();
+    try {
+      Paquet res = myData.get(id);
+      if(res!=null)
+        return res;
+      else{
+        Utilitaires.out("Le paquet n'est pas prÃ©sent sur le serveur");
+        return null;
+      }
+    }
+    finally {
+      myDataLock.unlock();
+    }
+  } 
 
-	public static Paquet removeTemporarlyPaquet(String id) {
-		myDataLock.lock();
-		try {
-			if (myData.containsKey(id)) {
-				return myData.remove(id);
-			}
-			else {
-				return null;
-			}
-		}
-		finally {
-			myDataLock.unlock();
-		}
-	}
+  public static Paquet removeTemporarlyPaquet(String id) {
+    myDataLock.lock();
+    try {
+      if (myData.containsKey(id)) {
+        Paquet temp = myData.get(id);
+        myData.remove(id);
+        //Utilitaires.out("Paquet choisi pour l'envoi : " +temp.idGlobal);
+        return temp;
+      }
+      else {
+        Utilitaires.out("Paquet non trouvÃ©.");
+        return null;
+      }
+    }
+    finally {
+      myDataLock.unlock();
+    }
+  }
 
 	public static void putNewPaquet(Paquet p) {
 		myDataLock.lock();
@@ -451,5 +567,12 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
+	
+	 public static void addPaquetToMyData(String idGlobal, Paquet paquet) {
+	    myDataLock.lock();
+	    myData.put(idGlobal, paquet);
+	    myDataLock.unlock();
+	    
+	  }
 
 }
