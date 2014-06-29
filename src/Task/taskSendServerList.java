@@ -36,8 +36,6 @@ public class taskSendServerList implements Runnable {
 				message += Message.END_ENVOI;
 				continuer = false;
 			}
-			else
-				message += Message.NEXT_BUFFER;
 			
 			try {
 				s.write(Utilitaires.stringToBuffer(message));
