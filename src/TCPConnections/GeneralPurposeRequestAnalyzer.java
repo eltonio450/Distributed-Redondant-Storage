@@ -132,6 +132,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket), 20);
 			}
 
+			else if(token.equals(Message.AskForPaquet)){
+        r.socket.configureBlocking(true);
+        aEnlever.add(r);
+        Slaver.giveTask(new Task.taskServeurGiveOnePaquet(r.socket), 20);
+      }
 
 			else if (token.equals(Message.IS_DEAD)) {
 				if (scan.hasNext()) {

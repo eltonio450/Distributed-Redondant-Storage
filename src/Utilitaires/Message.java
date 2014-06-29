@@ -19,6 +19,7 @@ public class Message {
 		public static int BUFFER_LENGTH = 1000 ;
 		public static final String DEMANDE_ID = "id_please#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";
+    public static final String AskForPaquet = "I_can_take";
 		public static String ANNULE_ENVOI = "stop#" ;
 		public static String DO_NOT_ACCEPT = "non#" ;
 		public static String OK = "ok#" ;
