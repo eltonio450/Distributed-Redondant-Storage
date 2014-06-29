@@ -22,7 +22,7 @@ public class taskServeurExchange implements Runnable {
   }
   
   public void recoitPaquet() throws IOException{
-    
+	  //Utilitaires.out("Recu depuis celui qui doit recevoir",1,true);
     socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
@@ -32,10 +32,13 @@ public class taskServeurExchange implements Runnable {
     
 
     if(Donnees.acceptePaquet(s)){
+    	Utilitaires.out("J'accepte de recevoir le paquet que tu me propores.",1,true);
       buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE) ;
       socket.write(buffer) ;
-    
-      Paquet receivedPaquet = Paquet.recoitPaquet(socket) ;
+      //Utilitaires.out("J'ai accepté d'échanger ce paquet",1,true);
+      
+      Paquet receivedPaquet = Paquet.recoitPaquetReellement(socket) ;
+      Utilitaires.out("J'ai bien reçu le paquet que tu me proposais",1,true);
       Donnees.receptionPaquet(receivedPaquet);
       
       Paquet sentPaquet = envoitPaquet() ;
@@ -48,6 +51,7 @@ public class taskServeurExchange implements Runnable {
   
   public Paquet envoitPaquet() throws IOException {
    
+	  
     ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
     buffer.clear() ;
     socket.read(buffer) ;
@@ -71,7 +75,7 @@ public class taskServeurExchange implements Runnable {
           buffer.flip() ;
           s = Utilitaires.buffToString(buffer) ;
           if(s.equals(Message.REPONSE_EXCHANGE)){
-            aEnvoyer.envoyerPaquet(socket);
+            aEnvoyer.envoyerPaquetReellement(socket);
             ok = true ;
           }
           else{ Donnees.putNewPaquet(aEnvoyer) ; }
@@ -92,7 +96,7 @@ public class taskServeurExchange implements Runnable {
             buffer.flip() ;
             s = Utilitaires.buffToString(buffer) ;
             if(s.equals(Message.REPONSE_EXCHANGE)){
-              aEnvoyer.envoyerPaquet(socket);
+              aEnvoyer.envoyerPaquetReellement(socket);
               ok = true ;
             }
             else{ Donnees.putNewPaquet(aEnvoyer) ; }

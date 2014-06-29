@@ -5,16 +5,16 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
 import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 
 public class Donnees {
 
@@ -35,7 +35,7 @@ public class Donnees {
 	// passage en public (cf la remarque sur le lock)
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
 
-	static private LinkedList<String> toSendASAP = new LinkedList<String>();
+	static private LinkedBlockingQueue<String> toSendASAP = new LinkedBlockingQueue<String>();
 	static public ReentrantLock toSendASAPLock = new ReentrantLock();
 	static public Condition notEmpty = toSendASAPLock.newCondition();
 
@@ -84,7 +84,7 @@ public class Donnees {
 	}
 
 	public static void receptionPaquet(Paquet p) {
-		Utilitaires.out("-------------Reception paquet--------------------");
+		//Utilitaires.out("-------------Reception paquet--------------------");
 		for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
 		  if(i != p.power){
 		    addInterestServeur(p.otherHosts.get(i)) ;
@@ -246,16 +246,20 @@ public class Donnees {
 		}
 	}
 
-	public static void addPaquetToSendAsap(String id) {
-		toSendASAPLock.lock();
+	public static void waitForSomethingInToSendASAP(){
+		
 		try {
+			toSendASAP.put(toSendASAP.take());
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void addPaquetToSendAsap(String id) {
+		
 			toSendASAP.add(id);
-			notEmpty.signalAll();
-		}
-		finally {
-			toSendASAPLock.unlock();
-		}
-		//for(String s : toSendASAP)
+			//for(String s : toSendASAP)
 			//Utilitaires.out("Paquet dans toSendASAP : " + s);
 	}
 
@@ -271,13 +275,9 @@ public class Donnees {
 	}
 
 	public static void removeToSendAsap(String id) {
-		toSendASAPLock.lock();
-		try {
-			toSendASAP.remove(id);
-		}
-		finally {
-			toSendASAPLock.unlock();
-		}
+		
+		toSendASAP.remove(id);
+		
 	}
 
 	public static LinkedList<String> chooseManyPaquetToSend1() {
@@ -317,11 +317,21 @@ public class Donnees {
 
 	}
 
+	public static void printHostedDataList(){
+		for(String s : myData.keySet())
+			Utilitaires.out(s,1,true);
+	}
 	
 	public static Paquet getHostedPaquet(String id) {
 		myDataLock.lock();
 		try {
-			return myData.get(id);
+			Paquet res = myData.get(id);
+			if(res!=null)
+				return res;
+			else{
+				Utilitaires.out("Le paquet n'est pas présent sur le serveur");
+				return null;
+			}
 		}
 		finally {
 			myDataLock.unlock();
@@ -332,9 +342,13 @@ public class Donnees {
 		myDataLock.lock();
 		try {
 			if (myData.containsKey(id)) {
-				return myData.remove(id);
+				Paquet temp = myData.get(id);
+				myData.remove(id);
+				//Utilitaires.out("Paquet choisi pour l'envoi : " +temp.idGlobal);
+				return temp;
 			}
 			else {
+				Utilitaires.out("Paquet non trouvé.");
 				return null;
 			}
 		}
@@ -444,6 +458,13 @@ public class Donnees {
 		finally {
 			allServeurLock.unlock();
 		}
+	}
+
+	public static void addPaquetToMyData(String idGlobal, Paquet paquet) {
+		myDataLock.lock();
+		myData.put(idGlobal, paquet);
+		myDataLock.unlock();
+		
 	}
 
 }

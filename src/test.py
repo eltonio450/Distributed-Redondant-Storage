@@ -21,16 +21,25 @@ os.chdir("../bin")
 os.system("java Main " + ligne +"&\n")
 #print(ligne)
 #sleep(1)
-time.sleep(1)
-
+time.sleep(3)
+#while(i<10) :
+#   i=i+1
+#   os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
+#    os.system("fuser -fk " + str(5000+4*i+2)+"/udp")
+#    os.system("fuser -fk " + str(5000+4*i)+"/tcp")
+    
+i=0
 while (i < nombreDeServeur-1) :
    
     i=i+1
     ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 127.0.0.1" + " -P 5000" 
-    os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
-    os.system("fuser -fk " + str(5000+4*i+2)+"/udp")
-    os.system("fuser -fk " + str(5000+4*i)+"/tcp")
+    #os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
+    #os.system("fuser -fk " + str(5000+4*i+2)+"/udp")
+    #os.system("fuser -fk " + str(5000+4*i)+"/tcp")
    
     os.system("java Main " + ligne +"&\n")
     #os.system("pwd")
     #print(ligne)
+    
+#time.sleep(10)
+#os.system("./kill.py")

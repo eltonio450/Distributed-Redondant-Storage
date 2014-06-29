@@ -63,7 +63,7 @@ SocketChannel socket ;
           buffer.flip() ;
           s = Utilitaires.buffToString(buffer) ;
           if(s.equals(Message.REPONSE_EXCHANGE)){
-            aEnvoyer.envoyerPaquet(socket);
+            aEnvoyer.envoyerPaquetReellement(socket);
             ok = true ;
           }
           else{ Donnees.putNewPaquet(aEnvoyer) ; }
@@ -84,7 +84,7 @@ SocketChannel socket ;
             buffer.flip() ;
             s = Utilitaires.buffToString(buffer) ;
             if(s.equals(Message.REPONSE_EXCHANGE)){
-              aEnvoyer.envoyerPaquet(socket);
+              aEnvoyer.envoyerPaquetReellement(socket);
               ok = true ;
             }
             else{ Donnees.putNewPaquet(aEnvoyer) ; }

@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 import Stockage.Donnees;
+import Stockage.Machine;
 import Stockage.Paquet;
 import Utilitaires.Global;
 import Utilitaires.Utilitaires;
@@ -79,7 +80,14 @@ public class IniDonnees {
 					Utilitaires.out("Ajout à toSendAsap",0,true);
 					Donnees.addPaquetToSendAsap(paquetsEnConstruction.get(i).idGlobal);
 					
-					
+					Donnees.addPaquetToMyData(paquetsEnConstruction.get(i).idGlobal, paquetsEnConstruction.get(i));
+					Utilitaires.out("ID global ajouté : "+paquetsEnConstruction.get(i).idGlobal,1,true);
+					for(int j = 0;j<Global.NOMBRESOUSPAQUETS;j++)
+					{
+
+						
+						paquetsEnConstruction.get(i).otherHosts.add(j,new Machine(Global.MYSELF.ipAdresse, Global.MYSELF.port));
+					}
 				}
 					
 					//.push(paquetsEnConstruction.get(i).idGlobal);

@@ -16,6 +16,7 @@ public class Message {
 		public static String GET_LIST = "GET_LIST#";
 		public static String NEW_SERVER = "NEWBROHERE#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
+		public static String ASK_FOR_UNLOCK = "ASK_FOR_UNLOCK#";
 		public static int BUFFER_LENGTH = 1000 ;
 		public static final String DEMANDE_ID = "id_please#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";

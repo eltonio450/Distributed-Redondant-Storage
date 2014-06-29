@@ -54,7 +54,7 @@ public class taskClientExchange implements Runnable {
   
   			if (s.equals(Message.REPONSE_EXCHANGE)){
   				//exchange can begin : send its package
-  				aEnvoyer.envoyerPaquet(clientSocket);
+  				aEnvoyer.envoyerPaquetReellement(clientSocket);
   
   				if(recoitPaquet(clientSocket)){
   					aEnvoyer.removePaquet();
@@ -102,7 +102,7 @@ public class taskClientExchange implements Runnable {
 				clientSocket.write(buffer) ;
 
 				//now receive the package in exchange
-				Paquet receivedPaquet = Paquet.recoitPaquet(clientSocket) ;
+				Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket) ;
 				Donnees.receptionPaquet(receivedPaquet);
 				clientSocket.close();
 				return true ;

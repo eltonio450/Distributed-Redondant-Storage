@@ -56,12 +56,22 @@ public class Utilitaires {
 		String token;
 		int i = 0;
 		boolean continuer = true;
-
+		//Utilitaires.out("Test 30",6,true);
 		while (continuer && i < Global.BUFFER_LENGTH) {
-			if (s.read(b) == -1) continuer = false;
-			if (s.socket().isClosed()) throw new IOException ();
+			if (s.read(b) == -1)
+			{ 
+				Utilitaires.out("Buffer pourri");
+				continuer = false;
+			}
+			if (s.socket().isClosed()) {
+				Utilitaires.out("Socket fermée !");
+				throw new IOException ();
+			}
 			i++;
-			s.read(b);
+			//Utilitaires.out("Test 31",6,true);
+			//Utilitaires.out(finalWords[0],6,true);
+			//Utilitaires.out("Test 31",6,true);
+			//s.read(b);
 			b.flip();
 			m = buffToString(b);
 
@@ -79,8 +89,11 @@ public class Utilitaires {
 					}
 				}
 			}
+			//Utilitaires.out(Boolean.valueOf(continuer).toString(),6,true);
 			sc.close();
+			//Utilitaires.out(Boolean.valueOf(continuer).toString(),6,true);
 		}
+		
 		return retour;
 	}
 	
@@ -121,10 +134,17 @@ public class Utilitaires {
 				
 				
 		}
-		sortie+="mServeur "+ Global.TCP_PORT+ " : " + s +"\033[0m";
+		sortie+="mServeur "+ Global.TCP_PORT+ " : " + s +"\033[0m\n";
 		
 			
-		System.out.println(sortie);
+		try {
+			Thread.sleep((int) Math.abs(Math.random()*20));
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.print(sortie);
 	}
 
 }

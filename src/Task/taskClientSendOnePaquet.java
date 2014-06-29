@@ -56,7 +56,7 @@ public class taskClientSendOnePaquet implements Runnable {
   
         if (s.equals(Message.REPONSE_EXCHANGE)){
           //exchange can begin : send its package
-          aEnvoyer.envoyerPaquet(clientSocket);
+          aEnvoyer.envoyerPaquetReellement(clientSocket);
           clientSocket.close();
           return true ;
         }
