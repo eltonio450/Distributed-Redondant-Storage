@@ -10,17 +10,18 @@ public class Message {
 		public static String REPONSE_EXCHANGE = "ok_exchange#" ;
 		public static String FAIL ="fail#";
 		public static String MONITOR = "monitor#";
-		public static String END_ENVOI = "fin#" ;
+		public static String END_ENVOI = "FIN#" ;
 		public static String NEXT_BUFFER = "NEXT#";
 		public static String BEGIN = "BEGIN#";
 		public static String GET_LIST = "GET_LIST#";
-		public static String NEW_SERVER = "NEWBROHERE#";
+		public static String NEW_SERVER = "NEW_SERVER#";
 		public static String ASK_FOR_LOCK = "ASK_FOR_LOCK#";
 		public static String ASK_FOR_UNLOCK = "ASK_FOR_UNLOCK#";
 		public static int BUFFER_LENGTH = 1000 ;
 		public static final String DEMANDE_ID = "id_please#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";
     public static final String AskForPaquet = "I_can_take";
+    public static final String GiveMeMyPaquet = "give_my_paquet";
 		public static String ANNULE_ENVOI = "stop#" ;
 		public static String DO_NOT_ACCEPT = "non#" ;
 		public static String OK = "ok#" ;
@@ -28,12 +29,12 @@ public class Message {
 		public static String SendOne = "sendOnePaquet" ;
 		
 		//PR
-		public static String PREFIXE_BONJOUR = "WESH#";
-		public static String PREFIXE_REPONSE_BONJOUR = "YO#";
+		public static String PREFIXE_BONJOUR = "PING#";
+		public static String PREFIXE_REPONSE_BONJOUR = "RPING#";
 		public static String SELF_WAKE_UP = "DEBOUT#";
-		public static String VERIFY_DEATH = "YOUDEADBRO?#";
-		public static String NOT_DEAD = "NOPE#";
-		public static String IS_DEAD = "ILESTMORT#";
+		public static String VERIFY_DEATH = "VERIFY_DEATH?#";
+		public static String NOT_DEAD = "IMNOTDEAD!#";
+		public static String IS_DEAD = "DEATH#";
 		
 		public String body;
 		public InetSocketAddress dest;

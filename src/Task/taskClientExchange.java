@@ -31,7 +31,7 @@ public class taskClientExchange implements Runnable {
 			clientSocket.bind(local); 
 			InetSocketAddress remote = new InetSocketAddress(correspondant.ipAdresse, correspondant.port); 
 			clientSocket.connect(remote); 
-
+			
 			//ask to exchange
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.EXCHANGE) ;
 			clientSocket.write(buffer) ;
