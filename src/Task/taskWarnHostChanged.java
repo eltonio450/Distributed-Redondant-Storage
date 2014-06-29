@@ -56,12 +56,13 @@ public class taskWarnHostChanged implements Runnable {
             String s = id +" " + placeToModify + " " + Message.END_ENVOI ;
             buffer = Utilitaires.stringToBuffer(s) ;
             clientSocket.write(buffer) ; 
-            //Utilitaires.out("Envoy� : " + s) ;
+            //Utilitaires.out("Envoy� : " + s + " a : " + m.toString()) ;
           }
           
         }
         catch(IOException e){
           //TODO : on a pas pu pr�venir m !
+          //Utilitaires.out("echec") ;
         }
       }
     }

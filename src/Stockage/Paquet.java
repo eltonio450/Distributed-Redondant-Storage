@@ -124,11 +124,12 @@ public class Paquet {
 	public ByteBuffer createBufferForPaquetInformation() {
 		//create a buffer and flip it at the end
 	  
-		String s = idMachine + " " + owner.ipAdresse + " " + owner.port + " " + Message.END_ENVOI;
+		String s = idMachine + " " + owner.ipAdresse + " " + owner.port;
 		for (int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i++){
 			Machine m = otherHosts.get(i) ;
 			s = s + " " + m.ipAdresse + " " + m.port ;
 		}
+		s = s + " " + Message.END_ENVOI ;
 		ByteBuffer buffer = Utilitaires.stringToBuffer(s) ;
 		return buffer;
 	}
