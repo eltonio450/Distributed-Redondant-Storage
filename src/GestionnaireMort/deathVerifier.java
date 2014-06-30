@@ -50,8 +50,8 @@ public class deathVerifier implements Runnable {
 			return true;
 		}
 		catch (IOException e) {
-			Utilitaires.out("Erreur dans le death verifier", 4, true);
-			e.printStackTrace();
+			Utilitaires.out(m.port + " est mort.");
+			return true;
 		}
 		return mort;
 	}

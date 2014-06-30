@@ -27,17 +27,17 @@ import Utilitaires.Utilitaires;
  */
 public class Paquet {
 
-  /**
-   * L'identifiant unique correspondant a un paquet
-   */
+	/**
+	 * L'identifiant unique correspondant a un paquet
+	 */
 	public String idGlobal;
-	
+
 	/**
 	 * Un numero unique mais seulement du point de vue du proprietaire.
 	 * Il correspond a sa position lorsque les donnees du proprietaires sont decoupees en paquets
 	 */
 	public int idMachine;
-	
+
 	/**
 	 * La position du paquet parmi le groupe de paquet dont il fait partie.
 	 */
@@ -70,9 +70,9 @@ public class Paquet {
 	// l'information
 
 	public boolean lockLogique = false; // défini si le paquet peut-être
-										// déplacé. Attention : différent d'un
-										// Lock : locked peut-être modifié par
-										// n'importe quel Thread.
+	// déplacé. Attention : différent d'un
+	// Lock : locked peut-être modifié par
+	// n'importe quel Thread.
 	// public boolean isAskingTheLock = false;
 
 	// Lock lockHasAsked = new ReentrantLock();
@@ -142,7 +142,7 @@ public class Paquet {
 		// envoie d'abord les informations
 
 		ByteBuffer buffer = createBufferForPaquetInformation(); // already
-																// flipped
+		// flipped
 		s.write(buffer);
 		//Utilitaires.out("Buffer du paquet bien envoyé.", 1, true);
 		isUsed.lock();
@@ -194,7 +194,7 @@ public class Paquet {
 		// Utilitaires.out("Test 4",6,true);
 		Paquet paq = new Paquet(id, owner);
 		paq.putOtherHosts(hosts);
-		
+
 		scan.close();
 		return paq;
 	}
@@ -260,17 +260,17 @@ public class Paquet {
 			i++;
 		}
 		switch (resultat) {
-			case 0:
-				unlock();
-				toUnlock.clear();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
-				return true;
-			default:
-				
-				spreadUnlock();
-				toUnlock.clear();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
-				return false;
+		case 0:
+			unlock();
+			toUnlock.clear();
+			Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+			return true;
+		default:
+
+			spreadUnlock();
+			toUnlock.clear();
+			Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
+			return false;
 		}
 
 	}
@@ -298,17 +298,17 @@ public class Paquet {
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
-			
+
 			//clientSocket.configureBlocking(true);
 			//Utilitaires.out("Test 2", 6, true);
-	
+
 			if(!clientSocket.connect(remote))
 				Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
 			// 
 			// Etape 2 : Envoie du pré-Lock
-			
+
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
-		
+
 			clientSocket.write(buffer);
 
 			//Thread.sleep(1000);
@@ -343,7 +343,7 @@ public class Paquet {
 				Utilitaires.out("Gros bug : lock impossible !");
 				return 2;
 			}
-			
+
 
 		}
 		catch (Exception e) {
@@ -352,7 +352,7 @@ public class Paquet {
 			return 3;
 		}
 		finally{
-			
+
 		}
 	}
 
@@ -384,15 +384,15 @@ public class Paquet {
 		}
 		spreadUnlockLock.unlock();
 		switch (resultat) {
-			case 0:
-				unlock();
-				toUnlock.clear();
-				//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
-				break;
-			default:
-				unlock();
-				toUnlock.clear();
-				break;
+		case 0:
+			unlock();
+			toUnlock.clear();
+			//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
+			break;
+		default:
+			unlock();
+			toUnlock.clear();
+			break;
 		}
 
 	}
@@ -407,31 +407,31 @@ public class Paquet {
 	public int askForUnlock(Machine m, String idGlobal) {
 		try {
 
-			
+
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
 			Utilitaires.out("Envoi de la demande de unlock pour " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
-			
+
 			//clientSocket.configureBlocking(true);
 			//Utilitaires.out("Test 2", 6, true);
-	
+
 			if(!clientSocket.connect(remote))
 				Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
 			// 
 			// Etape 2 : Envoie du pré-Lock
-			
+
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_UNLOCK);
-		
+
 			clientSocket.write(buffer);
 
 			//Thread.sleep(1000);
 
-			
+
 			buffer.clear();
-			
+
 			clientSocket.read(buffer);
 			buffer.flip();
 			//Utilitaires.out("Iciiiiiiiiiiiii"+Utilitaires.buffToString(buffer));
