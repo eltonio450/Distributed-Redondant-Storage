@@ -249,14 +249,15 @@ public class Paquet {
 		lock();
 		// isAskingTheLock = true;
 		int resultat = 0;
-		int i = 0;
+		Integer i = 0;
 		// int j = idGlobal-idInterne;
 		Utilitaires.out("Demande de lock formulée par " + idGlobal, 5, true);
 		while (i < Global.NOMBRESOUSPAQUETS) {
 
 			if (i != idInterne && resultat == 0) {
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
-				if (resultat == 0)
+				//if (resultat == 0)
+					Utilitaires.out("Ajout à la liste de ceux qu'il faut enlever : " +i);
 					toUnlock.add(i);
 			}
 			i++;
@@ -264,13 +265,11 @@ public class Paquet {
 		switch (resultat) {
 			case 0:
 				unlock();
-				toUnlock.clear();
 				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
 				
 				spreadUnlock();
-				toUnlock.clear();
 				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
 				return false;
 		}
@@ -376,10 +375,15 @@ public class Paquet {
 
 		// int j = idGlobal-idInterne;
 		Utilitaires.out("Demande de unlock formulée par " + idGlobal, 5, true);
+		
 		spreadUnlockLock.lock();
+		Utilitaires.out("Plap ! "+toUnlock.size());
+		
 		for (Integer i : toUnlock) {
+			Utilitaires.out("Youhou !");
 			Utilitaires.out("Demande de unlock formulée par " + idGlobal +" numero " + i, 5, true);
 			if (i != idInterne && resultat == 0) {
+				Utilitaires.out("Youhou ! et i : " +i);
 				resultat = askForUnlock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i));
 
 			}

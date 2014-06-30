@@ -2,7 +2,7 @@
 
 import os
 import time
-nombreDeServeur = 2
+nombreDeServeur = 5
 i = 0
 
 #os.system("killall java")

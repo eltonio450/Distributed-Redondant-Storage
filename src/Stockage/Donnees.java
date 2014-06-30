@@ -321,7 +321,10 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			int n = (int) (Math.random() * (double) allServeur.size());
-			return allServeur.get(n);
+			
+			Machine m = allServeur.get(n);
+			Utilitaires.out("I choose : " + n + " " + m.toString());
+			return m ;
 		}
 		finally {
 			allServeurLock.unlock();
@@ -737,19 +740,19 @@ public class Donnees {
 	}
 
 	public static void printMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		/*Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
 		for (Paquet p : myData.values()) {
 			Utilitaires.out("Paquet : " + p.idGlobal);
-		}
+		}*/
 
 	}
 
 	public static void printUnlockedInMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		/*Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
 		for (Paquet p : myData.values()) {
 			if (!p.lockLogique)
 				Utilitaires.out("Paquet : " + p.idGlobal);
 		}
-
+*/
 	}
 }

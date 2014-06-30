@@ -57,9 +57,9 @@ public class taskLockPacket implements Runnable {
 			//Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
-			Utilitaires.out("Test 1");
+			//Utilitaires.out("Test 1");
 			if (Donnees.getHostedPaquet(id)!=null){
-				Utilitaires.out("Test 2");
+				//Utilitaires.out("Test 2");
 				if(!Donnees.getHostedPaquet(id).lockLogique){
 					Donnees.getHostedPaquet(id).lock();
 					b = Utilitaires.stringToBuffer(Message.OK);
