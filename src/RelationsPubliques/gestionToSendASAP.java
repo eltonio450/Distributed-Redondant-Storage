@@ -11,7 +11,7 @@ public class gestionToSendASAP extends Thread {
   	    
           Donnees.waitForSomethingInToSendASAP();
           try {
-			Thread.sleep((int)(Math.abs(Math.random())*(double)30000));
+			Thread.sleep((int)(Math.abs(Math.random())*(double)10000));
 			Utilitaires.out("Coucou");
 		}
 		catch (InterruptedException e) {

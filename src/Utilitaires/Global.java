@@ -15,7 +15,7 @@ public class Global {
 	
 	// Relations Publiques
 	
-	public static long TIMEOUT = 60000;
+	public static long TIMEOUT = 3000;
 	public static int SLEEPTIME = 40000;
 	public static int NOMBRESOUSPAQUETS = 5;
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;

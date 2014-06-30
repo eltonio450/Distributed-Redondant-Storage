@@ -77,6 +77,7 @@ public class taskDumpToMachine implements Runnable {
 							else
 							{
 								Donnees.putNewPaquet(aEnvoyer);
+							
 								aEnvoyer.spreadUnlock();
 							}
 							
@@ -197,11 +198,12 @@ public class taskDumpToMachine implements Runnable {
 			Utilitaires.out("J'ai fini de te l'envoyer réellement, maintenant à toi !", 1, true);
 			// Utilitaires.out("J'ai fini d'envoyer le paquet");
 			buffer.clear();
+			Utilitaires.out("Test 1");
 			clientSocket.read(buffer);
-			// Utilitaires.out("Test 2");
+			Utilitaires.out("Test 2");
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			// Utilitaires.out("Message reçu : " +s,1,true);
+			Utilitaires.out("Message reçu : " +s,1,true);
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
 				Utilitaires.out("Test 2");
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
@@ -212,12 +214,12 @@ public class taskDumpToMachine implements Runnable {
 				s = Utilitaires.buffToString(buffer);
 			}
 			if (s.equals(Message.ANNULE_ENVOI)) {
-				// Utilitaires.out("Test 3");
+				Utilitaires.out("Test 3");
 				clientSocket.close();
 				return false;
 			}
 			else {
-				//Utilitaires.out("Test 4");
+				Utilitaires.out("Test 4");
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 

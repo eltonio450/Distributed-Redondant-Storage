@@ -2,6 +2,7 @@ package Task;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ public class taskWarnHostChanged implements Runnable {
 	public void run() {
 		// Utilitaires.out("-------------task warn host changed--------------------");
 		prevenirHostChanged(ID);
+		Utilitaires.out("La je préviens les autres pour "+ID);
 		Donnees.getHostedPaquet(ID).unlock();
 	}
 
@@ -106,6 +108,7 @@ public class taskWarnHostChanged implements Runnable {
 			catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 
 		}
 	}

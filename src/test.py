@@ -2,7 +2,7 @@
 
 import os
 import time
-nombreDeServeur = 3
+nombreDeServeur = 5
 i = 0
 
 #os.system("killall java")
@@ -15,13 +15,13 @@ i = 0
 #Le premier serveur est une tete du serveur.
 os.system("fuser -fk " + str(5000)+"/tcp")
 os.system("fuser -fk " + str(5000)+"/udp")
-time.sleep(0.1)
+#time.sleep(3)
 ligne = " -d " + str(0) + " -p " + str(5000) + " -t "
 os.chdir("../bin")
 os.system("java Main " + ligne +"&\n")
 #print(ligne)
-#sleep(1)
 time.sleep(1)
+
 #while(i<10) :
 #   i=i+1
 #   os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
@@ -30,7 +30,7 @@ time.sleep(1)
     
 i=0
 while (i < nombreDeServeur-1) :
-   
+    time.sleep(1)
     i=i+1
     ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 127.0.0.1" + " -P 5000" 
     #os.system("fuser -fk " + str(5000+4*i+1)+"/udp")

@@ -51,10 +51,10 @@ public class taskUnlockPacket implements Runnable {
 			//Utilitaires.out("Test 237");
 			Scanner scan = new Scanner(temp);
 			id = scan.next();
-			System.out.println("C'est l'ID récupéré :"+id);
+			//System.out.println("C'est l'ID récupéré :"+id);
 
 			b.clear();
-			Utilitaires.out("Attention préparation de l'unlock de "+id);
+			//Utilitaires.out("Attention préparation de l'unlock de "+id);
 			
 			Donnees.printMyData();
 			Donnees.printUnlockedInMyData();

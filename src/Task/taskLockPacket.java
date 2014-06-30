@@ -57,18 +57,23 @@ public class taskLockPacket implements Runnable {
 			//Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
-			//Utilitaires.out("Test 1");
-			if (Donnees.getHostedPaquet(id)!=null && !Donnees.getHostedPaquet(id).lockLogique){
-				//Utilitaires.out("Test 2");
-				// (!Donnees.getHostedPaquet(id).isAskingTheLock   
-					//|| power > Donnees.getHostedPaquet(id).idInterne) &&  {
-				//Utilitaires.out("Test 8"+power,4,true);
-				Donnees.getHostedPaquet(id).lock();
-				//Utilitaires.out("Demande de lock acceptée.",4,true);
-				//Utilitaires.out("Test 3");
-				b = Utilitaires.stringToBuffer(Message.OK);
-				s.write(b);
-				//Utilitaires.out("Test 4");
+			Utilitaires.out("Test 1");
+			if (Donnees.getHostedPaquet(id)!=null){
+				Utilitaires.out("Test 2");
+				if(!Donnees.getHostedPaquet(id).lockLogique){
+					Donnees.getHostedPaquet(id).lock();
+					b = Utilitaires.stringToBuffer(Message.OK);
+					s.write(b);
+				
+				}
+				else{
+					Utilitaires.out("Mais il est déjà locké !.",4,true);
+					b = Utilitaires.stringToBuffer(Message.FAIL);
+					s.write(b);
+					
+				}
+			
+				
 			}
 			else {
 				Utilitaires.out("Je refuse de donner le lock.",4,true);
