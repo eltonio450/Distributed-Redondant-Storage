@@ -1,6 +1,7 @@
 package Task;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -33,7 +34,7 @@ public class taskDumpToMachine implements Runnable {
 			// Utilitaires.out("Test 0");
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
-					// Utilitaires.out("Test 1");
+					//Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;
 
@@ -42,7 +43,7 @@ public class taskDumpToMachine implements Runnable {
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
+							//Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
 							if (aEnvoyer.askForlock()) {
 								SocketChannel socket = init(m);
 								if (socket != null) {
@@ -123,12 +124,19 @@ public class taskDumpToMachine implements Runnable {
 			// + correspondant.port);
 			return (clientSocket);
 		}
+		catch(ConnectException e){
+			Donnees.printServerList();
+			Utilitaires.out("Blahhh "+ correspondant.toString());
+				e.printStackTrace();
+				return null;
+			}
+
 		catch (IOException e) {
 			Utilitaires.out("Problème dans l'initialisation de la socket pour échanger un paquet avec " + correspondant.port);
 			e.printStackTrace();
-			return null;
-
-		}
+			return null;}
+		
+		
 	}
 
 	public boolean envoiePaquet(Paquet aEnvoyer, Machine correspondant, SocketChannel clientSocket) {

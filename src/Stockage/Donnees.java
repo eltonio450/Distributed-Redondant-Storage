@@ -323,7 +323,10 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			int n = (int) (Math.random() * (double) allServeur.size());
-			return allServeur.get(n);
+			
+			Machine m = allServeur.get(n);
+			Utilitaires.out("I choose : " + n + " " + m.toString());
+			return m ;
 		}
 		finally {
 			allServeurLock.unlock();
@@ -578,8 +581,13 @@ public class Donnees {
 	}
 
 	/**
+<<<<<<< HEAD
+	 * Ajoute ce paquet a myData.
+	 * Gere la concurrence
+=======
 	 * Ajoute ce paquet � myData. Gere la concurrence
 	 * 
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 	 * @param p
 	 *            Le paquet
 	 */
@@ -596,7 +604,7 @@ public class Donnees {
 	}
 
 	/**
-	 * Recupere, si possible, ses propres donn�es et les ajoute dans myData
+	 * Recupere, si possible, ses propres donnees et les ajoute dans myData
 	 */
 	public static void recupereMyOwnData() {
 		for (String id : myHosts.keySet()) {
@@ -668,7 +676,11 @@ public class Donnees {
 	 * interestServeur.
 	 * 
 	 * @param p
+<<<<<<< HEAD
+	 *       Le paquet a supprimer
+=======
 	 *            Le paquet � supprimer
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 	 */
 	public static void removePaquet(Paquet p) {
 		myDataLock.lock();
@@ -688,8 +700,7 @@ public class Donnees {
 			myDataLock.unlock();
 			toSendASAPLock.unlock();
 			interestServeurLock.unlock();
-
-		}
+			}
 	}
 
 	public static void fillingServers(boolean flag) {
@@ -736,14 +747,14 @@ public class Donnees {
 
 	public static void printMyData() {
 		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for (Paquet p : myData.values()) {
+		for (Paquet p : myData.values()) 
 			Utilitaires.out("Paquet : " + p.idGlobal);
-		}
+		
 
 	}
 
 	public static void printUnlockedInMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+	Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
 		for (Paquet p : myData.values()) {
 			if (!p.lockLogique)
 				Utilitaires.out("Paquet : " + p.idGlobal);
