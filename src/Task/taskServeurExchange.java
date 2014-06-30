@@ -82,7 +82,6 @@ public class taskServeurExchange implements Runnable {
 						aEnvoyer.envoyerPaquetReellement(socket);
 						ok = true;
 					}
-					
 					else {
 						Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
@@ -90,7 +89,8 @@ public class taskServeurExchange implements Runnable {
 					}
 				}
 				else if(aEnvoyer !=null)
-				{
+				{ 
+				  Donnees.putNewPaquet(aEnvoyer);
 					aEnvoyer.spreadUnlock();
 					aEnvoyer = null;
 				}
@@ -121,6 +121,7 @@ public class taskServeurExchange implements Runnable {
 					}
 					else if(aEnvoyer !=null)
 					{
+					  Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
 						aEnvoyer = null;
 					}

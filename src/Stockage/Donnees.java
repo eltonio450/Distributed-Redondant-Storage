@@ -97,7 +97,8 @@ public class Donnees {
 	static private boolean filling = true;
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
-
+	static public int nombreDeLocks;
+	
 	/**
 	 * La liste des paquets dont je suis proprietaire.
 	 * On stocke seulement l'identifiant des paquets.
@@ -183,7 +184,7 @@ public class Donnees {
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
 		
-		//p.spreadUnlock();
+		//p.unlock();
 		//Utilitaires.out("fin reception");
 		
 	}
@@ -504,19 +505,28 @@ public class Donnees {
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
-		myDataLock.lock();
-		Paquet temp;
-		try {
-			temp = myData.get(id);
-			if(temp!=null)
-				;//Utilitaires.out("Le paquet "+id+"est bien présent chez moi.",1,true);
-			else
-				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+    myDataLock.lock();
+    Paquet temp = null;
+    try {
+      if(myData.containsKey(id))
+        return myData.get(id);
+      else
+      {
+        Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+        return null;
+				
+			}
+		}
+		catch(Exception e){
+			//e.printStackTrace();
+			
 		}
 		finally {
 			myDataLock.unlock();
+			return temp;
+			
 		}
-		return temp;
+		
 	} 
 
 	/**
@@ -684,5 +694,22 @@ public class Donnees {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void printMyData() {
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for(Paquet p : myData.values()){
+			Utilitaires.out("Paquet : " +p.idGlobal);
+		}
+		
+	}
+	
+	public static void printUnlockedInMyData() {
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for(Paquet p : myData.values()){
+			if(!p.lockLogique)
+				Utilitaires.out("Paquet : " +p.idGlobal);
+		}
+		
 	}
 }
