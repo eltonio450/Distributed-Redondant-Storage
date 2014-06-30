@@ -148,7 +148,7 @@ public class Paquet {
 		ByteBuffer buffer = createBufferForPaquetInformation(); // already
 																// flipped
 		s.write(buffer);
-		Utilitaires.out("Buffer du paquet bien envoyé.", 1, true);
+		//Utilitaires.out("Buffer du paquet bien envoyé.", 1, true);
 		isUsed.lock();
 		try {
 			fichier.transferTo(0, Global.PAQUET_SIZE, s);

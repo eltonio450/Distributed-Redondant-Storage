@@ -14,9 +14,10 @@ public class Global {
   public static int BUFFER_LENGTH = 1000 ;
 	
 	// Relations Publiques
-	
+
 	public static long TIMEOUT = 3000;
-	public static int SLEEPTIME = 40000;
+	public static int SLEEPTIME = 10000;
+
 	public static int NOMBRESOUSPAQUETS = 5;
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
 	public static long MAXIMUM_SIZE = 500000000000L ;  //TODO : set a reasonable size
@@ -26,7 +27,7 @@ public class Global {
 	public static final long TIME_TO_SLEEP_Dumping = 500; //TODO 
 
 	// GestionnaireMort
-	public static int DEATH_TIMEOUT = 10000;
+	public static int DEATH_TIMEOUT = 60000;
 	public static long SOCKET_TIMEOUT = 30000;
 
 	//RP de debug

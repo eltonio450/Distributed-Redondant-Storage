@@ -530,21 +530,17 @@ public class Donnees {
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
-		// Utilitaires.out("Je suis arrivé dans la fonction !");
+
 		myDataLock.lock();
-		// Utilitaires.out("Oui j'ai locké !");
 		Paquet temp = null;
 		try {
-			if (myData.containsKey(id)) {
-				// Utilitaires.out("Oui je le contiens !");
-				temp = myData.get(id);
-				return temp;
-			}
+			if (myData.containsKey(id))
+				return myData.get(id);
 			else {
-				// Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+				Utilitaires.out("Le paquet " + id + " n'est pas présent chez moi.", 1, true);
 				return null;
-
 			}
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -556,7 +552,6 @@ public class Donnees {
 			// Utilitaires.out("Et je ne suis pas ressorti.");
 
 		}
-
 	}
 
 	/**
