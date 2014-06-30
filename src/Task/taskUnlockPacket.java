@@ -41,13 +41,13 @@ public class taskUnlockPacket implements Runnable {
 			s.write(b);
 			
 			b.clear();
-			//Utilitaires.out("Test 235");
+
 			s.read(b);
-			//Utilitaires.out("Test 236");
+
 			b.flip();
 			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
 			temp = Utilitaires.buffToString(b);
-			//Utilitaires.out("Test 237");
+
 			Scanner scan = new Scanner(temp);
 			id = scan.next();
 			//System.out.println("C'est l'ID récupéré :"+id);
@@ -57,7 +57,8 @@ public class taskUnlockPacket implements Runnable {
 			
 			Donnees.printMyData();
 			Donnees.printUnlockedInMyData();
-			Donnees.getHostedPaquet(id).unlock();
+			if(Donnees.getHostedPaquet(id)!=null)
+				Donnees.getHostedPaquet(id).unlock();
 				
 			scan.close();
 			s.close();
@@ -66,6 +67,7 @@ public class taskUnlockPacket implements Runnable {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 
 	}
 

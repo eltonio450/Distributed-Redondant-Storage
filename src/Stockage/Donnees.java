@@ -738,19 +738,19 @@ public class Donnees {
 	}
 
 	public static void printMyData() {
-		/*Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for (Paquet p : myData.values()) {
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for (Paquet p : myData.values()) 
 			Utilitaires.out("Paquet : " + p.idGlobal);
-		}*/
+		
 
 	}
 
 	public static void printUnlockedInMyData() {
-		/*Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+	Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
 		for (Paquet p : myData.values()) {
 			if (!p.lockLogique)
 				Utilitaires.out("Paquet : " + p.idGlobal);
 		}
-*/
+
 	}
 }

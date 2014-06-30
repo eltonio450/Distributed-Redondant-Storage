@@ -34,7 +34,7 @@ public class taskDumpToMachine implements Runnable {
 			// Utilitaires.out("Test 0");
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
-					Utilitaires.out("I choose machine " + m.toString());
+					//Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;
 
@@ -43,7 +43,7 @@ public class taskDumpToMachine implements Runnable {
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
+							//Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
 							if (aEnvoyer.askForlock()) {
 								SocketChannel socket = init(m);
 								if (socket != null) {

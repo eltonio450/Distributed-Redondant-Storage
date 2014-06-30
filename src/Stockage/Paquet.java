@@ -264,12 +264,12 @@ public class Paquet {
 
 			case 0:
 				unlock();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
 				
 				spreadUnlock();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
+				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
 				return false;
 
 		}
@@ -295,7 +295,7 @@ public class Paquet {
 		try{
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
-			Utilitaires.out("Envoi de la demande de lock à " + idGlobal, 6, true);
+			//Utilitaires.out("Envoi de la demande de lock à " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
