@@ -34,7 +34,6 @@ public class taskLockPacket implements Runnable {
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
 
-		String temp;
 		String id;
 		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
@@ -82,6 +81,7 @@ public class taskLockPacket implements Runnable {
 			}
 
 			s.close();
+			scan.close();
 
 		}
 		catch (IOException e) {

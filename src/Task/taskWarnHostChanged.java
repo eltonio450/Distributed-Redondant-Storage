@@ -2,10 +2,8 @@ package Task;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -107,6 +105,9 @@ public class taskWarnHostChanged implements Runnable {
 			}
 			catch (IOException e) {
 				e.printStackTrace();
+			}
+			finally {
+				scan.close();
 			}
 			
 

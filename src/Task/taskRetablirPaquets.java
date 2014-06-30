@@ -30,12 +30,12 @@ public class taskRetablirPaquets implements Runnable {
 
 
 	public taskRetablirPaquets (Paquet f, int num) {
-		frere = f;
-		numeroMort = num;
+		this.frere = f;
+		this.numeroMort = num;
 		for(int i = 0; i<Global.NOMBRESOUSPAQUETS;i++)
 			b[i] = ByteBuffer.allocate((int) (Global.PAQUET_SIZE+3));
 
-		Paquet reconstruit = new Paquet(frere.idMachine-frere.idInterne+numeroMort,frere.owner);
+		this.reconstruit = new Paquet(frere.idMachine-frere.idInterne+numeroMort,frere.owner);
 
 	}
 
@@ -80,7 +80,7 @@ public class taskRetablirPaquets implements Runnable {
 				}
 			}
 		}
-		
+
 		try {
 			frere.fichier.read(b[frere.idInterne]);
 		}
@@ -89,12 +89,12 @@ public class taskRetablirPaquets implements Runnable {
 			e1.printStackTrace();
 		}
 		frere.remettrePositionZero();
-		
-		
+
+
 		for(int j = 0;j<Global.PAQUET_SIZE;j++)
 		{
 
-			
+
 			b[reconstruit.idInterne].clear();
 
 			if(numeroMort>=Global.NOMBRESOUSPAQUETSSIGNIFICATIFS)
@@ -135,5 +135,5 @@ public class taskRetablirPaquets implements Runnable {
 
 
 
-	
+
 }

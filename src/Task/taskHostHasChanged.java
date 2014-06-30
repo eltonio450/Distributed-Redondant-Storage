@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import Stockage.Donnees;
 import Stockage.Machine;
-import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
@@ -49,6 +48,7 @@ public class taskHostHasChanged implements Runnable {
 			}
 			
 			socket.close();
+			scan.close();
 		}
 		catch(Exception e){
 			e.printStackTrace();

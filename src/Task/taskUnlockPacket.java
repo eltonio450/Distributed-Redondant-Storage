@@ -35,7 +35,6 @@ public class taskUnlockPacket implements Runnable {
 		//Utilitaires.out("L'unlock est lààààà !");
 		String temp;
 		String id;
-		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
 		//Utilitaires.out("Test 234");
 		try {
@@ -60,7 +59,7 @@ public class taskUnlockPacket implements Runnable {
 			Donnees.printUnlockedInMyData();
 			Donnees.getHostedPaquet(id).unlock();
 				
-
+			scan.close();
 			s.close();
 
 		}

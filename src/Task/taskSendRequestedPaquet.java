@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import Stockage.Donnees;
-import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
