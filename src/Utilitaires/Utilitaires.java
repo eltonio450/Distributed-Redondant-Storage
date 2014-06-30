@@ -25,7 +25,7 @@ public class Utilitaires {
 	 * 
 	 * @param b     buffer to convert (already flipped !)
 	 * @return resulting string 
-	 * Le buffer est flippé
+	 * Le buffer est flippe
 	 */
 	public static String buffToString(ByteBuffer b) {
 

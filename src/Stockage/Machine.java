@@ -3,6 +3,9 @@ package Stockage;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
+import Utilitaires.Global;
+import Utilitaires.Utilitaires;
+
 public class Machine {
 
 	public String ipAdresse ;
@@ -23,10 +26,12 @@ public class Machine {
 		return ipAdresse + "-" + port;
 	}
 	
-	public static Machine otherMachineFromSocket(SocketChannel s){
-	  String ip = s.socket().getInetAddress().toString() ;
-	  int p = s.socket().getPort();
-	  return new Machine(ip,p) ;
-	}
+	
+  public static Machine otherMachineFromSocket(SocketChannel s){
+    String ip = s.socket().getInetAddress().getHostName().toString() ;
+    int p = s.socket().getPort();
+    Utilitaires.out("IP: "+ ip + " Port : "+p);
+    return new Machine(ip,p) ;
+  }
 	
 }
