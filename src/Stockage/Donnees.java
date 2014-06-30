@@ -198,7 +198,7 @@ public class Donnees {
 	 *       Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-		Utilitaires.out("Change host !");
+		
 		myDataLock.lock();
 		interestServeurLock.lock();
 		try {
@@ -211,6 +211,10 @@ public class Donnees {
 				interestServeur.add(newHost) ;
 				myData.get(s).unlock();
 			}
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 		finally {
 			myDataLock.unlock();
@@ -552,7 +556,7 @@ public class Donnees {
 	}
 	
 	/**
-	 * Recupere, si possible, ses propres données et les ajoute dans myData
+	 * Recupere, si possible, ses propres donnï¿½es et les ajoute dans myData
 	 */
 	public static void recupereMyOwnData(){
 	  for(String id : myHosts.keySet()){

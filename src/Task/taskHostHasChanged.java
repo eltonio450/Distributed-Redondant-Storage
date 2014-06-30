@@ -27,11 +27,13 @@ public class taskHostHasChanged implements Runnable {
 	public void run() {
 		try{
 		  //Utilitaires.out("-------------------taskHostChanged-------------------") ;
-			
+			//Utilitaires.out("Change host !");
+			//Utilitaires.out("Ici il a répondu x3");
 		  Machine newHost = Machine.otherMachineFromSocket(socket) ;
+		  //Utilitaires.out("Ici il a répondu x2");
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
-		
+			//Utilitaires.out("Ici il a répondu");
 			String[] t = new String[1] ;
 			t[0] = Message.END_ENVOI ;
 			String msg = Utilitaires.getAFullMessage(t, socket);
@@ -52,7 +54,7 @@ public class taskHostHasChanged implements Runnable {
 			socket.close();
 		}
 		catch(Exception e){
-			//TODO : what can we do ???
+			e.printStackTrace();
 		}
 	}
 }

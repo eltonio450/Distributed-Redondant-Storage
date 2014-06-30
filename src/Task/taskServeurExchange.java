@@ -44,7 +44,7 @@ public class taskServeurExchange implements Runnable {
 				sentPaquet.removePaquet();
 			}
 			else {
-				Donnees.removePaquet(receivedPaquet);
+				receivedPaquet.deleteData();
 			}
 		}
 		else {
@@ -86,11 +86,13 @@ public class taskServeurExchange implements Runnable {
 					else {
 						Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
+						aEnvoyer = null;
 					}
 				}
 				else if(aEnvoyer !=null)
 				{
 					aEnvoyer.spreadUnlock();
+					aEnvoyer = null;
 				}
 			}
 
@@ -114,11 +116,13 @@ public class taskServeurExchange implements Runnable {
 						else {
 							Donnees.putNewPaquet(aEnvoyer);
 							aEnvoyer.spreadUnlock();
+							aEnvoyer = null;
 						}
 					}
 					else if(aEnvoyer !=null)
 					{
 						aEnvoyer.spreadUnlock();
+						aEnvoyer = null;
 					}
 				}
 

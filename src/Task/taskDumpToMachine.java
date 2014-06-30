@@ -41,7 +41,7 @@ public class taskDumpToMachine implements Runnable {
 
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
-						if (aEnvoyer != null) {
+						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
 							Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
 							if (aEnvoyer.askForlock()) {
 								SocketChannel socket = init(m);
@@ -204,6 +204,7 @@ public class taskDumpToMachine implements Runnable {
 				Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket);
 				receivedPaquet.lock();
 				Donnees.receptionPaquet(receivedPaquet);
+				//receivedPaquet.unlock();
 				// receivedPaquet.spreadUnlock();
 				clientSocket.close();
 				return true;

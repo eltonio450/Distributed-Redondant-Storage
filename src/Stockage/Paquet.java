@@ -220,6 +220,8 @@ public class Paquet {
 	 */
 
 	public boolean askForlock() {
+		if(lockLogique)
+			return false;
 		lock();
 		// isAskingTheLock = true;
 		int resultat = 0;
@@ -242,6 +244,7 @@ public class Paquet {
 				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
+				
 				spreadUnlock();
 				toUnlock.clear();
 				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
@@ -270,7 +273,7 @@ public class Paquet {
 		try{
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
-			//Utilitaires.out("Envoi de la demande de lock à " + m.port, 6, true);
+			Utilitaires.out("Envoi de la demande de lock à " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
@@ -284,19 +287,16 @@ public class Paquet {
 			// Etape 2 : Envoie du pré-Lock
 			
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
-			//Utilitaires.out("Ici " +Utilitaires.buffToString(buffer),1,true);
-			//Thread.sleep(1000);
-			//Utilitaires.out("Demande en cours d'envoi.",6,true);
+		
 			clientSocket.write(buffer);
-			//Utilitaires.out("Demande effectivement envoyée",6,true);
-			Thread.sleep(1000);
-			// Etpae 3 : Reception du la confirmation de la connexion
+
+			//Thread.sleep(1000);
+
 			buffer.clear();
-			//buffer.flip();
-			//Utilitaires.out("Ici " +Utilitaires.buffToString(buffer),1,true);
+
 			clientSocket.read(buffer);
 			buffer.flip();
-			//Utilitaires.out("Blhablhalbha "+Utilitaires.buffToString(buffer));
+
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)) {
 
 				//Utilitaires.out("Test 4", 6, true);
@@ -352,7 +352,7 @@ public class Paquet {
 		Utilitaires.out("Demande de unlock formulée par " + idGlobal, 5, true);
 		spreadUnlockLock.lock();
 		for (Integer i : toUnlock) {
-
+			Utilitaires.out("Demande de unlock formulée par " + idGlobal +" numero " + i, 5, true);
 			if (i != idInterne && resultat == 0) {
 				resultat = askForUnlock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i));
 				if (resultat == 0)
@@ -365,12 +365,13 @@ public class Paquet {
 			case 0:
 				unlock();
 				toUnlock.clear();
-				Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
+				//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
 				break;
 			default:
+				unlock();
 				//spreadUnlock();
 				toUnlock.clear();
-				Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a échoué.", 5, true);
+				//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a échoué.", 5, true);
 				break;
 		}
 
@@ -385,33 +386,48 @@ public class Paquet {
 
 	public int askForUnlock(Machine m, String idGlobal) {
 		String reponse = "";
-		try (SocketChannel clientSocket = SocketChannel.open()) {
+		try {
 
+			
+			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
-			Utilitaires.out("Envoi de la demande de unlock à " + m.port, 6, true);
+			Utilitaires.out("Envoi de la demande de lock pour " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
-			clientSocket.connect(remote);
-			// Utilitaires.out("Test 2", 6, true);
+			
+			//clientSocket.configureBlocking(true);
+			//Utilitaires.out("Test 2", 6, true);
+	
+			if(!clientSocket.connect(remote))
+				Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
+			// 
 			// Etape 2 : Envoie du pré-Lock
+			
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_UNLOCK);
-			// buffer.flip();
+		
 			clientSocket.write(buffer);
 
+			//Thread.sleep(1000);
+
+			
 			buffer.clear();
+			
 			clientSocket.read(buffer);
 			buffer.flip();
-			if (Utilitaires.buffToString(buffer).equals(Message.OK))
-
+			//Utilitaires.out("Iciiiiiiiiiiiii"+Utilitaires.buffToString(buffer));
+			if (Utilitaires.buffToString(buffer).equals(Message.OK)){
+				//Utilitaires.out("Youlou");
 				return 0;
+			}
 
-			else
+			else{
+				//Utilitaires.out("GRoooooooooooooos Echec");
 				return 1;
-
+			}
 		}
 		catch (Exception e) {
-			Utilitaires.out("La demande de lock a foiré");
+			Utilitaires.out("La demande de unlock a foiré");
 			e.printStackTrace();
 			return 3;
 		}

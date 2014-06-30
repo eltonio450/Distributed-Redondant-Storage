@@ -2,6 +2,7 @@
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
+import RelationsPubliques.gestionToSendASAP;
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
@@ -38,6 +39,10 @@ public class Main {
 		Utilitaires.out("Starting TCP Server.............");
 		IniTCP.iniTCP();
 		Utilitaires.out("Ok");
+		
+		Utilitaires.out("Début de toSendASAP.............");
+		(new gestionToSendASAP()).start();
+		Utilitaires.out("OK");
 
 
 
