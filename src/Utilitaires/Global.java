@@ -23,7 +23,7 @@ public class Global {
 	public static long PAQUET_SIZE = 100 ;  //TODO : set a reasonable size
 
 	// Dumping paquets in toSendASAP
-	public static final long TIME_TO_SLEEP_Dumping = 2000; //TODO 
+	public static final long TIME_TO_SLEEP_Dumping = 500; //TODO 
 
 	// GestionnaireMort
 	public static int DEATH_TIMEOUT = 10000;

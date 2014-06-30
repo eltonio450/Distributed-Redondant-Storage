@@ -46,14 +46,24 @@ public class taskDumpToMachine implements Runnable {
 							if (aEnvoyer.askForlock()) {
 								SocketChannel socket = init(m);
 								if (socket != null) {
-									// Utilitaires.out("La demande de lock a réussi pour "+aEnvoyer.idGlobal,
-									// 1, true);
 									if (!envoiePaquet(aEnvoyer, m, socket)) {
 										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString(), 1, true);
 										Donnees.putNewPaquet(aEnvoyer);
+										aEnvoyer.spreadUnlock();
+										try {
+											Thread.sleep(5000);
+										}
+										catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										Donnees.printMyData();
+										Donnees.printUnlockedInMyData();
 									}
 									else {
 										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " envoyé vers " + m.toString(), 2, true);
+										Donnees.printMyData();
+										Donnees.printUnlockedInMyData();
 									}
 									try {
 										socket.close();
@@ -64,7 +74,18 @@ public class taskDumpToMachine implements Runnable {
 									}
 								}
 							}
+							else
+							{
+								Donnees.putNewPaquet(aEnvoyer);
+								aEnvoyer.spreadUnlock();
+							}
+							
 							changeMachine = true;
+						}
+						else if(aEnvoyer != null)
+						{
+							Donnees.putNewPaquet(aEnvoyer);
+							//aEnvoyer.spreadUnlock();
 						}
 
 						if (toSendASAP.isEmpty()) {
@@ -142,7 +163,7 @@ public class taskDumpToMachine implements Runnable {
 
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						Utilitaires.out("Ici tout a fonctionné");
+						//Utilitaires.out("Ici tout a fonctionné");
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -196,7 +217,7 @@ public class taskDumpToMachine implements Runnable {
 				return false;
 			}
 			else {
-				Utilitaires.out("Test 4");
+				//Utilitaires.out("Test 4");
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 

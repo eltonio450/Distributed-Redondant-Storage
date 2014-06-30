@@ -89,8 +89,13 @@ public class taskServeurExchange implements Runnable {
 					}
 				}
 				else if(aEnvoyer !=null)
+<<<<<<< HEAD
 				{ 
 				  Donnees.putNewPaquet(aEnvoyer);
+=======
+				{
+					Donnees.putNewPaquet(aEnvoyer);
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 					aEnvoyer.spreadUnlock();
 					aEnvoyer = null;
 				}
@@ -121,7 +126,11 @@ public class taskServeurExchange implements Runnable {
 					}
 					else if(aEnvoyer !=null)
 					{
+<<<<<<< HEAD
 					  Donnees.putNewPaquet(aEnvoyer);
+=======
+						Donnees.putNewPaquet(aEnvoyer);
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 						aEnvoyer.spreadUnlock();
 						aEnvoyer = null;
 					}

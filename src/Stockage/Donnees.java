@@ -505,6 +505,7 @@ public class Donnees {
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
+<<<<<<< HEAD
     myDataLock.lock();
     Paquet temp = null;
     try {
@@ -514,6 +515,17 @@ public class Donnees {
       {
         Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
         return null;
+=======
+		myDataLock.lock();
+		Paquet temp = null;
+		try {
+			if(myData.containsKey(id))
+				return myData.get(id);
+			else
+			{
+				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+				return null;
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 				
 			}
 		}
