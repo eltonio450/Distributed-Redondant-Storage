@@ -23,23 +23,47 @@ import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
+/**
+ * Cette classe represente un paquet
+ * 
+ * @author SebastienD
+ *
+ */
 public class Paquet {
 
+  /**
+   * L'identifiant unique correspondant a un paquet
+   */
 	public String idGlobal;
+	
+	/**
+	 * Un numero unique mais seulement du point de vue du proprietaire.
+	 * Il correspond a sa position lorsque les donnees du proprietaires sont decoupees en paquets
+	 */
 	public int idMachine;
+	
+	/**
+	 * La position du paquet parmi le groupe de paquet dont il fait partie.
+	 */
 	public int idInterne;
 
-	// pour rétablir un paquet manquant : si on a power 1, c'est à nous de
-	// rétablir le paquet.
+	/**
+	 * Permet d'attribuer un role si un hote d'un paquet de son groupe est mort.
+	 * En fait, power = idInterne.
+	 */
 	public int power;
 	// boolean enLecture;
 
+	/**
+	 * Le cannal qui permet de relier le paquet a l'emplacement sur le disque ou sont rellement stockees
+	 * les donnees.
+	 */
 	public FileChannel fichier;
 
-	// il va falloir protéger cette variable vis-à-vis de la concurrence je
-	// pense
-	// otherHosts est la liste des host : Attention, les indices correspondent
-	// au numero du paquet !
+
+	/**
+	 * 
+	 */
 	public ArrayList<Machine> otherHosts;
 
 	public Machine owner;

@@ -199,7 +199,7 @@ public class Donnees {
 	 *       Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-		
+
 		myDataLock.lock();
 		interestServeurLock.lock();
 		try {

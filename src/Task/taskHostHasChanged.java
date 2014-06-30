@@ -29,7 +29,7 @@ public class taskHostHasChanged implements Runnable {
 		  //Utilitaires.out("-------------------taskHostChanged-------------------") ;
 			//Utilitaires.out("Change host !");
 			//Utilitaires.out("Ici il a répondu x3");
-		  Machine newHost = Machine.otherMachineFromSocket(socket) ;
+		  
 		  //Utilitaires.out("Ici il a répondu x2");
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
@@ -41,9 +41,10 @@ public class taskHostHasChanged implements Runnable {
 			//Utilitaires.out("a recu : " + msg);
 			
 			Scanner scan = new Scanner(msg) ;
+			String machine = scan.next() ;
 			String Id = scan.next() ;
 			int place = scan.nextInt() ;
-			
+			Machine newHost = new Machine(machine) ;
 			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propri�taire du paquet
 			  Donnees.changeHostForPaquet(Id, place, newHost);
 			}

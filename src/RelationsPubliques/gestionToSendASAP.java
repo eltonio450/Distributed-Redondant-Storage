@@ -15,9 +15,7 @@ public class gestionToSendASAP extends Thread {
           task.run();
         
   	  }
-  	 
-  	  
-	  
+  	
 	  
 	}
 	
