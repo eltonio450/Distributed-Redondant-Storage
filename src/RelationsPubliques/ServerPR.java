@@ -89,6 +89,7 @@ public class ServerPR extends Thread{
 			if (i==0){
 				Utilitaires.out("WARNING Reply received while non was expected :/");
 				sc.close();
+				expectedMessagesLock.unlock();
 				return;
 			}
 			expectedMessages.remove(new ExpectedMessage(message, sender, 0));

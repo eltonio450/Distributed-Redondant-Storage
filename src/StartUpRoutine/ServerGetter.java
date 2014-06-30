@@ -20,10 +20,6 @@ public class ServerGetter {
 
 		Stockage.Donnees.fillingServers(true);
 		
-		String [] fins = new String [2];
-		fins[0] = Message.END_ENVOI;
-		fins[1] = Message.NEXT_BUFFER;
-
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
 			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT+10); 
 			clientSocket.bind(local); 
@@ -39,7 +35,7 @@ public class ServerGetter {
 
 			while (continuer) {
 				
-				liste = Utilitaires.getAFullMessage(fins, clientSocket);
+				liste = Utilitaires.getAFullMessage(Message.END_ENVOI, clientSocket);
 				
 				Scanner sc = new Scanner (liste);
 				while (sc.hasNext()) {

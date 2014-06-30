@@ -1,10 +1,13 @@
 
-import RelationsPubliques.gestionToSendASAP;
+import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
+
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
 import StartUpRoutine.IniUDP;
 import StartUpRoutine.ServerGetter;
+import Stockage.Donnees;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
 
@@ -12,8 +15,6 @@ import Utilitaires.Utilitaires;
 public class Main {
 
 	public static void main(String[] args)  {
-
-
 		Utilitaires.out("Modal launched !");
 		Utilitaires.out("Parsing arguments...............");
 		IniServer.iniServer(args);
@@ -24,7 +25,7 @@ public class Main {
 		IniDonnees.iniDonnees();
 		Utilitaires.out("Data initialized...");
 		Utilitaires.out("Ok");
-		
+
 		Utilitaires.out("Enslaving innocent threads......");
 		Slaver.initialize();
 		Utilitaires.out("Ok");
@@ -33,18 +34,13 @@ public class Main {
 		Utilitaires.out("Getting server list.............");
 		ServerGetter.getServerList();
 		Utilitaires.out("Ok");
-		
-		
-		
+
 		Utilitaires.out("Starting TCP Server.............");
 		IniTCP.iniTCP();
 		Utilitaires.out("Ok");
 
-		Utilitaires.out("Début de toSendASAP.............");
-		(new gestionToSendASAP()).start();
-		Utilitaires.out("OK");
-		
-		
+
+
 
 
 		//Utilitaires.out("Starting UDP server.............");
@@ -59,11 +55,11 @@ public class Main {
 		Thread thread2 = new Thread( 
 				new ThreadTcpServer(port,tailleBuffer),"TcpServer"); 
 		thread2.start();
-		*/
+		 */
 
 		//Utilitaires.out("Serveurs lancés") ;
 		//new Thread(new ThreadClient()).start();
-   
+
 
 		Utilitaires.out("Starting UDP server.............");
 		IniUDP.iniUDP();

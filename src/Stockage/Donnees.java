@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,10 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Task.taskGiveMeMyPaquet;
 import Task.taskRetablirPaquets;
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
 import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 
 
 
@@ -298,12 +298,19 @@ public class Donnees {
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
+	  allServeurLock.lock();
+	  try{
+	    int n =(int) ( Math.random() * (double) allServeur.size()) ;
+	    return allServeur.get(n) ;	    
+	  }
+	  finally{
+	    allServeurLock.unlock();
+	  }
 
-		return allServeur.peek();
 	}
 
 	/**
-	 * Ajoute une machine ï¿½ allServeuraï¿½ partir de l'ip et du port
+	 * Ajoute une machine a allServeur a partir de l'ip et du port
 	 * @param ip
 	 *         L'ip de la machine
 	 * @param port
@@ -542,6 +549,22 @@ public class Donnees {
 		finally{
 		  myDataLock.unlock();
 		}
+	}
+	
+	/**
+	 * Recupere, si possible, ses propres données et les ajoute dans myData
+	 */
+	public static void recupereMyOwnData(){
+	  for(String id : myHosts.keySet()){
+	    myHostsLock.lock();
+	    try{
+	      Machine host = myHosts.get(id);
+	      (new taskGiveMeMyPaquet(id,host)).run() ;
+	    }
+	    finally{
+	      myHostsLock.unlock();
+	    }
+	  }
 	}
 
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
