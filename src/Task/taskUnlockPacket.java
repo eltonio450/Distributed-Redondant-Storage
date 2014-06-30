@@ -32,28 +32,32 @@ public class taskUnlockPacket implements Runnable {
 
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
-		Utilitaires.out("L'unlock est lààààà !");
+		//Utilitaires.out("L'unlock est lààààà !");
 		String temp;
 		String id;
 		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
-		Utilitaires.out("Test 234");
+		//Utilitaires.out("Test 234");
 		try {
 			s.write(b);
 			
 			b.clear();
-			Utilitaires.out("Test 235");
+			//Utilitaires.out("Test 235");
 			s.read(b);
-			Utilitaires.out("Test 236");
+			//Utilitaires.out("Test 236");
 			b.flip();
 			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
 			temp = Utilitaires.buffToString(b);
-			Utilitaires.out("Test 237");
+			//Utilitaires.out("Test 237");
 			Scanner scan = new Scanner(temp);
 			id = scan.next();
+			System.out.println("C'est l'ID récupéré :"+id);
 
 			b.clear();
-			Utilitaires.out("L'unlock a fonctioné !");
+			Utilitaires.out("Attention préparation de l'unlock de "+id);
+			
+			Donnees.printMyData();
+			Donnees.printUnlockedInMyData();
 			Donnees.getHostedPaquet(id).unlock();
 				
 

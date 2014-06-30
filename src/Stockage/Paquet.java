@@ -360,10 +360,12 @@ public class Paquet {
 	}
 
 	public void lock() {
+		Utilitaires.out("Lock du paquet : " + idGlobal);
 		lockLogique = true;
 	}
 
 	public void unlock() {
+		Utilitaires.out("Unlock du paquet : " + idGlobal);
 		lockLogique = false;
 	}
 
@@ -379,8 +381,7 @@ public class Paquet {
 			Utilitaires.out("Demande de unlock formulée par " + idGlobal +" numero " + i, 5, true);
 			if (i != idInterne && resultat == 0) {
 				resultat = askForUnlock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i));
-				if (resultat == 0)
-					toUnlock.remove(i);
+
 			}
 			i++;
 		}
@@ -393,9 +394,7 @@ public class Paquet {
 				break;
 			default:
 				unlock();
-				//spreadUnlock();
 				toUnlock.clear();
-				//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a échoué.", 5, true);
 				break;
 		}
 
@@ -441,7 +440,8 @@ public class Paquet {
 			buffer.flip();
 			//Utilitaires.out("Iciiiiiiiiiiiii"+Utilitaires.buffToString(buffer));
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)){
-				//Utilitaires.out("Youlou");
+				buffer = Utilitaires.stringToBuffer(idGlobal);
+				clientSocket.write(buffer);
 				return 0;
 			}
 

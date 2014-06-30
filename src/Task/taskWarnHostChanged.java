@@ -26,6 +26,7 @@ public class taskWarnHostChanged implements Runnable {
 	public void run() {
 		// Utilitaires.out("-------------task warn host changed--------------------");
 		prevenirHostChanged(ID);
+		Donnees.getHostedPaquet(ID).unlock();
 	}
 
 	public static void prevenirHostChanged(String id) {
@@ -98,7 +99,7 @@ public class taskWarnHostChanged implements Runnable {
 					//Utilitaires.out("Test 237");
 				}
 				//Utilitaires.out("Test 238");
-				Donnees.getHostedPaquet(id).unlock();
+				//Donnees.getHostedPaquet(id).unlock();
 				clientSocket.close();
 
 			}
