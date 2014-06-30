@@ -10,14 +10,22 @@ public class gestionToSendASAP extends Thread {
 	    
   	    
           Donnees.waitForSomethingInToSendASAP();
+          try {
+			Thread.sleep((int)(Math.abs(Math.random())*(double)30000));
+			Utilitaires.out("Coucou");
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          Donnees.printMyData();
+          Donnees.printUnlockedInMyData();
           Runnable task = new taskDumpToMachine() ;
           
           task.run();
         
   	  }
-  	 
-  	  
-	  
+  	
 	  
 	}
 	

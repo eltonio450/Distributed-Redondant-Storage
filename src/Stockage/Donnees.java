@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,10 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import Task.taskGiveMeMyPaquet;
 import Task.taskRetablirPaquets;
 import Utilitaires.Global;
-import Utilitaires.Utilitaires;
 import Utilitaires.Slaver;
+import Utilitaires.Utilitaires;
 
 
 
@@ -97,7 +97,8 @@ public class Donnees {
 	static private boolean filling = true;
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
-
+	static public int nombreDeLocks;
+	
 	/**
 	 * La liste des paquets dont je suis proprietaire.
 	 * On stocke seulement l'identifiant des paquets.
@@ -182,7 +183,8 @@ public class Donnees {
 		}
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		p.spreadUnlock();
+		
+		//p.unlock();
 		//Utilitaires.out("fin reception");
 		
 	}
@@ -197,17 +199,23 @@ public class Donnees {
 	 *       Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-		Utilitaires.out("Change host !");
+
 		myDataLock.lock();
 		interestServeurLock.lock();
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
 			for (String s : paquets) {
-			  Machine toRemove = myData.get(Id).otherHosts.get(place) ;
+			  Machine toRemove = myData.get(s).otherHosts.get(place) ;
 			  interestServeur.remove(toRemove) ;
-				myData.get(Id).otherHosts.set(place, newHost);
+				myData.get(s).otherHosts.set(place, newHost);
+				
 				interestServeur.add(newHost) ;
+				myData.get(s).unlock();
 			}
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 		finally {
 			myDataLock.unlock();
@@ -295,12 +303,19 @@ public class Donnees {
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
+	  allServeurLock.lock();
+	  try{
+	    int n =(int) ( Math.random() * (double) allServeur.size()) ;
+	    return allServeur.get(n) ;	    
+	  }
+	  finally{
+	    allServeurLock.unlock();
+	  }
 
-		return allServeur.peek();
 	}
 
 	/**
-	 * Ajoute une machine � allServeura� partir de l'ip et du port
+	 * Ajoute une machine a allServeur a partir de l'ip et du port
 	 * @param ip
 	 *         L'ip de la machine
 	 * @param port
@@ -490,19 +505,40 @@ public class Donnees {
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
+<<<<<<< HEAD
+    myDataLock.lock();
+    Paquet temp = null;
+    try {
+      if(myData.containsKey(id))
+        return myData.get(id);
+      else
+      {
+        Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+        return null;
+=======
 		myDataLock.lock();
-		Paquet temp;
+		Paquet temp = null;
 		try {
-			temp = myData.get(id);
-			if(temp!=null)
-				Utilitaires.out("Le paquet "+id+"est bien présent chez moi.",1,true);
+			if(myData.containsKey(id))
+				return myData.get(id);
 			else
+			{
 				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
+				return null;
+>>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+				
+			}
+		}
+		catch(Exception e){
+			//e.printStackTrace();
+			
 		}
 		finally {
 			myDataLock.unlock();
+			return temp;
+			
 		}
-		return temp;
+		
 	} 
 
 	/**
@@ -539,6 +575,22 @@ public class Donnees {
 		finally{
 		  myDataLock.unlock();
 		}
+	}
+	
+	/**
+	 * Recupere, si possible, ses propres donn�es et les ajoute dans myData
+	 */
+	public static void recupereMyOwnData(){
+	  for(String id : myHosts.keySet()){
+	    myHostsLock.lock();
+	    try{
+	      Machine host = myHosts.get(id);
+	      (new taskGiveMeMyPaquet(id,host)).run() ;
+	    }
+	    finally{
+	      myHostsLock.unlock();
+	    }
+	  }
 	}
 
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
@@ -654,5 +706,22 @@ public class Donnees {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void printMyData() {
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for(Paquet p : myData.values()){
+			Utilitaires.out("Paquet : " +p.idGlobal);
+		}
+		
+	}
+	
+	public static void printUnlockedInMyData() {
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for(Paquet p : myData.values()){
+			if(!p.lockLogique)
+				Utilitaires.out("Paquet : " +p.idGlobal);
+		}
+		
 	}
 }

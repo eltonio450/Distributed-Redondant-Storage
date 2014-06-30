@@ -32,33 +32,34 @@ public class taskUnlockPacket implements Runnable {
 
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
-
+		//Utilitaires.out("L'unlock est lààààà !");
 		String temp;
 		String id;
 		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
-
+		//Utilitaires.out("Test 234");
 		try {
 			s.write(b);
-
-			// Etape 2 : attendre de recevoir l'identifiant du paquet qui
-			// demande le lock
-			temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
+			
+			b.clear();
+			//Utilitaires.out("Test 235");
+			s.read(b);
+			//Utilitaires.out("Test 236");
+			b.flip();
+			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
+			temp = Utilitaires.buffToString(b);
+			//Utilitaires.out("Test 237");
 			Scanner scan = new Scanner(temp);
 			id = scan.next();
-			power = Integer.parseInt(scan.next());
+			System.out.println("C'est l'ID récupéré :"+id);
 
-			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
-			if (!Donnees.getHostedPaquet(id).isAskingTheLock || power < Donnees.getHostedPaquet(id).idInterne) {
-				Donnees.getHostedPaquet(id).lock();
-				b = Utilitaires.stringToBuffer(Message.OK + " " + Message.END_ENVOI);
-				s.write(b);
-			}
-			else {
-				b = Utilitaires.stringToBuffer(Message.FAIL + " " + Message.END_ENVOI);
-				s.write(b);
-			}
+			Utilitaires.out("Attention préparation de l'unlock de "+id);
+			
+			Donnees.printMyData();
+			Donnees.printUnlockedInMyData();
+			Donnees.getHostedPaquet(id).unlock();
+				
 
 			s.close();
 

@@ -2,6 +2,9 @@ package Stockage;
 
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.Scanner;
+
+import Utilitaires.Utilitaires;
 
 public class Machine {
 
@@ -23,10 +26,19 @@ public class Machine {
 		return ipAdresse + "-" + port;
 	}
 	
-	public static Machine otherMachineFromSocket(SocketChannel s){
-	  String ip = s.socket().getInetAddress().toString() ;
-	  int p = s.socket().getPort();
-	  return new Machine(ip,p) ;
+	public Machine(String s){
+	  Scanner scan = new Scanner(s);
+	  scan.useDelimiter("-") ;
+ 	  ipAdresse = scan.next() ;
+	  port = scan.nextInt() ; 
 	}
+	
+  public static Machine otherMachineFromSocket(SocketChannel s){
+    String ip = s.socket().getInetAddress().getHostName().toString() ;
+    int p = s.socket().getPort();
+    Utilitaires.out("IP: "+ ip + " Port : "+p);
+    return new Machine(ip,p) ;
+  }
+
 	
 }

@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 public class Message {
 	
     // TCP Connections
-	  public static String HOST_CHANGED = "host-changed#" ;
+	  public static String HOST_CHANGED = "host_changed#" ;
 		public static String EXCHANGE = "exchange#" ;
 		public static String REPONSE_EXCHANGE = "ok_exchange#" ;
 		public static String FAIL ="fail#";
@@ -21,6 +21,7 @@ public class Message {
 		public static final String DEMANDE_ID = "id_please#";
 		public static final String DEMANDE_PAQUET = "demande_paquet#";
     public static final String AskForPaquet = "I_can_take";
+    public static final String GiveMeMyPaquet = "give_my_paquet";
 		public static String ANNULE_ENVOI = "stop#" ;
 		public static String DO_NOT_ACCEPT = "non#" ;
 		public static String OK = "ok#" ;
