@@ -1,23 +1,19 @@
 package Stockage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.sun.security.ntlm.Client;
 
 import Utilitaires.Global;
 import Utilitaires.Message;
@@ -31,17 +27,17 @@ import Utilitaires.Utilitaires;
  */
 public class Paquet {
 
-  /**
-   * L'identifiant unique correspondant a un paquet
-   */
+	/**
+	 * L'identifiant unique correspondant a un paquet
+	 */
 	public String idGlobal;
-	
+
 	/**
 	 * Un numero unique mais seulement du point de vue du proprietaire.
 	 * Il correspond a sa position lorsque les donnees du proprietaires sont decoupees en paquets
 	 */
 	public int idMachine;
-	
+
 	/**
 	 * La position du paquet parmi le groupe de paquet dont il fait partie.
 	 */
@@ -74,9 +70,9 @@ public class Paquet {
 	// l'information
 
 	public boolean lockLogique = false; // défini si le paquet peut-être
-										// déplacé. Attention : différent d'un
-										// Lock : locked peut-être modifié par
-										// n'importe quel Thread.
+	// déplacé. Attention : différent d'un
+	// Lock : locked peut-être modifié par
+	// n'importe quel Thread.
 	// public boolean isAskingTheLock = false;
 
 	// Lock lockHasAsked = new ReentrantLock();
@@ -146,9 +142,9 @@ public class Paquet {
 		// envoie d'abord les informations
 
 		ByteBuffer buffer = createBufferForPaquetInformation(); // already
-																// flipped
+		// flipped
 		s.write(buffer);
-		Utilitaires.out("Buffer du paquet bien envoyé.", 1, true);
+		//Utilitaires.out("Buffer du paquet bien envoyé.", 1, true);
 		isUsed.lock();
 		try {
 			fichier.transferTo(0, Global.PAQUET_SIZE, s);
@@ -198,6 +194,8 @@ public class Paquet {
 		// Utilitaires.out("Test 4",6,true);
 		Paquet paq = new Paquet(id, owner);
 		paq.putOtherHosts(hosts);
+
+		scan.close();
 		return paq;
 	}
 
@@ -249,30 +247,30 @@ public class Paquet {
 		lock();
 		// isAskingTheLock = true;
 		int resultat = 0;
-		int i = 0;
+		Integer i = 0;
 		// int j = idGlobal-idInterne;
 		Utilitaires.out("Demande de lock formulée par " + idGlobal, 5, true);
 		while (i < Global.NOMBRESOUSPAQUETS) {
-
+		  
 			if (i != idInterne && resultat == 0) {
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
-				if (resultat == 0)
+				//if (resultat == 0)
+					Utilitaires.out("Ajout à la liste de ceux qu'il faut enlever : " +i);
 					toUnlock.add(i);
 			}
 			i++;
 		}
 		switch (resultat) {
+
 			case 0:
 				unlock();
-				toUnlock.clear();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-				
 				spreadUnlock();
-				toUnlock.clear();
-				Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
+				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
 				return false;
+
 		}
 
 	}
@@ -292,26 +290,28 @@ public class Paquet {
 	 */
 
 	public int sendAskForLock(Machine m, String idGlobal, int power) {
-		String reponse = "";
 		//SocketChannel clientSocket;
 		try{
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
-			Utilitaires.out("Envoi de la demande de lock à " + idGlobal, 6, true);
+			//Utilitaires.out("Envoi de la demande de lock à " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
-			
+
 			//clientSocket.configureBlocking(true);
 			//Utilitaires.out("Test 2", 6, true);
-	
-			if(!clientSocket.connect(remote))
-				Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
+
+			if(!clientSocket.connect(remote)){
+			  Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
+			  return 3 ;
+			}
+				
 			// 
 			// Etape 2 : Envoie du pré-Lock
-			
+
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
-		
+
 			clientSocket.write(buffer);
 
 			//Thread.sleep(1000);
@@ -346,7 +346,7 @@ public class Paquet {
 				Utilitaires.out("Gros bug : lock impossible !");
 				return 2;
 			}
-			
+
 
 		}
 		catch (Exception e) {
@@ -354,9 +354,7 @@ public class Paquet {
 			e.printStackTrace();
 			return 3;
 		}
-		finally{
-			
-		}
+
 	}
 
 	public void lock() {
@@ -376,10 +374,15 @@ public class Paquet {
 
 		// int j = idGlobal-idInterne;
 		Utilitaires.out("Demande de unlock formulée par " + idGlobal, 5, true);
+		
 		spreadUnlockLock.lock();
+		Utilitaires.out("Plap ! "+toUnlock.size());
+		
 		for (Integer i : toUnlock) {
+			Utilitaires.out("Youhou !");
 			Utilitaires.out("Demande de unlock formulée par " + idGlobal +" numero " + i, 5, true);
 			if (i != idInterne && resultat == 0) {
+				Utilitaires.out("Youhou ! et i : " +i);
 				resultat = askForUnlock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i));
 
 			}
@@ -387,15 +390,15 @@ public class Paquet {
 		}
 		spreadUnlockLock.unlock();
 		switch (resultat) {
-			case 0:
-				unlock();
-				toUnlock.clear();
-				//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
-				break;
-			default:
-				unlock();
-				toUnlock.clear();
-				break;
+		case 0:
+			unlock();
+			toUnlock.clear();
+			//Utilitaires.out("La demande de unlock formulée par " + idGlobal + " a réussi.", 5, true);
+			break;
+		default:
+			unlock();
+			toUnlock.clear();
+			break;
 		}
 
 	}
@@ -408,34 +411,33 @@ public class Paquet {
 	}
 
 	public int askForUnlock(Machine m, String idGlobal) {
-		String reponse = "";
 		try {
 
-			
+
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
 			Utilitaires.out("Envoi de la demande de unlock pour " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
-			
+
 			//clientSocket.configureBlocking(true);
 			//Utilitaires.out("Test 2", 6, true);
-	
+
 			if(!clientSocket.connect(remote))
 				Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
 			// 
 			// Etape 2 : Envoie du pré-Lock
-			
+
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_UNLOCK);
-		
+
 			clientSocket.write(buffer);
 
 			//Thread.sleep(1000);
 
-			
+
 			buffer.clear();
-			
+
 			clientSocket.read(buffer);
 			buffer.flip();
 			//Utilitaires.out("Iciiiiiiiiiiiii"+Utilitaires.buffToString(buffer));

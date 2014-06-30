@@ -18,74 +18,75 @@ import Utilitaires.Global;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
 
-
-
 /**
- *
+ * 
  * Cette classe represente les donnees stockees sur le disque d'une machine
  * 
  * 
  * @author SebastienD
- *
+ * 
  */
 
 public class Donnees {
 
-  /**
-   * La liste de toutes les machines.
-   * 
-   * Cette liste est protegee par un verrou.
-   * @see allServeurLock
-   * @see putServer
-   * @see removeServeur
-   * @see actualiseAllServeur
-   * @see getAllServeur
-   * @see chooseMAchine
-   */
-	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
-	
 	/**
-	 * La liste des machines qui hebergent un paquet d'un m�me groupe qu'un de ses paquets.
+	 * La liste de toutes les machines.
+	 * 
+	 * Cette liste est protegee par un verrou.
+	 * 
+	 * @see allServeurLock
+	 * @see putServer
+	 * @see removeServeur
+	 * @see actualiseAllServeur
+	 * @see getAllServeur
+	 * @see chooseMAchine
+	 */
+	static private LinkedList<Machine> allServeur = new LinkedList<Machine>();
+
+	/**
+	 * La liste des machines qui hebergent un paquet d'un m�me groupe qu'un de
+	 * ses paquets.
 	 * 
 	 * Cette liste est protgegee par un verrou.
+	 * 
 	 * @see interestServeurLock
 	 * @see addInterestServeur
 	 */
 	static private LinkedList<Machine> interestServeur = new LinkedList<Machine>();
-	
+
 	/**
-	 * Table de hashage des machines qui hebergent de de ses paquets.
-	 * La cle correspond a l'identifiant du paquet concerne, la valeur etant l'hote.
+	 * Table de hashage des machines qui hebergent de de ses paquets. La cle
+	 * correspond a l'identifiant du paquet concerne, la valeur etant l'hote.
 	 * Cette table est protegee par un verrou
+	 * 
 	 * @see myHostsLock
 	 */
-	static private HashMap<String, Machine> myHosts = new HashMap<String,Machine>();
-	
+	static private HashMap<String, Machine> myHosts = new HashMap<String, Machine>();
+
 	/**
-	 * Table de hashage des donnees que la machine heberge.
-	 * La cle correspond a l'identifiant du paquet.
-	 * Cette table est protegee par un verrou.
+	 * Table de hashage des donnees que la machine heberge. La cle correspond a
+	 * l'identifiant du paquet. Cette table est protegee par un verrou.
+	 * 
 	 * @see myDataLock
 	 * @see removePaquet
-	 * @see removeTemporarlyPaquet 
+	 * @see removeTemporarlyPaquet
 	 * @see putNewPaquet
 	 * @see chooseManyPaquetToSend2
 	 */
 	static private HashMap<String, Paquet> myData = new HashMap<String, Paquet>();
-	
+
 	/**
-	 * Liste des paquets a envoyer des que possible.
-	 * On stocke ici seulement les identifiants des paquets.
-	 * Cette liste est protegee par un verrou.
+	 * Liste des paquets a envoyer des que possible. On stocke ici seulement les
+	 * identifiants des paquets. Cette liste est protegee par un verrou.
+	 * 
 	 * @see toSendASAPLock
 	 * @see notEmpty
 	 * @see addPaquetToSendAsap
 	 * @see addListToSendAsap
 	 * @see chosseManyPaquetToSend1
 	 */
-  static private LinkedBlockingQueue<String> toSendASAP = new LinkedBlockingQueue<String>();
+	static private LinkedBlockingQueue<String> toSendASAP = new LinkedBlockingQueue<String>();
 
-	
 	/**
 	 * Le nombre de paquet en trop par rapport a la moyenne
 	 */
@@ -98,13 +99,12 @@ public class Donnees {
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
 	static public int nombreDeLocks;
-	
+
 	/**
-	 * La liste des paquets dont je suis proprietaire.
-	 * On stocke seulement l'identifiant des paquets.
+	 * La liste des paquets dont je suis proprietaire. On stocke seulement
+	 * l'identifiant des paquets.
 	 */
 	static public LinkedList<String> myOwnData = new LinkedList<String>();
-
 
 	static public ReentrantLock toSendASAPLock = new ReentrantLock();
 	static public Condition notEmpty = toSendASAPLock.newCondition();
@@ -125,29 +125,32 @@ public class Donnees {
 	 */
 
 	/**
-	 * Decide si l'on peut ou non heberger un paquet. 
+	 * Decide si l'on peut ou non heberger un paquet.
 	 * 
 	 * @param id
-	 *         L'identifiant du paquet
+	 *            L'identifiant du paquet
 	 * @return True or False
 	 */
 	public static boolean acceptePaquet(String id) {
-	  Scanner scan = new Scanner(id) ;
-	  scan.useDelimiter("-");
-	  scan.next() ;
-	  if(scan.hasNext()){
-	    if(hasPaquetLike(id).isEmpty()){
-	      return true ;
-	    }
-	  }
+		Scanner scan = new Scanner(id);
+		scan.useDelimiter("-");
+		scan.next();
+		if (scan.hasNext()) {
+			if (hasPaquetLike(id).isEmpty()) {
+				scan.close();
+				return true;
+			}
+		}
+		scan.close();
 		return false;
 	}
 
 	/**
-	 * Retourne la liste des paquets presents dans myData et qui sont du meme groupe que ce paquet.
+	 * Retourne la liste des paquets presents dans myData et qui sont du meme
+	 * groupe que ce paquet.
 	 * 
 	 * @param ID
-	 *       L'identifiant du paquet
+	 *            L'identifiant du paquet
 	 * @return La liste des paquets du meme groupe
 	 */
 	public static LinkedList<String> hasPaquetLike(String ID) {
@@ -156,7 +159,6 @@ public class Donnees {
 		final String newId = s.next() + "-" + s.next() + "-";
 		long n = s.nextLong();
 		long a = n / Global.NOMBRESOUSPAQUETS;
-		long b = n % Global.NOMBRESOUSPAQUETS;
 		LinkedList<String> res = new LinkedList<String>();
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
@@ -164,79 +166,92 @@ public class Donnees {
 				res.add(testId);
 			}
 		}
+		s.close();
 		return res;
 	}
 
 	/**
-	 * Receptionne un paquet :
-	 * ajoute le paquet dans myData, ajoute les serveurs d'interet et lance tackWarnHostHasChanged.
+	 * Receptionne un paquet : ajoute le paquet dans myData, ajoute les serveurs
+	 * d'interet et lance tackWarnHostHasChanged.
+	 * 
 	 * @param p
-	 *         Le paquet a receptionner
+	 *            Le paquet a receptionner
 	 */
 	public static void receptionPaquet(Paquet p) {
-		//Utilitaires.out("-------------Reception paquet--------------------");
+		// Utilitaires.out("-------------Reception paquet--------------------");
 		p.lock();
-		for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
-		  if(i != p.power){
-		    addInterestServeur(p.otherHosts.get(i)) ;
-		  }
+		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+			if (i != p.power) {
+				addInterestServeur(p.otherHosts.get(i));
+			}
 		}
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		
-		//p.unlock();
-		//Utilitaires.out("fin reception");
-		
+
+		// p.unlock();
+		// Utilitaires.out("fin reception");
+
 	}
 
 	/**
-	 * Change l'hote d'un paquet du groupe du paquet d'identifiant <b>Id</b>. Il s'agit du paquet du groupe ayant comme idInterne <b>place</b>. 
+	 * Change l'hote d'un paquet du groupe du paquet d'identifiant <b>Id</b>. Il
+	 * s'agit du paquet du groupe ayant comme idInterne <b>place</b>.
+	 * 
 	 * @param Id
-	 *       Le paquet sur lequel il faut effectuer le changement
+	 *            Le paquet sur lequel il faut effectuer le changement
 	 * @param place
-	 *       L'idInterne du paquet du groupe qui a subi un changement d'hote
+	 *            L'idInterne du paquet du groupe qui a subi un changement
+	 *            d'hote
 	 * @param newHost
-	 *       Le nouvel hote
+	 *            Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
 
+		// Utilitaires.out("Voyons voir ça...");
 		myDataLock.lock();
+		// Utilitaires.out("Humm");
 		interestServeurLock.lock();
+		// Utilitaires.out("Humm2");
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
+			// Utilitaires.out("Humm3");
 			for (String s : paquets) {
-			  Machine toRemove = myData.get(s).otherHosts.get(place) ;
-			  interestServeur.remove(toRemove) ;
+				// Utilitaires.out("Humm4");
+				Machine toRemove = myData.get(s).otherHosts.get(place);
+				interestServeur.remove(toRemove);
 				myData.get(s).otherHosts.set(place, newHost);
-				
-				interestServeur.add(newHost) ;
+
+				interestServeur.add(newHost);
 				myData.get(s).unlock();
 			}
-			
+
 		}
-		catch(Exception e){
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		finally {
+			// Utilitaires.out("Humm5");
 			myDataLock.unlock();
+			// Utilitaires.out("Ah le coquin, il est reparti !");
 			interestServeurLock.unlock();
 		}
 	}
 
 	/**
-	 * Adapte les listes allServeur, interestServeurs et myHosts du fait de la mort de la machine m. 
-	 * Si on le doit, lance la tache de reconstruction de paquet.
+	 * Adapte les listes allServeur, interestServeurs et myHosts du fait de la
+	 * mort de la machine m. Si on le doit, lance la tache de reconstruction de
+	 * paquet.
 	 * 
 	 * @param m
-	 *       La machine qui est morte
+	 *            La machine qui est morte
 	 */
 	public static void traiteUnMort(Machine m) {
 		myHostsLock.lock();
 		try {
-			for(String id : myHosts.keySet()){
-			  if(myHosts.get(id) == m){
-			    myHosts.remove(id) ;
-			  }
+			for (String id : myHosts.keySet()) {
+				if (myHosts.get(id) == m) {
+					myHosts.remove(id);
+				}
 			}
 		}
 		finally {
@@ -247,20 +262,21 @@ public class Donnees {
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
 				for (Paquet p : myData.values()) {
-					for (int i=0 ; i < Global.NOMBRESOUSPAQUETS ; i++) {
+					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 						if (m == p.otherHosts.get(i)) {
-						  if(p.power == 0) {
-	              (new taskRetablirPaquets(p,i)).run() ;				    
-						  }
-						  else if(p.power== 1 && i==0) {
-						    (new taskRetablirPaquets(p,i)).run() ;  
-						  }
+							if (p.power == 0) {
+								(new taskRetablirPaquets(p, i)).run();
+							}
+							else if (p.power == 1 && i == 0) {
+								(new taskRetablirPaquets(p, i)).run();
+							}
 						}
 					}
 				}
 			}
-			while(interestServeur.contains(m)){  //il peut y avoir plusieurs occurrences
-			  interestServeur.remove(m) ;
+			while (interestServeur.contains(m)) { // il peut y avoir plusieurs
+													// occurrences
+				interestServeur.remove(m);
 			}
 		}
 		finally {
@@ -283,6 +299,7 @@ public class Donnees {
 
 	/**
 	 * La liste de tous les serveurs
+	 * 
 	 * @return une copie de allServeur
 	 */
 	public static LinkedList<Machine> getAllServeurs() {
@@ -297,29 +314,33 @@ public class Donnees {
 		}
 	}
 
-
 	/**
 	 * Choisi une machine aleatoirement dans allServeur
+	 * 
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
-	  allServeurLock.lock();
-	  try{
-	    int n =(int) ( Math.random() * (double) allServeur.size()) ;
-	    return allServeur.get(n) ;	    
-	  }
-	  finally{
-	    allServeurLock.unlock();
-	  }
+		allServeurLock.lock();
+		try {
+			int n = (int) (Math.random() * (double) allServeur.size());
+			
+			Machine m = allServeur.get(n);
+			Utilitaires.out("I choose : " + n + " " + m.toString());
+			return m ;
+		}
+		finally {
+			allServeurLock.unlock();
+		}
 
 	}
 
 	/**
 	 * Ajoute une machine a allServeur a partir de l'ip et du port
+	 * 
 	 * @param ip
-	 *         L'ip de la machine
+	 *            L'ip de la machine
 	 * @param port
-	 *         Le port de la machine
+	 *            Le port de la machine
 	 */
 	public static void putServer(String ip, int port) {
 		allServeurLock.lock();
@@ -331,54 +352,58 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Ajoute la machine m a la liste allServeur
+	 * 
 	 * @param m
 	 */
-	 public static void putServer(Machine m) {
-	    allServeurLock.lock();
-	    try {
-	      allServeur.add(m);
-	      Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
-	    }
-	    finally {
-	      allServeurLock.unlock();
-	    }
-	  }
+	public static void putServer(Machine m) {
+		allServeurLock.lock();
+		try {
+			allServeur.add(m);
+			Utilitaires.out(m.ipAdresse + ":" + m.port + " added.");
+		}
+		finally {
+			allServeurLock.unlock();
+		}
+	}
 
-	 /**
-	  * Remplace la liste allServeur par cette nouvelle liste.
-	  * @param list
-	  *        La nouvelle liste
-	  */
+	/**
+	 * Remplace la liste allServeur par cette nouvelle liste.
+	 * 
+	 * @param list
+	 *            La nouvelle liste
+	 */
 	public static void actualiseAllServeur(LinkedList<Machine> list) {
 		allServeurLock.lock();
-		try{
-		  allServeur = list;
+		try {
+			allServeur = list;
 		}
-		finally{
-		  allServeurLock.unlock(); 
+		finally {
+			allServeurLock.unlock();
 		}
 	}
 
 	/**
 	 * Enleve une machine de la liste allServeur
+	 * 
 	 * @param m
-	 *       la machine a enlever
+	 *            la machine a enlever
 	 */
 	public static void removeServer(Machine m) {
 		allServeurLock.lock();
-		try{
-		  allServeur.remove(m);
+		try {
+			allServeur.remove(m);
 		}
-		finally{
-		  allServeurLock.unlock();
+		finally {
+			allServeurLock.unlock();
 		}
 	}
 
 	/**
 	 * Regarde si toSendAsap est vide
+	 * 
 	 * @return True or False
 	 */
 	public static boolean toSendAsapEmpty() {
@@ -393,8 +418,9 @@ public class Donnees {
 
 	/**
 	 * Ajoute un paquet a toSendASAP en envoyant un signal
+	 * 
 	 * @param id
-	 *         L'identifiant du paquet a ajouter
+	 *            L'identifiant du paquet a ajouter
 	 */
 	public static void addPaquetToSendAsap(String id) {
 		toSendASAPLock.lock();
@@ -405,14 +431,15 @@ public class Donnees {
 		finally {
 			toSendASAPLock.unlock();
 		}
-		//for(String s : toSendASAP)
-			//Utilitaires.out("Paquet dans toSendASAP : " + s);
+		// for(String s : toSendASAP)
+		// Utilitaires.out("Paquet dans toSendASAP : " + s);
 	}
 
 	/**
 	 * Ajoute une liste de paquets a toSendASAP
+	 * 
 	 * @param listId
-	 *         La liste des identifiants
+	 *            La liste des identifiants
 	 */
 	public static void addListToSendAsap(LinkedList<String> listId) {
 		toSendASAPLock.lock();
@@ -427,6 +454,7 @@ public class Donnees {
 
 	/**
 	 * Supprime un paquet de toSendASAP
+	 * 
 	 * @param id
 	 */
 	public static void removeToSendAsap(String id) {
@@ -438,15 +466,13 @@ public class Donnees {
 			toSendASAPLock.unlock();
 		}
 	}
-	
-	
 
 	/**
 	 * Retourne une copie de la liste toSendASAP
+	 * 
 	 * @return LinkedList<.String> copie de toSendASAP
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend1() {
-		// TODO :lock
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
@@ -459,90 +485,83 @@ public class Donnees {
 
 	/**
 	 * Retourne une copie de myData
+	 * 
 	 * @return LinkedList<.String> copie des identifiants des paquets de myData
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend2() {
-		return new LinkedList(myData.keySet());
+		return new LinkedList<String>(myData.keySet());
 	}
 
 	/**
-	 * Ajoute cette machine dans interestServeur.
-	 * Gere la concurrence
+	 * Ajoute cette machine dans interestServeur. Gere la concurrence
+	 * 
 	 * @param m
-	 *        La machine e ajouter
+	 *            La machine e ajouter
 	 */
 	public static void addInterestServeur(Machine m) {
 		interestServeurLock.lock();
-		try{
-		  interestServeur.add(m);
+		try {
+			interestServeur.add(m);
 		}
-		finally{
-		  interestServeurLock.unlock(); 
+		finally {
+			interestServeurLock.unlock();
 		}
 	}
 
 	/**
 	 * Ajoute ce matching � la table de hashage myHosts
+	 * 
 	 * @param id
 	 * @param m
-	 *     La machine qui heberge le paquet d'identifiant <b>id</b>
+	 *            La machine qui heberge le paquet d'identifiant <b>id</b>
 	 */
-	public static void addHost(String id,Machine m) {
-	  myHostsLock.lock();
-		try{
-		  myHosts.put(id, m) ;
-		  //Utilitaires.out("Host added : " + m.toString());
+	public static void addHost(String id, Machine m) {
+		myHostsLock.lock();
+		try {
+			myHosts.put(id, m);
+			// Utilitaires.out("Host added : " + m.toString());
 		}
-		finally{
-		  myHostsLock.unlock();
+		finally {
+			myHostsLock.unlock();
 		}
 
 	}
 
 	/**
 	 * Retourne ce paquet de myData sans le supprimer
+	 * 
 	 * @param id
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
-<<<<<<< HEAD
-    myDataLock.lock();
-    Paquet temp = null;
-    try {
-      if(myData.containsKey(id))
-        return myData.get(id);
-      else
-      {
-        Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
-        return null;
-=======
+
 		myDataLock.lock();
 		Paquet temp = null;
 		try {
-			if(myData.containsKey(id))
+			if (myData.containsKey(id))
 				return myData.get(id);
-			else
-			{
-				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
-				return null;
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
-				
+			else {
+				Utilitaires.out("Le paquet " + id + " n'est pas présent chez moi.", 1, true);
+				return null;				
 			}
+
 		}
-		catch(Exception e){
-			//e.printStackTrace();
-			
+		catch (Exception e) {
+			e.printStackTrace();
+			return temp;
 		}
 		finally {
+
 			myDataLock.unlock();
-			return temp;
-			
+			// Utilitaires.out("Et je ne suis pas ressorti.");
+
 		}
-		
-	} 
+	}
 
 	/**
-	 * Supprime et retourne ce paquet de myData. Cependant, aucun ajustement n'est effectue dans interestServeur.
+	 * Supprime et retourne ce paquet de myData. Cependant, aucun ajustement
+	 * n'est effectue dans interestServeur.
+	 * 
 	 * @param id
 	 * @return Le paquet s'il est dans myData, <b>null</b> sinon.
 	 */
@@ -562,35 +581,37 @@ public class Donnees {
 	}
 
 	/**
-	 * Ajoute ce paquet � myData.
+	 * Ajoute ce paquet a myData.
 	 * Gere la concurrence
 	 * @param p
-	 *         Le paquet
+	 *            Le paquet
 	 */
 	public static void putNewPaquet(Paquet p) {
+		// Utilitaires.out("Ou lui ?");
 		myDataLock.lock();
-		try{
-		  myData.put(p.idGlobal, p);
+		try {
+			myData.put(p.idGlobal, p);
 		}
-		finally{
-		  myDataLock.unlock();
+		finally {
+			myDataLock.unlock();
+			// Utilitaires.out("Non pas lui !");
 		}
 	}
-	
+
 	/**
-	 * Recupere, si possible, ses propres donn�es et les ajoute dans myData
+	 * Recupere, si possible, ses propres donnees et les ajoute dans myData
 	 */
-	public static void recupereMyOwnData(){
-	  for(String id : myHosts.keySet()){
-	    myHostsLock.lock();
-	    try{
-	      Machine host = myHosts.get(id);
-	      (new taskGiveMeMyPaquet(id,host)).run() ;
-	    }
-	    finally{
-	      myHostsLock.unlock();
-	    }
-	  }
+	public static void recupereMyOwnData() {
+		for (String id : myHosts.keySet()) {
+			myHostsLock.lock();
+			try {
+				Machine host = myHosts.get(id);
+				(new taskGiveMeMyPaquet(id, host)).run();
+			}
+			finally {
+				myHostsLock.unlock();
+			}
+		}
 	}
 
 	public static void genererPaquetsSecurite(ArrayList<Paquet> tableau) {
@@ -630,38 +651,46 @@ public class Donnees {
 	}
 
 	/**
-	 * Affiche la liste des machines dans allServeur.
-	 * Attention cette methode n'utilise pas les verrous !
+	 * Affiche la liste des machines dans allServeur. Attention cette methode
+	 * n'utilise pas les verrous !
 	 */
 	public static void printServerList() {
-		Utilitaires.out("Liste des serveurs :", 1, true);
-		for (Machine m : allServeur)
-			Utilitaires.out("s : " + m.toString(), 1, false);
-
+		allServeurLock.lock();
+		try {
+			Utilitaires.out("Liste des serveurs :", 1, true);
+			for (Machine m : allServeur)
+				Utilitaires.out("s : " + m.toString(), 1, false);
+		}
+		finally {
+			allServeurLock.unlock();
+		}
 	}
 
 	/**
-	 * Supprime un paquet de myData, en actualisant egalement toSendASAP et interestServeur.
+	 * Supprime un paquet de myData, en actualisant egalement toSendASAP et
+	 * interestServeur.
+	 * 
 	 * @param p
-	 *       Le paquet � supprimer
+	 *       Le paquet a supprimer
 	 */
 	public static void removePaquet(Paquet p) {
-		//TODO : remove interestServeur
-	  myDataLock.lock();
+		myDataLock.lock();
+
 		toSendASAPLock.lock();
 		interestServeurLock.lock();
 		try {
 			myData.remove(p.idGlobal);
 			toSendASAP.remove(p.idGlobal);
-			for(int i = 0 ; i < Global.NOMBRESOUSPAQUETS ; i ++){
-			  if(i != p.power){
-			    interestServeur.remove(p.otherHosts.get(i)) ;
-			  }
+			for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+				if (i != p.power) {
+					interestServeur.remove(p.otherHosts.get(i));
+				}
 			}
 		}
 		finally {
 			myDataLock.unlock();
 			toSendASAPLock.unlock();
+			interestServeurLock.lock();
 		}
 	}
 
@@ -694,34 +723,33 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Attend qu'un paquet soit ajoute � toSendASAP
 	 */
-	public static void waitForSomethingInToSendASAP(){
+	public static void waitForSomethingInToSendASAP() {
 		try {
 			toSendASAP.put(toSendASAP.take());
 		}
 		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static void printMyData() {
 		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for(Paquet p : myData.values()){
-			Utilitaires.out("Paquet : " +p.idGlobal);
-		}
+		for (Paquet p : myData.values()) 
+			Utilitaires.out("Paquet : " + p.idGlobal);
 		
+
 	}
-	
+
 	public static void printUnlockedInMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for(Paquet p : myData.values()){
-			if(!p.lockLogique)
-				Utilitaires.out("Paquet : " +p.idGlobal);
+	Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		for (Paquet p : myData.values()) {
+			if (!p.lockLogique)
+				Utilitaires.out("Paquet : " + p.idGlobal);
 		}
-		
+
 	}
 }
