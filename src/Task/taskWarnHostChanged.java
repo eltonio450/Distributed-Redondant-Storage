@@ -83,9 +83,9 @@ public class taskWarnHostChanged implements Runnable {
 				Utilitaires.out(Utilitaires.buffToString(buffer2));
 				clientSocket.write(buffer);
 				buffer.clear();
-				Utilitaires.out("Test 235");
+				//Utilitaires.out("Test 235");
 				clientSocket.read(buffer);
-				Utilitaires.out("Test 236");
+				//Utilitaires.out("Test 236");
 				buffer.flip();
 				String response = Utilitaires.buffToString(buffer);
 
@@ -95,9 +95,9 @@ public class taskWarnHostChanged implements Runnable {
 					buffer = Utilitaires.stringToBuffer(s);
 					clientSocket.write(buffer);
 
-					Utilitaires.out("Test 237");
+					//Utilitaires.out("Test 237");
 				}
-				Utilitaires.out("Test 238");
+				//Utilitaires.out("Test 238");
 				Donnees.getHostedPaquet(id).unlock();
 				clientSocket.close();
 

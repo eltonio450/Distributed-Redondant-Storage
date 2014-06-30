@@ -391,7 +391,7 @@ public class Paquet {
 			
 			SocketChannel clientSocket = SocketChannel.open();
 			// Etape 1 : Initialisation de la connexion
-			Utilitaires.out("Envoi de la demande de lock pour " + idGlobal, 6, true);
+			Utilitaires.out("Envoi de la demande de unlock pour " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);

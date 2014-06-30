@@ -97,7 +97,8 @@ public class Donnees {
 	static private boolean filling = true;
 	static private LinkedList<Machine> toRemove = new LinkedList<Machine>();
 	static private int index = 0;
-
+	static public int nombreDeLocks;
+	
 	/**
 	 * La liste des paquets dont je suis proprietaire.
 	 * On stocke seulement l'identifiant des paquets.

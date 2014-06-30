@@ -142,7 +142,7 @@ public class taskDumpToMachine implements Runnable {
 
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						Utilitaires.out("Ici tout a fonctionné");
+						//Utilitaires.out("Ici tout a fonctionné");
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -196,7 +196,7 @@ public class taskDumpToMachine implements Runnable {
 				return false;
 			}
 			else {
-				Utilitaires.out("Test 4");
+				//Utilitaires.out("Test 4");
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 
