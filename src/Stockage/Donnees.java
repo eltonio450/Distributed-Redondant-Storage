@@ -295,12 +295,19 @@ public class Donnees {
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
+	  allServeurLock.lock();
+	  try{
+	    int n =(int) ( Math.random() * (double) allServeur.size()) ;
+	    return allServeur.get(n) ;	    
+	  }
+	  finally{
+	    allServeurLock.unlock();
+	  }
 
-		return allServeur.peek();
 	}
 
 	/**
-	 * Ajoute une machine � allServeura� partir de l'ip et du port
+	 * Ajoute une machine a allServeur a partir de l'ip et du port
 	 * @param ip
 	 *         L'ip de la machine
 	 * @param port
