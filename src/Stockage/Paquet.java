@@ -294,7 +294,6 @@ public class Paquet {
 	 */
 
 	public int sendAskForLock(Machine m, String idGlobal, int power) {
-		String reponse = "";
 		//SocketChannel clientSocket;
 		try{
 			SocketChannel clientSocket = SocketChannel.open();
@@ -410,7 +409,6 @@ public class Paquet {
 	}
 
 	public int askForUnlock(Machine m, String idGlobal) {
-		String reponse = "";
 		try {
 
 			

@@ -9,7 +9,6 @@ import Utilitaires.Message;
 import Stockage.Donnees;
 import Stockage.Machine;
 import Stockage.Paquet;
-import Stockage.Stockage;
 import Utilitaires.Utilitaires;
 
 
