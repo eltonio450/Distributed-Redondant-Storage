@@ -6,9 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 
 import Stockage.Donnees;
-import Stockage.Machine;
 import Stockage.Paquet;
-import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
@@ -82,6 +80,7 @@ public class taskServeurExchange implements Runnable {
 						aEnvoyer.envoyerPaquetReellement(socket);
 						ok = true;
 					}
+					
 					else {
 						Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
@@ -89,8 +88,8 @@ public class taskServeurExchange implements Runnable {
 					}
 				}
 				else if(aEnvoyer !=null)
-				{ 
-				  Donnees.putNewPaquet(aEnvoyer);
+				{
+					Donnees.putNewPaquet(aEnvoyer);
 					aEnvoyer.spreadUnlock();
 					aEnvoyer = null;
 				}

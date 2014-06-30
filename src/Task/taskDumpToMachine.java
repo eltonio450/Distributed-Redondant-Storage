@@ -1,6 +1,7 @@
 package Task;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -33,7 +34,7 @@ public class taskDumpToMachine implements Runnable {
 			// Utilitaires.out("Test 0");
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
-					// Utilitaires.out("Test 1");
+					//Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;
 
@@ -42,7 +43,7 @@ public class taskDumpToMachine implements Runnable {
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
+							//Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
 							if (aEnvoyer.askForlock()) {
 								SocketChannel socket = init(m);
 								if (socket != null) {
@@ -77,6 +78,7 @@ public class taskDumpToMachine implements Runnable {
 							else
 							{
 								Donnees.putNewPaquet(aEnvoyer);
+							
 								aEnvoyer.spreadUnlock();
 							}
 							
@@ -122,12 +124,19 @@ public class taskDumpToMachine implements Runnable {
 			// + correspondant.port);
 			return (clientSocket);
 		}
+		catch(ConnectException e){
+			Donnees.printServerList();
+			Utilitaires.out("Blahhh "+ correspondant.toString());
+				e.printStackTrace();
+				return null;
+			}
+
 		catch (IOException e) {
 			Utilitaires.out("Problème dans l'initialisation de la socket pour échanger un paquet avec " + correspondant.port);
 			e.printStackTrace();
-			return null;
-
-		}
+			return null;}
+		
+		
 	}
 
 	public boolean envoiePaquet(Paquet aEnvoyer, Machine correspondant, SocketChannel clientSocket) {
@@ -197,11 +206,12 @@ public class taskDumpToMachine implements Runnable {
 			Utilitaires.out("J'ai fini de te l'envoyer réellement, maintenant à toi !", 1, true);
 			// Utilitaires.out("J'ai fini d'envoyer le paquet");
 			buffer.clear();
+			Utilitaires.out("Test 1");
 			clientSocket.read(buffer);
-			// Utilitaires.out("Test 2");
+			Utilitaires.out("Test 2");
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			// Utilitaires.out("Message reçu : " +s,1,true);
+			Utilitaires.out("Message reçu : " +s,1,true);
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
 				Utilitaires.out("Test 2");
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
@@ -212,12 +222,12 @@ public class taskDumpToMachine implements Runnable {
 				s = Utilitaires.buffToString(buffer);
 			}
 			if (s.equals(Message.ANNULE_ENVOI)) {
-				// Utilitaires.out("Test 3");
+				Utilitaires.out("Test 3");
 				clientSocket.close();
 				return false;
 			}
 			else {
-				//Utilitaires.out("Test 4");
+				Utilitaires.out("Test 4");
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 

@@ -34,7 +34,6 @@ public class taskLockPacket implements Runnable {
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
 
-		String temp;
 		String id;
 		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
@@ -58,17 +57,22 @@ public class taskLockPacket implements Runnable {
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
 			//Utilitaires.out("Test 1");
-			if (Donnees.getHostedPaquet(id)!=null && !Donnees.getHostedPaquet(id).lockLogique){
+			if (Donnees.getHostedPaquet(id)!=null){
 				//Utilitaires.out("Test 2");
-				// (!Donnees.getHostedPaquet(id).isAskingTheLock   
-					//|| power > Donnees.getHostedPaquet(id).idInterne) &&  {
-				//Utilitaires.out("Test 8"+power,4,true);
-				Donnees.getHostedPaquet(id).lock();
-				//Utilitaires.out("Demande de lock acceptée.",4,true);
-				//Utilitaires.out("Test 3");
-				b = Utilitaires.stringToBuffer(Message.OK);
-				s.write(b);
-				//Utilitaires.out("Test 4");
+				if(!Donnees.getHostedPaquet(id).lockLogique){
+					Donnees.getHostedPaquet(id).lock();
+					b = Utilitaires.stringToBuffer(Message.OK);
+					s.write(b);
+				
+				}
+				else{
+					Utilitaires.out("Mais il est déjà locké !.",4,true);
+					b = Utilitaires.stringToBuffer(Message.FAIL);
+					s.write(b);
+					
+				}
+			
+				
 			}
 			else {
 				Utilitaires.out("Je refuse de donner le lock.",4,true);
@@ -77,6 +81,7 @@ public class taskLockPacket implements Runnable {
 			}
 
 			s.close();
+			scan.close();
 
 		}
 		catch (IOException e) {

@@ -2,14 +2,11 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.GatheringByteChannel;
-import java.nio.channels.ScatteringByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 
-import Stockage.Donnees;
-import Stockage.Machine;
+
 import Stockage.Paquet;
 import Task.taskServeurExchange;
 import Task.taskServeurReceiveOnePaquet;

@@ -307,7 +307,7 @@ public class Paquet {
 			  return 3 ;
 			}
 				
-			// 
+// 
 			// Etape 2 : Envoie du pré-Lock
 
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
@@ -354,7 +354,6 @@ public class Paquet {
 			e.printStackTrace();
 			return 3;
 		}
-
 	}
 
 	public void lock() {

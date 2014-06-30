@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import Stockage.Donnees;
 import Stockage.Machine;
-import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 
@@ -27,10 +26,8 @@ public class taskHostHasChanged implements Runnable {
 	public void run() {
 		try{
 		  //Utilitaires.out("-------------------taskHostChanged-------------------") ;
-			//Utilitaires.out("Change host !");
-			//Utilitaires.out("Ici il a répondu x3");
-		  
-		  //Utilitaires.out("Ici il a répondu x2");
+			
+			
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.OK) ;
 			socket.write(buffer) ;
 			//Utilitaires.out("Ici il a répondu");
@@ -45,14 +42,13 @@ public class taskHostHasChanged implements Runnable {
 			String Id = scan.next() ;
 			int place = scan.nextInt() ;
 			Machine newHost = new Machine(machine) ;
-			if(!Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propri�taire du paquet
-			  Donnees.changeHostForPaquet(Id, place, newHost);
-			}
-			else{  //nous sommes le propri�taire du paquet
+			Donnees.changeHostForPaquet(Id, place, newHost);
+			if(Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propri�taire du paquet
 			  Donnees.addHost(Id, newHost) ;
 			}
 			
 			socket.close();
+			scan.close();
 		}
 		catch(Exception e){
 			e.printStackTrace();

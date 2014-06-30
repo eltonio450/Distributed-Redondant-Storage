@@ -45,13 +45,9 @@ public class deathVerifier implements Runnable {
 			}
 				
 			clientSocket.close();
-		}catch (ConnectException e){
+		}catch (IOException e){
 			Utilitaires.out(m.port + " est mort.");
-			return true;
-		}
-		catch (IOException e) {
-			Utilitaires.out("Erreur dans le death verifier", 4, true);
-			e.printStackTrace();
+			mort = true;
 		}
 		return mort;
 	}

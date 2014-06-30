@@ -1,11 +1,8 @@
 import StartUpRoutine.IniDonnees;
 import StartUpRoutine.IniServer;
 import StartUpRoutine.IniTCP;
-import StartUpRoutine.IniUDP;
-import StartUpRoutine.ServerGetter;
 import Stockage.Machine;
 import Stockage.Paquet;
-import Task.taskClientExchange;
 import Task.taskClientSendOnePaquet;
 import Task.taskDumpToMachine;
 import Utilitaires.Global;
