@@ -3,10 +3,8 @@ package Task;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.LinkedList;
 
 import Stockage.Donnees;
-import Stockage.Machine;
 import Stockage.Paquet;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;

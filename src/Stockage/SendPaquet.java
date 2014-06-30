@@ -1,19 +1,10 @@
 package Stockage;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-
-import Utilitaires.Global;
-import Utilitaires.Message;
-import Utilitaires.Utilitaires;
 
 public class SendPaquet {
 /*
   public static void prevenirHostChanged(String id){
-    //préviens une machine que cette machine remplace m pour le paquet d'id Id
+    //prï¿½viens une machine que cette machine remplace m pour le paquet d'id Id
     Paquet p = Donnees.getHostedPaquet(id) ;
     int placeToModify = p.power ;
     for (int i =0 ; i< 5 ; i++) {
@@ -41,7 +32,7 @@ public class SendPaquet {
             }
           }
           catch(IOException e){
-            //TODO : on a pas pu prévenir m !
+            //TODO : on a pas pu prï¿½venir m !
           }
         }
       }
@@ -59,7 +50,7 @@ public class SendPaquet {
         while (!hostsFound){
           Machine correspondant = Stockage.chooseMachine();
           if (!hosts.contains(correspondant)) {
-            //il ne faut pas qu'un même serveur possède 2 paquets du même groupe
+            //il ne faut pas qu'un mï¿½me serveur possï¿½de 2 paquets du mï¿½me groupe
           try (SocketChannel clientSocket = SocketChannel.open()) {
           
           //init connection
@@ -109,8 +100,8 @@ public class SendPaquet {
   /*
   public static void putAndGet(Machine m, Paquet p){ 
     //TODO
-    //cette méthode actualise le champ myData de Donnees
-    //Envoie UN paquet à m et reçoit UN paquet en échange
+    //cette mï¿½thode actualise le champ myData de Donnees
+    //Envoie UN paquet ï¿½ m et reï¿½oit UN paquet en ï¿½change
   }
   */
   

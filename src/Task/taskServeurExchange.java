@@ -6,9 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 
 import Stockage.Donnees;
-import Stockage.Machine;
 import Stockage.Paquet;
-import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
 

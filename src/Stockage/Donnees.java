@@ -137,9 +137,11 @@ public class Donnees {
 		scan.next();
 		if (scan.hasNext()) {
 			if (hasPaquetLike(id).isEmpty()) {
+				scan.close();
 				return true;
 			}
 		}
+		scan.close();
 		return false;
 	}
 
@@ -157,7 +159,6 @@ public class Donnees {
 		final String newId = s.next() + "-" + s.next() + "-";
 		long n = s.nextLong();
 		long a = n / Global.NOMBRESOUSPAQUETS;
-		long b = n % Global.NOMBRESOUSPAQUETS;
 		LinkedList<String> res = new LinkedList<String>();
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
@@ -165,6 +166,7 @@ public class Donnees {
 				res.add(testId);
 			}
 		}
+		s.close();
 		return res;
 	}
 
@@ -471,7 +473,6 @@ public class Donnees {
 	 * @return LinkedList<.String> copie de toSendASAP
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend1() {
-		// TODO :lock
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
@@ -488,7 +489,7 @@ public class Donnees {
 	 * @return LinkedList<.String> copie des identifiants des paquets de myData
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend2() {
-		return new LinkedList(myData.keySet());
+		return new LinkedList<String>(myData.keySet());
 	}
 
 	/**
@@ -673,8 +674,6 @@ public class Donnees {
 	 *            Le paquet � supprimer
 	 */
 	public static void removePaquet(Paquet p) {
-		// TODO : remove interestServeur
-
 		myDataLock.lock();
 
 		toSendASAPLock.lock();
@@ -734,7 +733,6 @@ public class Donnees {
 			toSendASAP.put(toSendASAP.take());
 		}
 		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

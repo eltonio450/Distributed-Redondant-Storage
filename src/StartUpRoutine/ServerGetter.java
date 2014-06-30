@@ -2,9 +2,7 @@ package StartUpRoutine;
 
 
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 import Stockage.Donnees;
@@ -28,7 +26,6 @@ public class ServerGetter {
 
 			clientSocket.write(Utilitaires.stringToBuffer(Message.GET_LIST));
 
-			ByteBuffer b = ByteBuffer.allocateDirect(Global.BUFFER_LENGTH);
 			String token;
 			String liste;
 			boolean continuer = true;
