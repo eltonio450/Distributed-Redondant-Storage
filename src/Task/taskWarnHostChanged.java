@@ -30,7 +30,7 @@ public class taskWarnHostChanged implements Runnable {
 	}
 
 	public static void prevenirHostChanged(String id) {
-		// pr�viens une machine que cette machine remplace m pour le paquet d'id
+		// previens une machine que cette machine remplace m pour le paquet d'id
 		// Id
 		SocketChannel clientSocket;
 		Paquet p = Donnees.getHostedPaquet(id);
@@ -76,7 +76,6 @@ public class taskWarnHostChanged implements Runnable {
 				InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
 				if (!clientSocket.connect(remote))
 					Utilitaires.out("Ca a foiré !");
-				// clientSocket.configureBlocking(true);
 
 				// message
 				ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
@@ -84,22 +83,15 @@ public class taskWarnHostChanged implements Runnable {
 				Utilitaires.out(Utilitaires.buffToString(buffer2));
 				clientSocket.write(buffer);
 				buffer.clear();
-				//Utilitaires.out("Test 235");
 				clientSocket.read(buffer);
-				//Utilitaires.out("Test 236");
 				buffer.flip();
 				String response = Utilitaires.buffToString(buffer);
 
 				if (response.equals(Message.OK)) {
 					String s = Global.MYSELF.toString() + " " +id + " " + placeToModify + " " + Message.END_ENVOI;
-					// buffer.flip();
 					buffer = Utilitaires.stringToBuffer(s);
 					clientSocket.write(buffer);
-
-					//Utilitaires.out("Test 237");
 				}
-				//Utilitaires.out("Test 238");
-				//Donnees.getHostedPaquet(id).unlock();
 				clientSocket.close();
 
 			}

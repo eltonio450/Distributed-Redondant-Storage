@@ -47,13 +47,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
 
 		while (true) {
-			// Utilitaires.out("Bouh");
 			while (aTraiter.isEmpty()) {
 				lock.lock();
-				// Utilitaires.out("Blah");
 				c.awaitUninterruptibly(); // On patiente si la liste des sockets
-											// à écouter est vide
-				// Utilitaires.out("Juste après le await !");
+										  // à écouter est vide
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
 				lock.unlock();
@@ -61,11 +58,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 			lock.lock();
 			for (Requester r : aTraiter) {
-				// Utilitaires.out("Bleuh");
-				// Utilitaires.out("Dans la boucle !");
 				try {
 					buff.clear();
-					// Utilitaires.out("Lecture !");
 					r.socket.read(buff);
 				}
 				catch (IOException e) {
@@ -75,7 +69,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
-				// Utilitaires.out(r.recu);
 				if (buff.hasRemaining())
 					Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
 				else
@@ -91,7 +84,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				else {
 					try {
-						// Utilitaires.out("Traitement");
 						traiter(r);
 					}
 					catch (Exception e) {
@@ -119,7 +111,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 	public void addRequester(Requester requester) {
 		try {
-			// Utilitaires.out("This is added !");
 			requester.socket.configureBlocking(false);
 		}
 		catch (IOException e) {
@@ -127,11 +118,9 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			return;
 		}
 		lock.lock();
-		// Utilitaires.out("Juste après le lock !");
 		try {
 			aAjouter.add(requester);
 			c.signal();
-			// Utilitaires.out("Juste après le signal !");
 		}
 		finally {
 			lock.unlock();
@@ -270,18 +259,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
 
 			}
-
-			/**
-			 * Modèle :
-			 * 
-			 * else if (token.equals(MOT_CLEF) { MyTache m = new MyTache
-			 * (r.socket); // Nouvelle tâche r.socket.configureBlocking(true);
-			 * // La nouvelle tâche va attendre qu'il parle aEnlever.add(r); //
-			 * On enlève r de la liste à analyser par le GPRA
-			 * Slaver.giveTask(m); // Ou Slaver.giveUrgentTask(m) }
-			 * 
-			 * 
-			 */
 		}
 		catch (IOException e) {
 			aEnlever.add(r);
