@@ -31,6 +31,7 @@ public class Machine {
 	  scan.useDelimiter("-") ;
  	  ipAdresse = scan.next() ;
 	  port = scan.nextInt() ; 
+	  scan.close();
 	}
 	
   public static Machine otherMachineFromSocket(SocketChannel s){

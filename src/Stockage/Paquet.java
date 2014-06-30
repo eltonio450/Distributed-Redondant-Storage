@@ -198,6 +198,8 @@ public class Paquet {
 		// Utilitaires.out("Test 4",6,true);
 		Paquet paq = new Paquet(id, owner);
 		paq.putOtherHosts(hosts);
+		
+		scan.close();
 		return paq;
 	}
 
