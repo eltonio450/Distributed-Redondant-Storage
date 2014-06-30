@@ -34,18 +34,20 @@ public class taskDumpToMachine implements Runnable {
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("Test 1");
-					SocketChannel socket = init(m);
-					if (socket != null) {
-						boolean changeMachine = false;
 
-						while (!toSendASAP.isEmpty() && !changeMachine) {
+					boolean changeMachine = false;
 
-							Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
+					while (!toSendASAP.isEmpty() && !changeMachine) {
 
-							if (aEnvoyer != null) {
-								Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
-								if (aEnvoyer.askForlock()) {
-									//Utilitaires.out("La demande de lock a réussi pour "+aEnvoyer.idGlobal, 1, true);
+						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
+
+						if (aEnvoyer != null) {
+							Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
+							if (aEnvoyer.askForlock()) {
+								SocketChannel socket = init(m);
+								if (socket != null) {
+									// Utilitaires.out("La demande de lock a réussi pour "+aEnvoyer.idGlobal,
+									// 1, true);
 									if (!envoiePaquet(aEnvoyer, m, socket)) {
 										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString(), 1, true);
 										Donnees.putNewPaquet(aEnvoyer);
@@ -53,26 +55,22 @@ public class taskDumpToMachine implements Runnable {
 									else {
 										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " envoyé vers " + m.toString(), 2, true);
 									}
+									try {
+										socket.close();
+									}
+									catch (IOException e) {
+										Utilitaires.out("Erreur dans la fermeture de la socket pour échange de fichier.");
+										e.printStackTrace();
+									}
 								}
-								aEnvoyer.spreadUnlock();
-							
-								
-								changeMachine = true;
 							}
-
-							
+							changeMachine = true;
 						}
 
 						if (toSendASAP.isEmpty()) {
 							continuer = false;
 						}
-						try {
-							socket.close();
-						}
-						catch (IOException e) {
-							Utilitaires.out("Erreur dans la fermeture de la socket pour échange de fichier.");
-							e.printStackTrace();
-						}
+						
 
 					}
 				}
@@ -184,7 +182,7 @@ public class taskDumpToMachine implements Runnable {
 			String s = Utilitaires.buffToString(buffer);
 			// Utilitaires.out("Message reçu : " +s,1,true);
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
-				// Utilitaires.out("Test 2");
+				Utilitaires.out("Test 2");
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
 				clientSocket.write(buffer);
 				buffer.clear();
@@ -198,7 +196,7 @@ public class taskDumpToMachine implements Runnable {
 				return false;
 			}
 			else {
-				// Utilitaires.out("Test 4");
+				Utilitaires.out("Test 4");
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 
@@ -206,12 +204,13 @@ public class taskDumpToMachine implements Runnable {
 				Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket);
 				receivedPaquet.lock();
 				Donnees.receptionPaquet(receivedPaquet);
-				//receivedPaquet.spreadUnlock();
+				// receivedPaquet.spreadUnlock();
 				clientSocket.close();
 				return true;
 			}
 		}
 		catch (IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

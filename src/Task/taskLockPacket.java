@@ -28,6 +28,7 @@ public class taskLockPacket implements Runnable {
 
 	public taskLockPacket(SocketChannel socket) {
 		s = socket;
+		
 	}
 
 	public void run() {
@@ -39,7 +40,9 @@ public class taskLockPacket implements Runnable {
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
 
 		try {
-			//Utilitaires.out("Demande de lock reçue.",4,true);
+			//Utilitaires.out("Demande de lock reçue. Entrée dans le process",4,true);
+			Thread.sleep(1000);
+			//Utilitaires.out("Ici je vaux : " +Utilitaires.buffToString(b));
 			s.write(b);
 
 			// Etape 2 : attendre de recevoir l'identifiant du paquet qui
@@ -54,16 +57,17 @@ public class taskLockPacket implements Runnable {
 			id = scan.next();
 			power = Integer.parseInt(scan.next());
 			
-			Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
+			//Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
 			// Etape 3 : effectuer le lock si c'est possible.
 			b.clear();
 		
 			//Donnees.getHostedPaquet(id);
-			if (Donnees.getHostedPaquet(id)!=null && (!Donnees.getHostedPaquet(id).isAskingTheLock 
-					|| power > Donnees.getHostedPaquet(id).idInterne)) {
-				Utilitaires.out("Test 8"+power,4,true);
+			if (Donnees.getHostedPaquet(id)!=null && !Donnees.getHostedPaquet(id).lockLogique){
+				// (!Donnees.getHostedPaquet(id).isAskingTheLock   
+					//|| power > Donnees.getHostedPaquet(id).idInterne) &&  {
+				//Utilitaires.out("Test 8"+power,4,true);
 				Donnees.getHostedPaquet(id).lock();
-				Utilitaires.out("Demande de lock acceptée.",4,true);
+				//Utilitaires.out("Demande de lock acceptée.",4,true);
 				b = Utilitaires.stringToBuffer(Message.OK);
 				s.write(b);
 			}

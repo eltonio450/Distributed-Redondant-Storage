@@ -48,17 +48,11 @@ public class taskUnlockPacket implements Runnable {
 			id = scan.next();
 			power = Integer.parseInt(scan.next());
 
-			// Etape 3 : effectuer le lock si c'est possible.
+			// Etape 3 : effectuer le unlock si c'est possible.
 			b.clear();
-			if (!Donnees.getHostedPaquet(id).isAskingTheLock || power < Donnees.getHostedPaquet(id).idInterne) {
-				Donnees.getHostedPaquet(id).lock();
-				b = Utilitaires.stringToBuffer(Message.OK + " " + Message.END_ENVOI);
-				s.write(b);
-			}
-			else {
-				b = Utilitaires.stringToBuffer(Message.FAIL + " " + Message.END_ENVOI);
-				s.write(b);
-			}
+			Utilitaires.out("L'unlock a fonctioné !");
+			Donnees.getHostedPaquet(id).unlock();
+				
 
 			s.close();
 

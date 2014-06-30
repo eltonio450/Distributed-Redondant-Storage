@@ -182,7 +182,8 @@ public class Donnees {
 		}
 		putNewPaquet(p);
 		Slaver.giveUrgentTask(new Task.taskWarnHostChanged("" + p.idGlobal), 1);
-		p.spreadUnlock();
+		
+		//p.spreadUnlock();
 		//Utilitaires.out("fin reception");
 		
 	}
@@ -203,10 +204,12 @@ public class Donnees {
 		try {
 			LinkedList<String> paquets = hasPaquetLike(Id);
 			for (String s : paquets) {
-			  Machine toRemove = myData.get(Id).otherHosts.get(place) ;
+			  Machine toRemove = myData.get(s).otherHosts.get(place) ;
 			  interestServeur.remove(toRemove) ;
-				myData.get(Id).otherHosts.set(place, newHost);
+				myData.get(s).otherHosts.set(place, newHost);
+				
 				interestServeur.add(newHost) ;
+				myData.get(s).unlock();
 			}
 		}
 		finally {
@@ -495,7 +498,7 @@ public class Donnees {
 		try {
 			temp = myData.get(id);
 			if(temp!=null)
-				Utilitaires.out("Le paquet "+id+"est bien présent chez moi.",1,true);
+				;//Utilitaires.out("Le paquet "+id+"est bien présent chez moi.",1,true);
 			else
 				Utilitaires.out("Le paquet "+id+" n'est pas présent chez moi.",1,true);
 		}

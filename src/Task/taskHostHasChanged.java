@@ -48,6 +48,7 @@ public class taskHostHasChanged implements Runnable {
 			else{  //nous sommes le propri�taire du paquet
 			  Donnees.addHost(Id, newHost) ;
 			}
+			
 			socket.close();
 		}
 		catch(Exception e){
