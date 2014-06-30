@@ -5,8 +5,10 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.LinkedList;
 
 import Stockage.Donnees;
+import Stockage.Machine;
 import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
@@ -21,7 +23,9 @@ public class deathVerifier implements Runnable {
 	public void run () {
 		Boolean mort = verifyDeath(m);
 		if (mort) {
-			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port + " #", Donnees.getAllServeurs());
+			LinkedList<Machine> liste = Donnees.getAllServeurs();
+			liste.add(Global.MYSELF);
+			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port + " #", liste);
 		}
 	}
 	
