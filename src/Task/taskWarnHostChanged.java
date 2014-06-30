@@ -90,7 +90,7 @@ public class taskWarnHostChanged implements Runnable {
 				String response = Utilitaires.buffToString(buffer);
 
 				if (response.equals(Message.OK)) {
-					String s = id + " " + placeToModify + " " + Message.END_ENVOI;
+					String s = Global.MYSELF.toString() + " " +id + " " + placeToModify + " " + Message.END_ENVOI;
 					// buffer.flip();
 					buffer = Utilitaires.stringToBuffer(s);
 					clientSocket.write(buffer);

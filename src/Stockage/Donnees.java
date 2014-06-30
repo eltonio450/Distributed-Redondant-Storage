@@ -198,10 +198,7 @@ public class Donnees {
 	 *       Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-<<<<<<< HEAD
-=======
-		
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+
 		myDataLock.lock();
 		interestServeurLock.lock();
 		try {
