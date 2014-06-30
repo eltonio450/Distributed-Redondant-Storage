@@ -542,7 +542,7 @@ public class Donnees {
 				return myData.get(id);
 			else {
 				Utilitaires.out("Le paquet " + id + " n'est pas présent chez moi.", 1, true);
-				return null;				
+				return null;
 			}
 
 		}
