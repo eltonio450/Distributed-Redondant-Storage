@@ -3,7 +3,6 @@ package Stockage;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
-import Utilitaires.Global;
 import Utilitaires.Utilitaires;
 
 public class Machine {
@@ -33,5 +32,6 @@ public class Machine {
     Utilitaires.out("IP: "+ ip + " Port : "+p);
     return new Machine(ip,p) ;
   }
+
 	
 }
