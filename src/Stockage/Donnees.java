@@ -188,6 +188,7 @@ public class Donnees {
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			if (i != p.power) {
 				addInterestServeur(p.otherHosts.get(i));
+				Utilitaires.out(p.otherHosts.get(i) + " added to interestServeur", 6, true);
 			}
 		}
 		putNewPaquet(p);
@@ -227,6 +228,7 @@ public class Donnees {
 				myData.get(s).otherHosts.set(place, newHost);
 
 				interestServeur.add(newHost);
+				Utilitaires.out(newHost + " replaced " + toRemove + " in interestServeur", 6, true);
 				myData.get(s).unlock();
 			}
 
@@ -309,6 +311,7 @@ public class Donnees {
 			while (interestServeur.contains(m)) { // il peut y avoir plusieurs
 													// occurrences
 				interestServeur.remove(m);
+				Utilitaires.out(m + " removed from interestServeur", 6, true);
 			}
 		}
 		finally {
@@ -523,6 +526,7 @@ public class Donnees {
 		interestServeurLock.lock();
 		try {
 			interestServeur.add(m);
+			Utilitaires.out(m + " added to interestServeur", 6, true);
 		}
 		finally {
 			interestServeurLock.unlock();
@@ -577,7 +581,7 @@ public class Donnees {
 
 	/**
 	 * Supprime et retourne ce paquet de myData. Cependant, aucun ajustement
-	 * n'est effectue dans interestServeur.
+	 * n'est effectue dans Serveur.
 	 * 
 	 * @param id
 	 * @return Le paquet s'il est dans myData, <b>null</b> sinon.

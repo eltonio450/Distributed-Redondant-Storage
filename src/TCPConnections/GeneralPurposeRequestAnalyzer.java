@@ -56,15 +56,16 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				// à écouter est vide
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
-
 			}
+			lock.unlock();
+			
+			Utilitaires.out("Blabla GPRA", 7, true);
 
 			for (Requester r : aTraiter) {
 				try {
 					buff.clear();
 					r.socket.read(buff);
 				} catch (IOException e) {
-
 					aEnlever.add(r);
 					e.printStackTrace();
 				}

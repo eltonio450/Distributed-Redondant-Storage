@@ -12,6 +12,7 @@ package Utilitaires;
 public class Slaver {
 	static final int NB_SLOWSLAVES = 100;
 	static final int NB_FASTSLAVES = 20;
+	static int indexSlow, indexFast;
 	static SlaveThread [] slowSlaves, fastSlaves;
 	
 	public static final void initialize () {
@@ -25,35 +26,17 @@ public class Slaver {
 			fastSlaves[i] = new SlaveThread();
 			fastSlaves[i].start();
 		}
+		
+		indexSlow = 0;
+		indexFast = 0;
 	}
 	
 	public static final void giveTask (Runnable r, int estimatedLoad) {
-		int minLoad = Integer.MAX_VALUE;
-		SlaveThread best = null;
-		for (SlaveThread s : slowSlaves) {
-			if (s.getLoad() < minLoad) {
-				minLoad = s.getLoad();
-				best = s;
-			}
-		}
-		if (!best.doThat(r, estimatedLoad)) {
-			Utilitaires.out("System overloaded : no more slave thread available.");
-			System.exit(-3);
-		}
+		slowSlaves[(indexSlow++) % NB_SLOWSLAVES].doThat(r, estimatedLoad);
 	}
 	
 	public static final void giveUrgentTask(Runnable r, int estimatedLoad) {
-		int minLoad = Integer.MAX_VALUE;
-		SlaveThread best = null;
-		for (SlaveThread s : fastSlaves) {
-			if (s.getLoad() < minLoad) {
-				minLoad = s.getLoad();
-				best = s;
-			}
-		}
-		if (!best.doThat(r, estimatedLoad)) {
-			Utilitaires.out("System overloaded : no more slave thread available.");
-			System.exit(-3);
-		}
+		slowSlaves[(indexFast++) % NB_FASTSLAVES].doThat(r, estimatedLoad);
+
 	}
 }
