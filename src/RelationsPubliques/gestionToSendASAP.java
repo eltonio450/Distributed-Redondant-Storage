@@ -19,7 +19,7 @@ public class gestionToSendASAP extends Thread {
 			Donnees.toSendASAPLock.unlock();*/
 			try {
 
-				Thread.sleep((int) (Math.abs(Math.random()) * (double) 40000));
+				Thread.sleep((long)(Math.abs(Math.random()) * 40000));
 				//Utilitaires.out("Répartition des paquets", 2, true);
 
 			}
@@ -28,10 +28,12 @@ public class gestionToSendASAP extends Thread {
 				e.printStackTrace();
 			}
 			if(!Donnees.toSendAsapEmpty())
-			{Runnable task = new taskDumpToMachine();
-
-			task.run();}
-
+			{
+				Utilitaires.out("New taskDumpToMachine", 6, true);
+				Runnable task = new taskDumpToMachine();
+				task.run();
+				Utilitaires.out("Completed taskDumpToMachine", 6, true);
+			}
 		}
 
 	}

@@ -59,8 +59,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			lock.unlock();
 			
-			Utilitaires.out("Blabla GPRA", 7, true);
-
 			for (Requester r : aTraiter) {
 				try {
 					buff.clear();
