@@ -805,8 +805,14 @@ public class Donnees {
 		Paquet temp = null;
 		try {
 			if (myData.containsKey(id)) {
-				myData.get(id).lock();
+				if(!myData.get(id).isLocked()){
+					myData.get(id).lock();
 				return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			else {
 
