@@ -4516,3 +4516,155 @@ Serveur 5028 : Pour la machine 127.0.0.1-5028
 [32mServeur 5028 : Paquet : 127.0.0.1-5008-0[0m
 [32mServeur 5028 : Paquet : 127.0.0.1-5004-1[0m
 [32mServeur 5028 : Paquet : 127.0.0.1-5016-1[0m
+Serveur 5000 : Pour la machine 127.0.0.1-5000
+[32mServeur 5000 : Paquet : 127.0.0.1-5004-2[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5020-3[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5008-1[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5032-0[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5020-8[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-0[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5012-2[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5016-3[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5012-6[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5004-6[0m
+Serveur 5008 : Pour la machine 127.0.0.1-5008
+[32mServeur 5008 : Paquet : 127.0.0.1-5032-1[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5036-1[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5024-3[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5004-8[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5012-8[0m
+[34mServeur 5008 : from  5037 : PING#[0m
+[34mServeur 5012 : from  5021 : PING#[0m
+[34mServeur 5028 : from  5009 : PING#[0m
+[34mServeur 5036 : from  5009 : RPING#[0m
+[34mServeur 5020 : from  5013 : RPING#[0m
+[34mServeur 5008 : from  5001 : PING#[0m
+[34mServeur 5008 : from  5029 : RPING#[0m
+[34mServeur 5036 : from  5029 : PING#[0m
+[34mServeur 5000 : from  5009 : RPING#[0m
+[34mServeur 5028 : from  5037 : RPING#[0m
+[34mServeur 5012 : from  5017 : PING#[0m
+[34mServeur 5000 : from  5005 : PING#[0m
+[34mServeur 5004 : from  5001 : RPING#[0m
+[34mServeur 5016 : from  5013 : PING#[0m
+[34mServeur 5024 : from  5021 : RPING#[0m
+[34mServeur 5012 : from  5017 : RPING#[0m
+[34mServeur 5016 : from  5013 : RPING#[0m
+[34mServeur 5032 : from  5037 : RPING#[0m
+Serveur 5028 : Pour la machine 127.0.0.1-5028
+[32mServeur 5028 : Paquet : 127.0.0.1-5020-0[0m
+[32mServeur 5028 : Paquet : 127.0.0.1-5000-7[0m
+[32mServeur 5028 : Paquet : 127.0.0.1-5008-0[0m
+[32mServeur 5028 : Paquet : 127.0.0.1-5004-1[0m
+[32mServeur 5028 : Paquet : 127.0.0.1-5016-1[0m
+Serveur 5012 : Pour la machine 127.0.0.1-5012
+[32mServeur 5012 : Paquet : 127.0.0.1-5032-2[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5000-4[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5016-2[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5028-2[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5024-1[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5012-4[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5008-2[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5036-2[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5004-7[0m
+Serveur 5004 : Pour la machine 127.0.0.1-5004
+[32mServeur 5004 : Paquet : 127.0.0.1-5000-9[0m
+[32mServeur 5012 : Paquet : 127.0.0.1-5020-6[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5000-2[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5012-3[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5036-0[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5024-2[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5028-0[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5008-3[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5012-7[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5020-5[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5016-0[0m
+Serveur 5004 : Pour la machine 127.0.0.1-5004
+[32mServeur 5004 : Paquet : 127.0.0.1-5000-9[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5000-2[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5012-3[0m
+Serveur 5020 : Pour la machine 127.0.0.1-5020
+[32mServeur 5004 : Paquet : 127.0.0.1-5036-0[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5024-2[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5004-0[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5028-4[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5024-0[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5028-0[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5032-4[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5000-1[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5008-3[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5012-1[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5016-4[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5036-4[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5020-4[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5020-5[0m
+[32mServeur 5020 : Paquet : 127.0.0.1-5012-5[0m
+[32mServeur 5004 : Paquet : 127.0.0.1-5016-0[0m
+Serveur 5036 : Pour la machine 127.0.0.1-5036
+[32mServeur 5036 : Paquet : 127.0.0.1-5004-5[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5000-6[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5020-1[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5004-3[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5012-0[0m
+Serveur 5008 : Pour la machine 127.0.0.1-5008
+[32mServeur 5008 : Paquet : 127.0.0.1-5032-1[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5036-1[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5024-3[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5004-8[0m
+[32mServeur 5008 : Paquet : 127.0.0.1-5012-8[0m
+[34mServeur 5008 : from  5029 : PING#[0m
+[34mServeur 5004 : from  5033 : PING#[0m
+[34mServeur 5036 : from  5009 : PING#[0m
+[34mServeur 5008 : from  5037 : RPING#[0m
+[34mServeur 5000 : from  5025 : PING#[0m
+[34mServeur 5020 : from  5037 : PING#[0m
+[34mServeur 5028 : from  5009 : RPING#[0m
+[34mServeur 5016 : from  5001 : PING#[0m
+[34mServeur 5032 : from  5005 : RPING#[0m
+[34mServeur 5000 : from  5021 : PING#[0m
+[34mServeur 5024 : from  5001 : RPING#[0m
+[34mServeur 5000 : from  5017 : RPING#[0m
+[34mServeur 5036 : from  5021 : RPING#[0m
+[34mServeur 5020 : from  5013 : PING#[0m
+[34mServeur 5020 : from  5001 : RPING#[0m
+[34mServeur 5012 : from  5021 : RPING#[0m
+Serveur 5036 : Pour la machine 127.0.0.1-5036
+[32mServeur 5036 : Paquet : 127.0.0.1-5004-5[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5000-6[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5020-1[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5004-3[0m
+[32mServeur 5036 : Paquet : 127.0.0.1-5012-0[0m
+Serveur 5024 : Pour la machine 127.0.0.1-5024
+[32mServeur 5024 : Paquet : 127.0.0.1-5000-8[0m
+[32mServeur 5024 : Paquet : 127.0.0.1-5012-9[0m
+[32mServeur 5024 : Paquet : 127.0.0.1-5000-3[0m
+[32mServeur 5024 : Paquet : 127.0.0.1-5020-9[0m
+[32mServeur 5024 : Paquet : 127.0.0.1-5004-9[0m
+[34mServeur 5008 : from  5033 : PING#[0m
+[34mServeur 5012 : from  5029 : PING#[0m
+[34mServeur 5032 : from  5009 : RPING#[0m
+[34mServeur 5004 : from  5009 : PING#[0m
+[34mServeur 5012 : from  5005 : PING#[0m
+[34mServeur 5024 : from  5037 : PING#[0m
+[34mServeur 5028 : from  5025 : PING#[0m
+[34mServeur 5008 : from  5005 : RPING#[0m
+[34mServeur 5036 : from  5025 : RPING#[0m
+[34mServeur 5024 : from  5017 : PING#[0m
+[34mServeur 5028 : from  5013 : RPING#[0m
+[34mServeur 5016 : from  5025 : RPING#[0m
+[34mServeur 5024 : from  5029 : RPING#[0m
+[34mServeur 5024 : from  5001 : PING#[0m
+[34mServeur 5028 : from  5021 : PING#[0m
+[34mServeur 5000 : from  5025 : RPING#[0m
+[34mServeur 5020 : from  5029 : RPING#[0m
+Serveur 5000 : Pour la machine 127.0.0.1-5000
+[32mServeur 5000 : Paquet : 127.0.0.1-5004-2[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5020-3[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5008-1[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5032-0[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5020-8[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-0[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5012-2[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5016-3[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5012-6[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5004-6[0m
