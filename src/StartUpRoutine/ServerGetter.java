@@ -12,6 +12,7 @@ import Utilitaires.Utilitaires;
 
 public class ServerGetter {
 	public static void getServerList() {
+		
 		if (Global.FIRST_IP.equals(Global.NO_FIRST_SERVER)) {
 			Donnees.fillingServers(false);
 			return; // premier serveur
@@ -20,11 +21,14 @@ public class ServerGetter {
 		Stockage.Donnees.fillingServers(true);
 		
 		try (SocketChannel clientSocket = SocketChannel.open()) { 
+			
 			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT+3); 
 			clientSocket.bind(local); 
+			Utilitaires.out("Ack 1.5 " + Global.FIRST_IP + " " + Global.FIRST_PORT);
 			InetSocketAddress remote = new InetSocketAddress(Global.FIRST_IP, Global.FIRST_PORT); 
+			Utilitaires.out("Ack 1.75");
 			clientSocket.connect(remote); 
-
+			Utilitaires.out("Ack 2");
 			clientSocket.write(Utilitaires.stringToBuffer(Message.GET_LIST));
 
 			String token;
@@ -32,9 +36,8 @@ public class ServerGetter {
 			boolean continuer = true;
 
 			while (continuer) {
-				
+				Utilitaires.out("Ack 3");
 				liste = Utilitaires.getAFullMessage(Message.END_ENVOI, clientSocket);
-				Utilitaires.out("Fréquence 5 : " + liste);
 				
 				Scanner sc = new Scanner (liste);
 				while (sc.hasNext()) {
@@ -57,6 +60,7 @@ public class ServerGetter {
 					}
 				}
 				sc.close();
+				Utilitaires.out("Ack 4");
 			}
 			clientSocket.close();
 		} catch (Exception e) {

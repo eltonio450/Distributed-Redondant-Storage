@@ -2,9 +2,13 @@
 
 import os
 import time
+import socket
 nombreDeServeur = 10
 i = 0
 
+ip = "127.0.0.1"
+
+print(ip)
 #os.system("killall java")
 # d : identifiant debug
 # p : port du serveur
@@ -15,7 +19,7 @@ i = 0
 #Le premier serveur est une tete du serveur.
 os.system("fuser -fk " + str(5000)+"/tcp")
 os.system("fuser -fk " + str(5000)+"/udp")
-#time.sleep(3)
+time.sleep(3)
 ligne = " -d " + str(0) + " -p " + str(5000) + " -t "
 os.chdir("../bin")
 os.system("java Main " + ligne +"&\n")
@@ -32,7 +36,7 @@ i=0
 while (i < nombreDeServeur-1) :
     time.sleep(1)
     i=i+1
-    ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I 127.0.0.1" + " -P 5000" 
+    ligne = " -d " + str(i) + " -p " + str(5000 + 4*i) + " -I "+ ip + " -P 5000" 
     #os.system("fuser -fk " + str(5000+4*i+1)+"/udp")
     #os.system("fuser -fk " + str(5000+4*i+2)+"/udp")
     #os.system("fuser -fk " + str(5000+4*i)+"/tcp")
