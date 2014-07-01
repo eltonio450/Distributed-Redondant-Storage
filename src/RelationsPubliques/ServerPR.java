@@ -51,7 +51,9 @@ public class ServerPR extends Thread{
 
 				try {
 					traiter (Utilitaires.buffToString(receivedMessage), sender);
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
 				receivedMessage.clear();
 

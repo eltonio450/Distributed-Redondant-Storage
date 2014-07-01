@@ -27,7 +27,7 @@ public class SlaveThread extends Thread{
 	public boolean doThat(Runnable r, int estimatedLoad) {
 		if (tasks.add(r)) {	// return false if couldnt add task (should not happen normally)
 			this.estimatedLoad += estimatedLoad;
-			this.loads.add(estimatedLoad);
+			this.loads.add(new Integer(estimatedLoad));
 			return true;
 		}
 		return false;
