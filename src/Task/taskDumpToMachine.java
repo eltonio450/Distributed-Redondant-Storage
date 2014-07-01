@@ -155,6 +155,8 @@ public class taskDumpToMachine implements Runnable {
 
 
 			if (!s.equals(Message.DEMANDE_ID)) {
+				Utilitaires.out("Didnt answer with DEMANDE ID", 5, true);
+				Utilitaires.out("Message was : " + s, 5, true);
 				return false;
 			}
 
