@@ -29,11 +29,12 @@ public class taskDumpToMachine implements Runnable {
 	}
 
 	public void dump() {
-		//Utilitaires.out("Entree dans la fonction DUMP");
+		Utilitaires.out("Entree dans la fonction DUMP");
 		boolean continuer = true;
 		while (continuer) {
 
 			for (Machine m : allServers) {
+				Utilitaires.out("Entree dans la fonction DUMP 2");
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
 
@@ -42,21 +43,21 @@ public class taskDumpToMachine implements Runnable {
 					while (!toSendASAP.isEmpty() && !changeMachine) {
 
 						for (String s : toSendASAP) {
-							Utilitaires.out("Fuuuck " + s, 5, true);
 						}
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("Choix dans la file toSendASAP : " + aEnvoyer.idGlobal, 5, true);
+
 							SocketChannel socket = null;
+							
 							if (aEnvoyer.askForlock()) {
-								Utilitaires.out("Lock received.", 5, true);
 								try {
 									socket = init(m);
 									if (socket != null) {
+
+
 										Utilitaires.out("Socket opened.", 5, true);
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
-											Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString() + " : Frere déjà présent.", 1, true);
 											
 											aEnvoyer.spreadUnlock();
 											

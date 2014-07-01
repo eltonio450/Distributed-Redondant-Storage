@@ -25,10 +25,9 @@ public class ServerGetter {
 			InetSocketAddress local = new InetSocketAddress(Global.TCP_PORT+3); 
 			clientSocket.bind(local); 
 			Utilitaires.out("Ack 1.5 " + Global.FIRST_IP + " " + Global.FIRST_PORT);
+			Utilitaires.out("Ack 2 " + (Global.TCP_PORT));
 			InetSocketAddress remote = new InetSocketAddress(Global.FIRST_IP, Global.FIRST_PORT); 
-			Utilitaires.out("Ack 1.75");
 			clientSocket.connect(remote); 
-			Utilitaires.out("Ack 2");
 			clientSocket.write(Utilitaires.stringToBuffer(Message.GET_LIST));
 
 			String token;
@@ -36,7 +35,6 @@ public class ServerGetter {
 			boolean continuer = true;
 
 			while (continuer) {
-				Utilitaires.out("Ack 3");
 				liste = Utilitaires.getAFullMessage(Message.END_ENVOI, clientSocket);
 				
 				Scanner sc = new Scanner (liste);
@@ -60,7 +58,6 @@ public class ServerGetter {
 					}
 				}
 				sc.close();
-				Utilitaires.out("Ack 4");
 			}
 			clientSocket.close();
 		} catch (Exception e) {
