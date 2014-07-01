@@ -1,0 +1,256 @@
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5000 : Je suis le serveur de base !
+Serveur 5000 : Arguments parsed...
+Serveur 5000 : Ok
+Serveur 5000 : Initializing data...............
+Serveur 5000 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5000 : Longueur des données :766
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-0.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-1.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-2.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-3.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-4.txt[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-0[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-1[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-2[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-3[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-4[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-0.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-1.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-2.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-3.txt[0m
+[37mServeur 5000 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/0/data/127.0.0.1-5000-4.txt[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-5[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-6[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-7[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-8[0m
+[1;30mServeur 5000 : Ajout à toSendAsap[0m
+[1;31mServeur 5000 : ID global ajouté : 127.0.0.1-5000-9[0m
+Serveur 5000 : Data initialized...
+Serveur 5000 : Ok
+Serveur 5000 : Enslaving innocent threads......
+Serveur 5000 : Ok
+Serveur 5000 : All set and ready to go !
+Serveur 5000 : Getting server list.............
+Serveur 5000 : Ok
+Serveur 5000 : Starting TCP Server.............
+Serveur 5000 : Ok
+Serveur 5000 : Début de toSendASAP.............
+Serveur 5000 : OK
+Serveur 5000 : Starting UDP server.............
+Serveur 5000 : Pour la machine 127.0.0.1-5000
+Serveur 5000 : TCP init sur : 5000
+Serveur 5000 : Ok
+Serveur 5000 : UDP Server on port 5002
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-6[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-7[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-8[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-9[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-2[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-3[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-4[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-5[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-1[0m
+[32mServeur 5000 : Paquet : 127.0.0.1-5000-0[0m
+[1;30mServeur 5000 : Chack[0m
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5004 : Arguments parsed...
+Serveur 5004 : Ok
+Serveur 5004 : Initializing data...............
+Serveur 5004 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5004 : Longueur des données :766
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-0.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-1.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-2.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-3.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-4.txt[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-0[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-1[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-2[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-3[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-4[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-0.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-1.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-2.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-3.txt[0m
+[37mServeur 5004 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/1/data/127.0.0.1-5004-4.txt[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-5[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-6[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-7[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-8[0m
+[1;30mServeur 5004 : Ajout à toSendAsap[0m
+[1;31mServeur 5004 : ID global ajouté : 127.0.0.1-5004-9[0m
+Serveur 5004 : Data initialized...
+Serveur 5004 : Ok
+Serveur 5004 : Enslaving innocent threads......
+Serveur 5004 : Ok
+Serveur 5004 : All set and ready to go !
+Serveur 5004 : Getting server list.............
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5008 : Arguments parsed...
+Serveur 5008 : Ok
+Serveur 5008 : Initializing data...............
+Serveur 5008 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5008 : Longueur des données :11
+[37mServeur 5008 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/2/data/127.0.0.1-5008-0.txt[0m
+[37mServeur 5008 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/2/data/127.0.0.1-5008-1.txt[0m
+[37mServeur 5008 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/2/data/127.0.0.1-5008-2.txt[0m
+[37mServeur 5008 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/2/data/127.0.0.1-5008-3.txt[0m
+[37mServeur 5008 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/2/data/127.0.0.1-5008-4.txt[0m
+[1;30mServeur 5008 : Ajout à toSendAsap[0m
+[1;31mServeur 5008 : ID global ajouté : 127.0.0.1-5008-0[0m
+[1;30mServeur 5008 : Ajout à toSendAsap[0m
+[1;31mServeur 5008 : ID global ajouté : 127.0.0.1-5008-1[0m
+[1;30mServeur 5008 : Ajout à toSendAsap[0m
+[1;31mServeur 5008 : ID global ajouté : 127.0.0.1-5008-2[0m
+[1;30mServeur 5008 : Ajout à toSendAsap[0m
+[1;31mServeur 5008 : ID global ajouté : 127.0.0.1-5008-3[0m
+[1;30mServeur 5008 : Ajout à toSendAsap[0m
+[1;31mServeur 5008 : ID global ajouté : 127.0.0.1-5008-4[0m
+Serveur 5008 : Data initialized...
+Serveur 5008 : Ok
+Serveur 5008 : Enslaving innocent threads......
+Serveur 5008 : Ok
+Serveur 5008 : All set and ready to go !
+Serveur 5008 : Getting server list.............
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5012 : Arguments parsed...
+Serveur 5012 : Ok
+Serveur 5012 : Initializing data...............
+Serveur 5012 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5012 : Longueur des données :766
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-0.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-1.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-2.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-3.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-4.txt[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-0[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-1[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-2[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-3[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-4[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-0.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-1.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-2.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-3.txt[0m
+[37mServeur 5012 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/3/data/127.0.0.1-5012-4.txt[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-5[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-6[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-7[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-8[0m
+[1;30mServeur 5012 : Ajout à toSendAsap[0m
+[1;31mServeur 5012 : ID global ajouté : 127.0.0.1-5012-9[0m
+Serveur 5012 : Data initialized...
+Serveur 5012 : Ok
+Serveur 5012 : Enslaving innocent threads......
+Serveur 5012 : Ok
+Serveur 5012 : All set and ready to go !
+Serveur 5012 : Getting server list.............
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5016 : Arguments parsed...
+Serveur 5016 : Ok
+Serveur 5016 : Initializing data...............
+Serveur 5016 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5016 : Longueur des données :11
+[37mServeur 5016 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/4/data/127.0.0.1-5016-0.txt[0m
+[37mServeur 5016 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/4/data/127.0.0.1-5016-1.txt[0m
+[37mServeur 5016 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/4/data/127.0.0.1-5016-2.txt[0m
+[37mServeur 5016 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/4/data/127.0.0.1-5016-3.txt[0m
+[37mServeur 5016 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/4/data/127.0.0.1-5016-4.txt[0m
+[1;30mServeur 5016 : Ajout à toSendAsap[0m
+[1;31mServeur 5016 : ID global ajouté : 127.0.0.1-5016-0[0m
+[1;30mServeur 5016 : Ajout à toSendAsap[0m
+[1;31mServeur 5016 : ID global ajouté : 127.0.0.1-5016-1[0m
+[1;30mServeur 5016 : Ajout à toSendAsap[0m
+[1;31mServeur 5016 : ID global ajouté : 127.0.0.1-5016-2[0m
+[1;30mServeur 5016 : Ajout à toSendAsap[0m
+[1;31mServeur 5016 : ID global ajouté : 127.0.0.1-5016-3[0m
+[1;30mServeur 5016 : Ajout à toSendAsap[0m
+[1;31mServeur 5016 : ID global ajouté : 127.0.0.1-5016-4[0m
+Serveur 5016 : Data initialized...
+Serveur 5016 : Ok
+Serveur 5016 : Enslaving innocent threads......
+Serveur 5016 : Ok
+Serveur 5016 : All set and ready to go !
+Serveur 5016 : Getting server list.............
+Serveur 5000 : Modal launched !
+Serveur 5000 : Parsing arguments...............
+Serveur 5000 : Votre IP est : 129.104.252.50
+Serveur 5020 : Arguments parsed...
+Serveur 5020 : Ok
+Serveur 5020 : Initializing data...............
+Serveur 5020 : /users/eleves-b/x2012/simon.matet/git/modal/bin
+Serveur 5020 : Longueur des données :766
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-0.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-1.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-2.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-3.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-4.txt[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-0[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-1[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-2[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-3[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-4[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-0.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-1.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-2.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-3.txt[0m
+[37mServeur 5020 : Fichier généré : /users/eleves-b/x2012/simon.matet/git/modal/bin/../debug/5/data/127.0.0.1-5020-4.txt[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-5[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-6[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-7[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-8[0m
+[1;30mServeur 5020 : Ajout à toSendAsap[0m
+[1;31mServeur 5020 : ID global ajouté : 127.0.0.1-5020-9[0m
+Serveur 5020 : Data initialized...
+Serveur 5020 : Ok
+Serveur 5020 : Enslaving innocent threads......
+Serveur 5020 : Ok
+Serveur 5020 : All set and ready to go !
+Serveur 5020 : Getting server list.............
