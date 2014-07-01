@@ -68,7 +68,12 @@ public class taskRetablirPaquets implements Runnable {
 
 					// Etape 2 : attendre que le monsieur réponde qu'il veut
 					// bien nous envoyer le paquet
-					Utilitaires.getAFullMessage(Message.OK, clientSocket[i]);
+					ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
+					buffer.clear() ;
+					clientSocket[i].read(buffer) ;
+					if(!Utilitaires.buffToString(buffer).equals(Message.OK)) {
+					  Utilitaires.out("Erreur reconstruction paquet ");
+					}
 
 					// Etape 3 : Envoyer le numero du paquet
 					clientSocket[i].write(Utilitaires
@@ -124,7 +129,6 @@ public class taskRetablirPaquets implements Runnable {
 		try {
 			reconstruit.fichier.write(b[numeroMort]);
 			reconstruit.remettrePositionZero();
-			Donnees.addPaquetToSendAsap(reconstruit.idGlobal);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
