@@ -229,6 +229,13 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					}
 				}
 			}
+			
+			else if (token.equals(Message.DEMANDE_PAQUET)) {
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				
+				Slaver.giveTask(new Task.taskSendRequestedPaquet(r.socket), 10);
+			}
 
 			else if (token.equals(Message.GET_LIST)) {
 				r.socket.configureBlocking(true);
@@ -262,8 +269,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				// Utilitaires.out("Chaine vide.", 5, true);
 
 			} else {
-				Utilitaires.out("Chaine non analysée : " + token.toString(), 5,
-						true);
+				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
 			}
 		} catch (IOException e) {
 			aEnlever.add(r);
