@@ -32,7 +32,7 @@ public class taskDumpToMachine implements Runnable {
 		//Utilitaires.out("Entree dans la fonction DUMP");
 		boolean continuer = true;
 		while (continuer) {
-			// Utilitaires.out("Test 0");
+
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
