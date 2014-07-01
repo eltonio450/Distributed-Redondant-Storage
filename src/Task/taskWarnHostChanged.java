@@ -91,7 +91,7 @@ public class taskWarnHostChanged implements Runnable {
 
 				if (response.equals(Message.OK)) {
 
-					String s = Global.MYSELF.toString() + " " + id + " " + placeToModify + " " + Message.END_ENVOI;
+					String s = Global.MYSELF.toString() + " " + id + " " + placeToModify + " " + Message.END_ENVOI + " ";
 					// buffer.flip();
 
 					buffer = Utilitaires.stringToBuffer(s);

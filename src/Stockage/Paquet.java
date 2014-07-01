@@ -261,6 +261,7 @@ public class Paquet {
 		while (i < Global.NOMBRESOUSPAQUETS) {
 		  
 			if (i != idInterne && resultat == 0) {
+			  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 				spreadUnlockLock.lock();
 				toUnlock.add(i);
@@ -297,6 +298,7 @@ public class Paquet {
 
 			if (i != idInterne && resultat == 0) {
 				if (i != mort) {
+				  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 					spreadUnlockLock.lock();
 					toUnlock.add(i);
@@ -346,11 +348,6 @@ public class Paquet {
 
 
 			clientSocket.connect(remote);
-
-		
-				
-// 
-
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
 			//Utilitaires.out("ASK 1",0,true);
 			clientSocket.write(buffer);
@@ -366,7 +363,6 @@ public class Paquet {
 				buffer = Utilitaires.stringToBuffer(idGlobal + " " + idInterne);
 				clientSocket.write(buffer);
 
-			
 				buffer.clear();
 				//Utilitaires.out("ASK 4",0,true);
 				clientSocket.read(buffer);

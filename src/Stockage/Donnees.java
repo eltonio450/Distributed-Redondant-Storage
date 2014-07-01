@@ -289,6 +289,7 @@ public class Donnees {
 		interestServeurLock.lock();
 		try {
 			Utilitaires.out("5");
+			printInterestServeur();
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
 				Utilitaires.out("6");
@@ -846,5 +847,17 @@ public class Donnees {
 
 			myDataLock.unlock();
 		}
+	}
+	
+	public static void printInterestServeur(){
+	  interestServeurLock.lock();
+	  try{
+	    for(Machine m : interestServeur){
+	      Utilitaires.out("intrestServeur : " + m.toString());
+	    }
+	  }
+	  finally{
+	    interestServeurLock.unlock();
+	  }
 	}
 }
