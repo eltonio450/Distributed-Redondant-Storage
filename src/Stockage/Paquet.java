@@ -308,13 +308,7 @@ public class Paquet {
 
 			clientSocket.connect(remote);
 
-			//clientSocket.configureBlocking(true);
-			//Utilitaires.out("Test 2", 6, true);
-
-			if(!clientSocket.connect(remote)){
-			  Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
-			  return 3 ;
-			}
+		
 				
 // 
 

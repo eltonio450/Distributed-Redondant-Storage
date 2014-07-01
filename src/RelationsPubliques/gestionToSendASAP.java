@@ -9,7 +9,12 @@ public class gestionToSendASAP extends Thread {
 	  while(true){
 	    
 		  Donnees.printMyData();
-          Donnees.waitForSomethingInToSendASAP();
+		  Donnees.toSendASAPLock.lock();
+		  Utilitaires.out("Chack",0,true);
+		  if(Donnees.toSendAsapEmpty())
+			  Utilitaires.out("Pas Chack",0,true);
+			  Donnees.notEmpty.awaitUninterruptibly();
+		  	Donnees.toSendASAPLock.unlock();
           try {
         	
 			Thread.sleep((int)(Math.abs(Math.random())*(double)1000));
