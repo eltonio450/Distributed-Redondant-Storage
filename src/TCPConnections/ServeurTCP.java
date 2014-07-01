@@ -20,7 +20,6 @@ public class ServeurTCP extends Thread {
 			serverSocket.bind(local);
 			while (true) {
 				SocketChannel client = serverSocket.accept();
-				client.socket().setSoTimeout((int) Global.TIMEOUT);
 				
 				Global.GPRA.addRequester(new Requester(client));
 			}
