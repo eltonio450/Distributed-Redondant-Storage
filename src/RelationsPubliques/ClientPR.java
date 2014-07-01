@@ -72,18 +72,6 @@ public class ClientPR extends Thread{
 				}
 			}
 
-
-			// Réveille le serveur si personne d'autre ne lui parle
-			try{
-				buffDebout.position(0);
-				channel.send(buffDebout, new InetSocketAddress("127.0.0.1", Global.SERVERPRPORT));
-			}catch(Exception e){
-				Utilitaires.out("Impossible d'envoyer DEBOUT#", 1, true);
-				e.printStackTrace();
-			}
-
-
-
 			// Envoie ce qu'on lui a demandé d'envoyer
 			lock.lock();
 			toSend.addAll(toAdd);
