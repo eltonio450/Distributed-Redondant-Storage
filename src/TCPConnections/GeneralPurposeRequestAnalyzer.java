@@ -31,7 +31,7 @@ import Utilitaires.Utilitaires;
  *         concurrence)
  */
 public class GeneralPurposeRequestAnalyzer extends Thread {
-	LinkedBlockingQueue<Requester> aTraiter;
+	private LinkedBlockingQueue<Requester> aTraiter;
 	LinkedList<Requester> aAjouter;
 	LinkedList<Requester> aEnlever;
 	ReentrantLock lock;
@@ -42,21 +42,20 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		aAjouter = new LinkedList<Requester>();
 		aEnlever = new LinkedList<Requester>();
 		lock = new ReentrantLock();
+		lock.lock();
 		c = lock.newCondition();
 
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
 
 		while (true) {
 			while (aTraiter.isEmpty()) {
-				lock.lock();
 				c.awaitUninterruptibly(); // On patiente si la liste des sockets
-										  // à écouter est vide
+				// à écouter est vide
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
-				lock.unlock();
 			}
+			lock.unlock();
 
-			lock.lock();
 			for (Requester r : aTraiter) {
 				try {
 					buff.clear();
@@ -83,28 +82,25 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					aEnlever.add(r);
 				}
 				else {
-					try {
-						traiter(r);
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-					}
+					traiter(r);
 				}
 			}
 
+
+			try {
+				Thread.sleep(5); // Evite de tourner trop à vide quand une
+				// connexion se tait.
+			}
+			catch (InterruptedException e) {
+				// Nobody cares
+			}
+			
+			lock.lock();
 			aTraiter.addAll(aAjouter);
 			aAjouter.clear();
 			lock.unlock();
 			for (Requester r : aEnlever) {
 				aTraiter.remove(r);
-			}
-
-			try {
-				Thread.sleep(5); // Evite de tourner trop à vide quand une
-									// connexion se tait.
-			}
-			catch (InterruptedException e) {
-				// Nobody cares
 			}
 		}
 	}
@@ -257,7 +253,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			else {
 				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
-
 			}
 		}
 		catch (IOException e) {
@@ -268,6 +263,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		catch (Exception e) {
 			// Catch parsing exception etc.
 		}
-		scan.close();
+		finally{
+			scan.close();
+		}
 	}
 }
