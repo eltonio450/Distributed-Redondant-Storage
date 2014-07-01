@@ -258,7 +258,7 @@ public class Paquet {
 		// int j = idGlobal-idInterne;
 		//Utilitaires.out("Demande de lock formulée par " + idGlobal, 5, true);
 		while (i < Global.NOMBRESOUSPAQUETS) {
-
+		  
 			if (i != idInterne && resultat == 0) {
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 				spreadUnlockLock.lock();
@@ -274,10 +274,6 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-
-				//spreadUnlock();
-				
-				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a échoué.", 5, true);
 				return false;
 
 		}
@@ -309,7 +305,18 @@ public class Paquet {
 			clientSocket.bind(local);
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
 
+
 			clientSocket.connect(remote);
+
+			//clientSocket.configureBlocking(true);
+			//Utilitaires.out("Test 2", 6, true);
+
+			if(!clientSocket.connect(remote)){
+			  Utilitaires.out("Arggghghhh, ça n'a pas marché !", 6, true);
+			  return 3 ;
+			}
+				
+// 
 
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
 			//Utilitaires.out("ASK 1",0,true);
@@ -351,6 +358,7 @@ public class Paquet {
 			Utilitaires.out("La demande de lock a foiré");
 			e.printStackTrace();
 			return 3;
+
 		}
 		finally {
 

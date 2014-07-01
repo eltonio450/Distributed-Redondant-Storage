@@ -9,13 +9,14 @@ public class SlaveThread extends Thread{
 	private int estimatedLoad;
 
 	public void run () {
-		Runnable r;
+		Runnable r = null;
 
 		while (true) {
 			try {
 				r = tasks.take();
 				r.run();
 			} catch (Exception e) {
+				Utilitaires.out("Exception in SlaverThread. Task was " + r.getClass());
 				e.printStackTrace();
 				// We don't want to crash the slave if the runnable is wrong.
 			}

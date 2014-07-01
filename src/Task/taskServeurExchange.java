@@ -93,9 +93,11 @@ public class taskServeurExchange implements Runnable {
 						
 						aEnvoyer = null;
 					}
+
 				}
 				else if (aEnvoyer != null) {
 					Donnees.putNewPaquet(aEnvoyer);
+
 					aEnvoyer.spreadUnlock();
 					aEnvoyer = null;
 				}
@@ -124,8 +126,10 @@ public class taskServeurExchange implements Runnable {
 							aEnvoyer = null;
 						}
 					}
+
 					else if (aEnvoyer != null) {
 						Donnees.putNewPaquet(aEnvoyer);
+
 						aEnvoyer.spreadUnlock();
 						aEnvoyer = null;
 					}

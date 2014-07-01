@@ -32,7 +32,7 @@ import Utilitaires.Utilitaires;
  *         concurrence)
  */
 public class GeneralPurposeRequestAnalyzer extends Thread {
-	LinkedBlockingQueue<Requester> aTraiter;
+	private LinkedBlockingQueue<Requester> aTraiter;
 	LinkedList<Requester> aAjouter;
 	LinkedList<Requester> aEnlever;
 	ReentrantLock lock;
@@ -43,6 +43,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		aAjouter = new LinkedList<Requester>();
 		aEnlever = new LinkedList<Requester>();
 		lock = new ReentrantLock();
+		lock.lock();
 		c = lock.newCondition();
 		
 		lock.lock();
@@ -50,28 +51,23 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
 
 		while (true) {
-			// Utilitaires.out("Bouh");
 			while (aTraiter.isEmpty()) {
-				
-				// Utilitaires.out("Blah");
-				
+
 				c.awaitUninterruptibly(); // On patiente si la liste des sockets
-											// à écouter est vide
-				// Utilitaires.out("Juste après le await !");
+				// à écouter est vide
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
-				
+
 			}
+
 			
 			
+
 
 
 			for (Requester r : aTraiter) {
-				// Utilitaires.out("Bleuh");
-				// Utilitaires.out("Dans la boucle !");
 				try {
 					buff.clear();
-					// Utilitaires.out("Lecture !");
 					r.socket.read(buff);
 				}
 				catch (IOException e) {
@@ -82,8 +78,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
 
+
 				//if (buff.hasRemaining())
 					//Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
+
 				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
 						r.socket.close();
@@ -94,6 +92,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					aEnlever.add(r);
 				}
 				else {
+
 					try {
 
 						traiter(r);
@@ -101,9 +100,10 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					catch (Exception e) {
 						e.printStackTrace();
 					}
+
 				}
 			}
-			
+
 			
 			try {
 				Thread.sleep(5); // Evite de tourner trop à vide quand une
@@ -126,6 +126,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			
 
 			
+
 		}
 	}
 
@@ -285,20 +286,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			}
 			else {
 				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
-
 			}
-
-			/**
-			 * Modèle :
-			 * 
-			 * else if (token.equals(MOT_CLEF) { MyTache m = new MyTache
-			 * (r.socket); // Nouvelle tâche r.socket.configureBlocking(true);
-			 * // La nouvelle tâche va attendre qu'il parle aEnlever.add(r); //
-			 * On enlève r de la liste à analyser par le GPRA
-			 * Slaver.giveTask(m); // Ou Slaver.giveUrgentTask(m) }
-			 * 
-			 * 
-			 */
 		}
 		catch (IOException e) {
 			aEnlever.add(r);
@@ -308,6 +296,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		catch (Exception e) {
 			// Catch parsing exception etc.
 		}
-		scan.close();
+		finally{
+			scan.close();
+		}
 	}
 }
