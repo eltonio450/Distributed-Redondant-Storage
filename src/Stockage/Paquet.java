@@ -306,7 +306,7 @@ public class Paquet {
 			InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
 
 
-			clientSocket.connect(remote);
+			// clientSocket.connect(remote);
 
 			//clientSocket.configureBlocking(true);
 			//Utilitaires.out("Test 2", 6, true);
@@ -485,7 +485,4 @@ public class Paquet {
 			e.printStackTrace();
 		}
 	}
-
-	
-
 }
