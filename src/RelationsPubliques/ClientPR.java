@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.LinkedList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -19,7 +18,6 @@ public class ClientPR extends Thread{
 
 	private DatagramChannel channel;
 	private ByteBuffer buffBonjour;
-	private ByteBuffer buffDebout;
 	private LinkedList<Message> toSend;
 	private LinkedList<Message> toAdd;
 	private long lastTime;
@@ -33,7 +31,6 @@ public class ClientPR extends Thread{
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
 		this.channel.socket().setSoTimeout(0);
 		this.buffBonjour = Utilitaires.stringToBuffer(Message.PREFIXE_BONJOUR);
-		this.buffDebout = Utilitaires.stringToBuffer(Message.SELF_WAKE_UP);
 		this.toSend = new LinkedList<Message> ();
 		this.toAdd = new LinkedList<Message> ();
 		this.lastTime = 0;

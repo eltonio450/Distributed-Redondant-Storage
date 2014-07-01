@@ -279,6 +279,41 @@ public class Paquet {
 		}
 
 	}
+	
+	public boolean askForlock(int mort) {
+		if(lockLogique)
+		{
+			return false;
+		}
+		// isAskingTheLock = true;
+		int resultat = 0;
+		Integer i = 0;
+		// int j = idGlobal-idInterne;
+		//Utilitaires.out("Demande de lock formulée par " + idGlobal, 5, true);
+		while (i < Global.NOMBRESOUSPAQUETS) {
+
+			if (i != idInterne && resultat == 0) {
+				if (i != mort) {
+					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
+					spreadUnlockLock.lock();
+					toUnlock.add(i);
+					spreadUnlockLock.unlock();
+				}
+			}
+			i++;
+		}
+		switch (resultat) {
+
+			case 0:
+				//unlock();
+				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+				return true;
+			default:
+				return false;
+
+		}
+
+	}
 
 	/**
 	 * 

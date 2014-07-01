@@ -31,7 +31,6 @@ public class Message {
 		//PR
 		public static String PREFIXE_BONJOUR = "PING#";
 		public static String PREFIXE_REPONSE_BONJOUR = "RPING#";
-		public static String SELF_WAKE_UP = "DEBOUT#";
 		public static String VERIFY_DEATH = "VERIFY_DEATH?#";
 		public static String NOT_DEAD = "IMNOTDEAD!#";
 		public static String IS_DEAD = "DEATH#";
