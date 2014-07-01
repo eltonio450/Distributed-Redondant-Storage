@@ -251,11 +251,33 @@ public class Donnees {
 	 *            La machine qui est morte
 	 */
 	public static void traiteUnMort(Machine m) {
+		allServeurLock.lock();
+		try {
+			if (!filling) {
+				Utilitaires.out("Removing");
+				if(!allServeur.remove(m))
+					return;
+				Utilitaires.out("Removing2");
+			}
+			else {
+				synchronized (toRemove) {
+					toRemove.add(m);
+				Utilitaires.out("Removing3");
+				}
+				
+			}
+		}
+		finally {
+			allServeurLock.unlock();
+		}
+		
+		Utilitaires.out("Je suis " + Global.MYSELF + " et je lance traiteUnMort", 5, true);
 		myHostsLock.lock();
 		try {
 			for (String id : myHosts.keySet()) {
 				if (myHosts.get(id) == m) {
 					myHosts.remove(id);
+					Utilitaires.out("4");
 				}
 			}
 		}
@@ -264,15 +286,20 @@ public class Donnees {
 		}
 		interestServeurLock.lock();
 		try {
+			Utilitaires.out("5");
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
+				Utilitaires.out("6");
 				for (Paquet p : myData.values()) {
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+						Utilitaires.out("7");
 						if (m == p.otherHosts.get(i)) {
 							if (p.power == 0) {
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 							else if (p.power == 1 && i == 0) {
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 						}
@@ -286,19 +313,6 @@ public class Donnees {
 		}
 		finally {
 			interestServeurLock.unlock();
-		}
-		allServeurLock.lock();
-		try {
-			if (!filling)
-				allServeur.remove(m);
-			else {
-				synchronized (toRemove) {
-					toRemove.add(m);
-				}
-			}
-		}
-		finally {
-			allServeurLock.unlock();
 		}
 	}
 
@@ -478,13 +492,15 @@ public class Donnees {
 	 * @return LinkedList<.String> copie de toSendASAP
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend1() {
+		toSendASAPLock.lock();
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
+			
 			return temp;
 		}
 		finally {
-			// unlock
+			toSendASAPLock.unlock();
 		}
 	}
 
@@ -704,7 +720,7 @@ public class Donnees {
 
 	public static void fillingServers(boolean flag) {
 		filling = flag;
-		if (flag = false) {
+		if (flag == false) {
 			synchronized (toRemove) {
 				for (Machine m : toRemove) {
 					traiteUnMort(m);

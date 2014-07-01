@@ -34,6 +34,11 @@ public class Machine {
 	  scan.close();
 	}
 	
+	public boolean equals (Object o) {
+		Machine m = (Machine) o;
+		return m.ipAdresse.equals(ipAdresse) && m.port == port;
+	}
+	
   public static Machine otherMachineFromSocket(SocketChannel s){
     String ip = s.socket().getInetAddress().getHostName().toString() ;
     int p = s.socket().getPort();

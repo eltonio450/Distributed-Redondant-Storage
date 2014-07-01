@@ -13,6 +13,7 @@ import Utilitaires.Utilitaires;
 public class ServerGetter {
 	public static void getServerList() {
 		if (Global.FIRST_IP.equals(Global.NO_FIRST_SERVER)) {
+			Donnees.fillingServers(false);
 			return; // premier serveur
 		}
 
