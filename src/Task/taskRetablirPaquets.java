@@ -128,5 +128,9 @@ public class taskRetablirPaquets implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		reconstruit.putOtherHosts(frere.otherHosts);
+		reconstruit.otherHosts.set(numeroMort, Global.MYSELF) ;
+		Donnees.receptionPaquet(reconstruit);
+		Donnees.addPaquetToSendAsap(reconstruit.idGlobal);
 	}
 }
