@@ -25,6 +25,7 @@ public class SlaveThread extends Thread{
 	}
 
 	public boolean doThat(Runnable r, int estimatedLoad) {
+		tasks.add(r);
 		this.estimatedLoad += estimatedLoad;
 		this.loads.add(new Integer(estimatedLoad));
 		return true;
