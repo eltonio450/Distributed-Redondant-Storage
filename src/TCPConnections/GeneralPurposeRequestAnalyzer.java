@@ -45,14 +45,13 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		lock = new ReentrantLock();
 		lock.lock();
 		c = lock.newCondition();
-		
+
 		lock.lock();
 
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
 
 		while (true) {
 			while (aTraiter.isEmpty()) {
-
 				c.awaitUninterruptibly(); // On patiente si la liste des sockets
 				// à écouter est vide
 				aTraiter.addAll(aAjouter);
@@ -60,17 +59,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 
 			}
 
-			
-			
-
-
-
 			for (Requester r : aTraiter) {
 				try {
 					buff.clear();
 					r.socket.read(buff);
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 
 					aEnlever.add(r);
 					e.printStackTrace();
@@ -78,80 +71,65 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
 
+				// if (buff.hasRemaining())
+				// Utilitaires.out("(TCP) from " + r.socket.socket().getPort() +
+				// " : " + r.recu, 6, false);
 
-				//if (buff.hasRemaining())
-					//Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
-
-				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
+				if (r.socket.socket().isClosed()
+						|| System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
 						r.socket.close();
-					}
-					catch (IOException e) {
+					} catch (IOException e) {
 						// Nope, still don't care.
 					}
 					aEnlever.add(r);
-				}
-				else {
+				} else {
 
 					try {
 
 						traiter(r);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
 				}
 			}
 
-			
 			try {
 				Thread.sleep(5); // Evite de tourner trop à vide quand une
 									// connexion se tait.
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				// Nobody cares
 			}
 
-			
 			lock.lock();
 			aTraiter.addAll(aAjouter);
 			aAjouter.clear();
-			
+
 			for (Requester r : aEnlever) {
 				aTraiter.remove(r);
 			}
 			aEnlever.clear();
-			//Utilitaires.out("Taille de aEnlever/aTrairer/aAjouter :" + aEnlever.size() + " " + aTraiter.size() + " " + aAjouter.size());
-			
-
-			
+			// Utilitaires.out("Taille de aEnlever/aTrairer/aAjouter :" +
+			// aEnlever.size() + " " + aTraiter.size() + " " + aAjouter.size());
 
 		}
 	}
 
 	public void addRequester(Requester requester) {
 		try {
-
 			requester.socket.configureBlocking(false);
-
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Utilitaires.out("Problème de changement Blocking / Non blocking");
 			return;
 		}
-		
 
 		lock.lock();
 
 		try {
 			aAjouter.add(requester);
 			c.signal();
-
-		}
-		finally {
+		} finally {
 			lock.unlock();
-
 		}
 	}
 
@@ -159,7 +137,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		Scanner scan = new Scanner(r.recu);
 		// Utilitaires.out("Message recu : "+r.recu);
 		String token = "";
-		
+
 		if (scan.hasNext())
 			token = scan.next();
 		try {
@@ -172,18 +150,19 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Message.SendOne)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket), 20);
+				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket),
+						20);
 			}
 
 			else if (token.equals(Message.AskForPaquet)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveTask(new Task.taskServeurGiveOnePaquet(r.socket), 20);
-			}
-			else if (token.equals(Message.GiveMeMyPaquet)) {
+			} else if (token.equals(Message.GiveMeMyPaquet)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				Slaver.giveTask(new Task.taskServeurCopyPaquetToOwner(r.socket), 20);
+				Slaver.giveTask(
+						new Task.taskServeurCopyPaquetToOwner(r.socket), 20);
 			}
 
 			else if (token.equals(Message.IS_DEAD)) {
@@ -193,8 +172,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					if (scan.hasNext()) {
 						try {
 							port = Integer.parseInt(scan.next());
-						}
-						catch (Exception e) {
+						} catch (Exception e) {
 							// Parsing exception
 							// The number following the IP Adress is wrong
 							// Remove the requester (won't get any better
@@ -208,9 +186,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						if (scan.hasNext()) {
 							// Alors le numéro de port était bien fini
 							// On peut agir
-							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip, port), 1);
+							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip,
+									port), 1);
 							aEnlever.add(r);
 							r.socket.close();
+							Utilitaires.out("Just learned that " + ip + ":"
+									+ port + " is dead>", 5, true);
 							scan.close();
 							return;
 						}
@@ -225,8 +206,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					if (scan.hasNext()) {
 						try {
 							port = Integer.parseInt(scan.next());
-						}
-						catch (Exception e) {
+						} catch (Exception e) {
 							// Parsing exception
 							// The number following the IP Adress is wrong
 							// Remove the requester (won't get any better
@@ -248,6 +228,13 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						}
 					}
 				}
+			}
+			
+			else if (token.equals(Message.DEMANDE_PAQUET)) {
+				r.socket.configureBlocking(true);
+				aEnlever.add(r);
+				
+				Slaver.giveTask(new Task.taskSendRequestedPaquet(r.socket), 10);
 			}
 
 			else if (token.equals(Message.GET_LIST)) {
@@ -274,29 +261,23 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new taskLockPacket(r.socket), 2);
-			}
-			else if (token.equals(Message.ASK_FOR_UNLOCK)) {
+			} else if (token.equals(Message.ASK_FOR_UNLOCK)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new taskUnlockPacket(r.socket), 2);
-			}
-			else if (token.isEmpty()) {
-				//Utilitaires.out("Chaine vide.", 5, true);
+			} else if (token.isEmpty()) {
+				// Utilitaires.out("Chaine vide.", 5, true);
 
-			}
-			else {
+			} else {
 				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			aEnlever.add(r);
 			scan.close();
 			return;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// Catch parsing exception etc.
-		}
-		finally{
+		} finally {
 			scan.close();
 		}
 	}
