@@ -103,9 +103,10 @@ public class IniServer {
 
 		// Attention : a supprimer pour avoir la vraie IP à l'initiatisation :
 		try{
-			 //String currentDir = System.getProperty("user.dir");
+			
 			//Utilitaires.out("YOUUUUUUUUUUUUUUUUUUU" + Global.FIRST_IP+" "+Global.FIRST_PORT);
-			Global.MYSELF = new Machine("127.0.0.1", Global.TCP_PORT);
+			//Global.MYSELF = new Machine("127.0.0.1", Global.TCP_PORT);
+			Global.MYSELF = new Machine(ip, Global.TCP_PORT);
 
 		}
 		catch (Exception e) {

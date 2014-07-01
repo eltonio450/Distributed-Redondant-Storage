@@ -104,17 +104,17 @@ public class IniDonnees {
 	}
 
 	public static void iniPaths() {
-		if (Global.DEBUG) {
+		//if (Global.DEBUG) {
 			Utilitaires.out(System.getProperty("user.dir"));
 			
 			Global.PATHTOMYDATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/myOwnData/fichier.txt";
 			Global.PATHTODATA=System.getProperty("user.dir")+"/../debug/"+Integer.valueOf(Global.NOM).toString()+"/data/";
 			
-		}
-		else {
-			Global.PATHTOMYDATA = "myOwnData/fichier.txt";
-			Global.PATHTODATA = "data/";
-		}
+		//}
+		//else {
+		//	Global.PATHTOMYDATA = "myOwnData/fichier.txt";
+		//	Global.PATHTODATA = "data/";
+		//}
 	}
 
 }
