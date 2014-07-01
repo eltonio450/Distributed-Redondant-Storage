@@ -35,6 +35,9 @@ public class taskHostHasChanged implements Runnable {
 			t[0] = Message.END_ENVOI ;
 			String msg = Utilitaires.getAFullMessage(t, socket);
 			
+		
+			//Utilitaires.out("Fréquence 4 : " + msg,1,true);
+			
 			//Utilitaires.out("a recu : " + msg);
 			
 			Scanner scan = new Scanner(msg) ;

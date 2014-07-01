@@ -19,35 +19,39 @@ public class taskServeurExchange implements Runnable {
 	}
 
 	public void recoitPaquet() throws IOException {
-		// Utilitaires.out("Recu depuis celui qui doit recevoir",1,true);
-		socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
-		ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH);
-		buffer.clear();
-		socket.read(buffer);
-		buffer.flip();
-		String s = Utilitaires.buffToString(buffer);
+		try {
+			socket.write(Utilitaires.stringToBuffer(Message.DEMANDE_ID));
+			ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH);
+			buffer.clear();
+			socket.read(buffer);
+			buffer.flip();
+			String s = Utilitaires.buffToString(buffer);
 
-		if (Donnees.acceptePaquet(s)) {
-			//Utilitaires.out("J'accepte de recevoir le paquet que tu me proposes.", 1, true);
-			buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
-			socket.write(buffer);
-			// Utilitaires.out("J'ai accepté d'échanger ce paquet",1,true);
+			if (Donnees.acceptePaquet(s)) {
 
-			Paquet receivedPaquet = Paquet.recoitPaquetReellement(socket);
-			//Utilitaires.out("J'ai bien reçu le paquet que tu me proposais", 1, true);
+				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
+				socket.write(buffer);
 
-			Paquet sentPaquet = envoitPaquet();
-			if (sentPaquet != null) {
-				Donnees.receptionPaquet(receivedPaquet);
-				sentPaquet.removePaquet();
+				Paquet receivedPaquet = Paquet.recoitPaquetReellement(socket);
+
+				Paquet sentPaquet = envoitPaquet();
+				if (sentPaquet != null) {
+					Donnees.receptionPaquet(receivedPaquet);
+					sentPaquet.removePaquet();
+				}
+				else {
+					receivedPaquet.deleteData();
+				}
 			}
 			else {
-				receivedPaquet.deleteData();
+				//Donnees.printMyData();
+				buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI);
+				socket.write(buffer);
+
 			}
 		}
-		else {
-			buffer = Utilitaires.stringToBuffer(Message.ANNULE_ENVOI);
-			socket.write(buffer);
+		finally {
+			socket.close();
 		}
 
 	}
@@ -69,6 +73,7 @@ public class taskServeurExchange implements Runnable {
 
 			while (!ok && !paquets1.isEmpty()) {
 				aEnvoyer = Donnees.removeTemporarlyPaquet(paquets1.pop());
+				//Utilitaires.out("Paquet choisi : " + aEnvoyer.idGlobal,1,true);
 				if (aEnvoyer != null && aEnvoyer.askForlock()) {
 					buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal);
 					socket.write(buffer);
@@ -80,15 +85,16 @@ public class taskServeurExchange implements Runnable {
 						aEnvoyer.envoyerPaquetReellement(socket);
 						ok = true;
 					}
-					
+
 					else {
+						
 						Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
+						
 						aEnvoyer = null;
 					}
 				}
-				else if(aEnvoyer !=null)
-				{
+				else if (aEnvoyer != null) {
 					Donnees.putNewPaquet(aEnvoyer);
 					aEnvoyer.spreadUnlock();
 					aEnvoyer = null;
@@ -118,9 +124,8 @@ public class taskServeurExchange implements Runnable {
 							aEnvoyer = null;
 						}
 					}
-					else if(aEnvoyer !=null)
-					{
-						
+					else if (aEnvoyer != null) {
+						Donnees.putNewPaquet(aEnvoyer);
 						aEnvoyer.spreadUnlock();
 						aEnvoyer = null;
 					}
@@ -151,9 +156,7 @@ public class taskServeurExchange implements Runnable {
 			recoitPaquet();
 		}
 		catch (IOException e) {
-			// traiter l'erreur - recommencer l'envoie ?
-			// a priori le client s'est rendu compte du probl�me et va
-			// recommencer tout seul
+
 		}
 	}
 

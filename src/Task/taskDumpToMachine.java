@@ -17,55 +17,58 @@ import Utilitaires.Utilitaires;
 public class taskDumpToMachine implements Runnable {
 
 	private LinkedList<Machine> allServers;
-
+	LinkedList<String> toSendASAP;
 	public taskDumpToMachine() {
 		allServers = Donnees.getAllServeurs();
+		
 	}
 
 	public void run() {
-		LinkedList<String> toSendASAP = Donnees.chooseManyPaquetToSend1();
-		dump(toSendASAP);
+		
+		dump();
 	}
 
-	public void dump(LinkedList<String> toSendASAP) {
-		Utilitaires.out("Entree dans la fonction DUMP");
+	public void dump() {
+		//Utilitaires.out("Entree dans la fonction DUMP");
 		boolean continuer = true;
 		while (continuer) {
 			// Utilitaires.out("Test 0");
 			for (Machine m : allServers) {
 				if (m != Global.MYSELF) {
-					//Utilitaires.out("I choose machine " + m.toString());
+					// Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;
-
+					toSendASAP = Donnees.chooseManyPaquetToSend1();
 					while (!toSendASAP.isEmpty() && !changeMachine) {
 
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							//Utilitaires.out("J'ai choisi d'envoyer ce paquet : " + aEnvoyer.idGlobal, 1, true);
+							//Utilitaires.out("Choix dans la file toSendASAP : " + aEnvoyer.idGlobal, 1, true);
+							SocketChannel socket = null;
 							if (aEnvoyer.askForlock()) {
-								SocketChannel socket = init(m);
-								if (socket != null) {
-									if (!envoiePaquet(aEnvoyer, m, socket)) {
-										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString(), 1, true);
-										Donnees.putNewPaquet(aEnvoyer);
-										aEnvoyer.spreadUnlock();
-										try {
-											Thread.sleep(5000);
+								try {
+									socket = init(m);
+									if (socket != null) {
+										
+										if (!envoiePaquet(aEnvoyer, m, socket)) {
+											Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé vers " + m.toString() + " : Frere déjà présent.", 1, true);
+											
+											aEnvoyer.spreadUnlock();
+											
+											Donnees.putNewPaquet(aEnvoyer);
+											
+											//Donnees.printMyData();
+
 										}
-										catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
+										else {
+											Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " envoyé vers " + m.toString(), 2, true);
+											//Donnees.printMyData();
+
 										}
-										Donnees.printMyData();
-										Donnees.printUnlockedInMyData();
 									}
-									else {
-										Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " envoyé vers " + m.toString(), 2, true);
-										Donnees.printMyData();
-										Donnees.printUnlockedInMyData();
-									}
+								}
+								finally {
 									try {
 										socket.close();
 									}
@@ -75,25 +78,26 @@ public class taskDumpToMachine implements Runnable {
 									}
 								}
 							}
-							else
-							{
+
+							else {
 								Donnees.putNewPaquet(aEnvoyer);
-							
+
 								aEnvoyer.spreadUnlock();
 							}
+
 							
-							changeMachine = true;
 						}
-						else if(aEnvoyer != null)
-						{
+						else if (aEnvoyer != null) {
+							Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé : lock non obtenu.", 1, true);
 							Donnees.putNewPaquet(aEnvoyer);
-							//aEnvoyer.spreadUnlock();
+							Donnees.securedUnlock(aEnvoyer.idGlobal);
+
 						}
 
 						if (toSendASAP.isEmpty()) {
+							changeMachine = true;
 							continuer = false;
 						}
-						
 
 					}
 				}
@@ -124,19 +128,19 @@ public class taskDumpToMachine implements Runnable {
 			// + correspondant.port);
 			return (clientSocket);
 		}
-		catch(ConnectException e){
+		catch (ConnectException e) {
 			Donnees.printServerList();
-			Utilitaires.out("Blahhh "+ correspondant.toString());
-				e.printStackTrace();
-				return null;
-			}
+			Utilitaires.out("Poblème avec " + correspondant.toString());
+			e.printStackTrace();
+			return null;
+		}
 
 		catch (IOException e) {
 			Utilitaires.out("Problème dans l'initialisation de la socket pour échanger un paquet avec " + correspondant.port);
 			e.printStackTrace();
-			return null;}
-		
-		
+			return null;
+		}
+
 	}
 
 	public boolean envoiePaquet(Paquet aEnvoyer, Machine correspondant, SocketChannel clientSocket) {
@@ -148,31 +152,27 @@ public class taskDumpToMachine implements Runnable {
 			clientSocket.read(buffer);
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			// Utilitaires.out("Test 1");
+
 
 			if (!s.equals(Message.DEMANDE_ID)) {
-				clientSocket.close();
 				return false;
 			}
 
 			else {
-				Utilitaires.out("J'aimerais envoyer ce fichier : " + aEnvoyer.idGlobal, 1, true);
+				//Utilitaires.out("Envoi de l'ID pour l'échange...  " + aEnvoyer.idGlobal, 1, true);
 				buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal);
 				clientSocket.write(buffer);
 				buffer.clear();
 				clientSocket.read(buffer);
 				buffer.flip();
 				s = Utilitaires.buffToString(buffer);
-
+				
 				if (s.equals(Message.REPONSE_EXCHANGE)) {
-					// Utilitaires.out("Test 3");
-					// exchange can begin : send its package
-					Utilitaires.out("Merci d'avoir accepté, je te l'envoie réellement", 1, true);
 					aEnvoyer.envoyerPaquetReellement(clientSocket);
 
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						//Utilitaires.out("Ici tout a fonctionné");
+						
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -183,8 +183,7 @@ public class taskDumpToMachine implements Runnable {
 				}
 
 				else {
-					// Utilitaires.out("Test 3 Echec");
-					clientSocket.close();
+					
 					return false;
 				}
 			}
@@ -195,6 +194,15 @@ public class taskDumpToMachine implements Runnable {
 			e.printStackTrace();
 			return false;
 		}
+		finally {
+			try {
+				clientSocket.close();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean recoitPaquet(SocketChannel clientSocket) {
@@ -203,47 +211,52 @@ public class taskDumpToMachine implements Runnable {
 			// say I have finished, what Paquet do you want to send to me ?
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI);
 			clientSocket.write(buffer);
-			Utilitaires.out("J'ai fini de te l'envoyer réellement, maintenant à toi !", 1, true);
-			// Utilitaires.out("J'ai fini d'envoyer le paquet");
 			buffer.clear();
-			Utilitaires.out("Test 1");
 			clientSocket.read(buffer);
-			Utilitaires.out("Test 2");
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			Utilitaires.out("Message reçu : " +s,1,true);
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
-				Utilitaires.out("Test 2");
+			
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
 				clientSocket.write(buffer);
+		
 				buffer.clear();
 				clientSocket.read(buffer);
+
 				buffer.flip();
 				s = Utilitaires.buffToString(buffer);
+
 			}
 			if (s.equals(Message.ANNULE_ENVOI)) {
-				Utilitaires.out("Test 3");
-				clientSocket.close();
+				Utilitaires.out("Recu demande d'annulation");
+
 				return false;
 			}
 			else {
-				Utilitaires.out("Test 4");
+
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 
 				// now receive the package in exchange
 				Paquet receivedPaquet = Paquet.recoitPaquetReellement(clientSocket);
-				receivedPaquet.lock();
+				Donnees.securedLock(receivedPaquet.idGlobal);
 				Donnees.receptionPaquet(receivedPaquet);
-				//receivedPaquet.unlock();
-				// receivedPaquet.spreadUnlock();
-				clientSocket.close();
+
 				return true;
 			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 			return false;
+		}
+		finally {
+			try {
+				clientSocket.close();
+			}
+			catch (IOException e) {
+
+			}
+
 		}
 	}
 }

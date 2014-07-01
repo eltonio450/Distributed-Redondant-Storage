@@ -33,14 +33,14 @@ public class taskSendServerList implements Runnable {
 			}
 			
 			if (servers.isEmpty()) {
-				message += Message.END_ENVOI;
+				message += Message.END_ENVOI + " ";
 				continuer = false;
 			}
 			
 			try {
 				s.write(Utilitaires.stringToBuffer(message));
 			} catch (IOException e) {
-				return;
+				e.printStackTrace();
 			}
 		}
 		

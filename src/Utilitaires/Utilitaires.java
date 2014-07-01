@@ -56,11 +56,11 @@ public class Utilitaires {
 		String token;
 		int i = 0;
 		boolean continuer = true;
-		//Utilitaires.out("Test 30",6,true);
 		while (continuer && i < Global.BUFFER_LENGTH) {
+			
 			if (s.read(b) == -1)
 			{ 
-				Utilitaires.out("Buffer pourri");
+				Utilitaires.out("Fréquence 2",2,true);
 				continuer = false;
 			}
 			if (s.socket().isClosed()) {

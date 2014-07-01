@@ -8,18 +8,20 @@ public class gestionToSendASAP extends Thread {
 	public void run(){
 	  while(true){
 	    
-  	    
+		  Donnees.printMyData();
           Donnees.waitForSomethingInToSendASAP();
           try {
-			Thread.sleep((int)(Math.abs(Math.random())*(double)4000));
-			Utilitaires.out("Coucou");
+        	
+			Thread.sleep((int)(Math.abs(Math.random())*(double)1000));
+		Utilitaires.out("Répartition des paquets",2,true);
+		
+			
 		}
 		catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-          Donnees.printMyData();
-          Donnees.printUnlockedInMyData();
+
           Runnable task = new taskDumpToMachine() ;
           
           task.run();

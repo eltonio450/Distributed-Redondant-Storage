@@ -132,17 +132,22 @@ public class Donnees {
 	 * @return True or False
 	 */
 	public static boolean acceptePaquet(String id) {
-		Scanner scan = new Scanner(id);
-		scan.useDelimiter("-");
-		scan.next();
-		if (scan.hasNext()) {
-			if (hasPaquetLike(id).isEmpty()) {
-				scan.close();
-				return true;
+		try {
+			Scanner scan = new Scanner(id);
+			scan.useDelimiter("-");
+			scan.next();
+			if (scan.hasNext()) {
+				if (hasPaquetLike(id).isEmpty()) {
+					scan.close();
+					return true;
+				}
 			}
+			scan.close();
+			return false;
 		}
-		scan.close();
-		return false;
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -323,10 +328,10 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			int n = (int) (Math.random() * (double) allServeur.size());
-			
+
 			Machine m = allServeur.get(n);
 			Utilitaires.out("I choose : " + n + " " + m.toString());
-			return m ;
+			return m;
 		}
 		finally {
 			allServeurLock.unlock();
@@ -534,14 +539,12 @@ public class Donnees {
 	 * @return Le paquet
 	 */
 	public static Paquet getHostedPaquet(String id) {
-
 		myDataLock.lock();
 		Paquet temp = null;
 		try {
 			if (myData.containsKey(id))
 				return myData.get(id);
 			else {
-				Utilitaires.out("Le paquet " + id + " n'est pas présent chez moi.", 1, true);
 				return null;
 			}
 
@@ -553,8 +556,6 @@ public class Donnees {
 		finally {
 
 			myDataLock.unlock();
-			// Utilitaires.out("Et je ne suis pas ressorti.");
-
 		}
 	}
 
@@ -594,7 +595,7 @@ public class Donnees {
 		}
 		finally {
 			myDataLock.unlock();
-			// Utilitaires.out("Non pas lui !");
+
 		}
 	}
 
@@ -625,8 +626,6 @@ public class Donnees {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 
 					b.clear();
-					// if(tableau.get(i).fichier.isOpen())
-					// Utilitaires.out("Chack !");
 					tableau.get(i).fichier.read(b);
 					b.flip();
 					// Global.debug(i);
@@ -730,7 +729,9 @@ public class Donnees {
 	 */
 	public static void waitForSomethingInToSendASAP() {
 		try {
-			toSendASAP.put(toSendASAP.take());
+			String p = toSendASAP.take();
+			Utilitaires.out("Paquet dans to send ASAP : "+p);
+			toSendASAP.put(p);
 		}
 		catch (InterruptedException e) {
 			e.printStackTrace();
@@ -738,19 +739,84 @@ public class Donnees {
 	}
 
 	public static void printMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for (Paquet p : myData.values()) 
-			Utilitaires.out("Paquet : " + p.idGlobal);
-		
+
+		myDataLock.lock();
+
+		try {
+			Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+			for (Paquet p : myData.values())
+				if (p.lockLogique)
+					Utilitaires.out("Paquet : " + p.idGlobal, 1, false);
+				else
+					Utilitaires.out("Paquet : " + p.idGlobal, 2, false);
+		}
+		finally {
+			myDataLock.unlock();
+
+		}
 
 	}
 
 	public static void printUnlockedInMyData() {
-	Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		for (Paquet p : myData.values()) {
-			if (!p.lockLogique)
-				Utilitaires.out("Paquet : " + p.idGlobal);
+		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
+		myDataLock.lock();
+		try {
+			for (Paquet p : myData.values()) {
+				if (!p.lockLogique)
+					Utilitaires.out("Paquet : " + p.idGlobal);
+			}
+		}
+		finally {
+			myDataLock.unlock();
 		}
 
+	}
+
+	public static boolean securedLock(String id) {
+		myDataLock.lock();
+		Paquet temp = null;
+		try {
+			if (myData.containsKey(id)) {
+				myData.get(id).lock();
+				return true;
+			}
+			else {
+
+				return false;
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		finally {
+
+			myDataLock.unlock();
+		}
+	}
+
+	public static boolean securedUnlock(String id) {
+		myDataLock.lock();
+		Paquet temp = null;
+		try {
+			if (myData.containsKey(id)) {
+				myData.get(id).unlock();
+				return true;
+			}
+			else {
+
+				return false;
+			}
+
+		}
+		catch (Exception e) {
+
+			return false;
+		}
+		finally {
+
+			myDataLock.unlock();
+		}
 	}
 }

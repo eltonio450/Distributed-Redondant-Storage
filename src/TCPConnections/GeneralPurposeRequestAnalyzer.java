@@ -1,6 +1,7 @@
 package TCPConnections;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -43,23 +44,28 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		aEnlever = new LinkedList<Requester>();
 		lock = new ReentrantLock();
 		c = lock.newCondition();
+		
+		lock.lock();
 
 		ByteBuffer buff = ByteBuffer.allocateDirect(10000);
 
 		while (true) {
 			// Utilitaires.out("Bouh");
 			while (aTraiter.isEmpty()) {
-				lock.lock();
+				
 				// Utilitaires.out("Blah");
+				
 				c.awaitUninterruptibly(); // On patiente si la liste des sockets
 											// à écouter est vide
 				// Utilitaires.out("Juste après le await !");
 				aTraiter.addAll(aAjouter);
 				aAjouter.clear();
-				lock.unlock();
+				
 			}
+			
+			
 
-			lock.lock();
+
 			for (Requester r : aTraiter) {
 				// Utilitaires.out("Bleuh");
 				// Utilitaires.out("Dans la boucle !");
@@ -75,11 +81,9 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				buff.flip();
 				r.recu += Utilitaires.buffToString(buff);
-				// Utilitaires.out(r.recu);
-				if (buff.hasRemaining())
-					Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
-				else
-					Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + ": message vide", 6, false);
+
+				//if (buff.hasRemaining())
+					//Utilitaires.out("(TCP) from " + r.socket.socket().getPort() + " : " + r.recu, 6, false);
 				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
 						r.socket.close();
@@ -91,7 +95,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				}
 				else {
 					try {
-						// Utilitaires.out("Traitement");
+
 						traiter(r);
 					}
 					catch (Exception e) {
@@ -99,14 +103,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					}
 				}
 			}
-
-			aTraiter.addAll(aAjouter);
-			aAjouter.clear();
-			lock.unlock();
-			for (Requester r : aEnlever) {
-				aTraiter.remove(r);
-			}
-
+			
+			
 			try {
 				Thread.sleep(5); // Evite de tourner trop à vide quand une
 									// connexion se tait.
@@ -114,27 +112,45 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			catch (InterruptedException e) {
 				// Nobody cares
 			}
+
+			
+			lock.lock();
+			aTraiter.addAll(aAjouter);
+			aAjouter.clear();
+			
+			for (Requester r : aEnlever) {
+				aTraiter.remove(r);
+			}
+			aEnlever.clear();
+			//Utilitaires.out("Taille de aEnlever/aTrairer/aAjouter :" + aEnlever.size() + " " + aTraiter.size() + " " + aAjouter.size());
+			
+
+			
 		}
 	}
 
 	public void addRequester(Requester requester) {
 		try {
-			// Utilitaires.out("This is added !");
+
 			requester.socket.configureBlocking(false);
+
 		}
 		catch (IOException e) {
 			Utilitaires.out("Problème de changement Blocking / Non blocking");
 			return;
 		}
+		
+
 		lock.lock();
-		// Utilitaires.out("Juste après le lock !");
+
 		try {
 			aAjouter.add(requester);
 			c.signal();
-			// Utilitaires.out("Juste après le signal !");
+
 		}
 		finally {
 			lock.unlock();
+
 		}
 	}
 
@@ -142,6 +158,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		Scanner scan = new Scanner(r.recu);
 		// Utilitaires.out("Message recu : "+r.recu);
 		String token = "";
+		
 		if (scan.hasNext())
 			token = scan.next();
 		try {
@@ -263,7 +280,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				Slaver.giveUrgentTask(new taskUnlockPacket(r.socket), 2);
 			}
 			else if (token.isEmpty()) {
-				Utilitaires.out("Chaine vide.", 5, true);
+				//Utilitaires.out("Chaine vide.", 5, true);
 
 			}
 			else {

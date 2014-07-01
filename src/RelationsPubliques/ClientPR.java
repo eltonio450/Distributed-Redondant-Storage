@@ -53,9 +53,7 @@ public class ClientPR extends Thread{
 
 			if (System.currentTimeMillis() - lastTime > Global.SLEEPTIME) {
 				try {
-					//buffDebout.flip();
-					//buffBonjour.flip();
-				//Utilitaires.out("Envoi de YO",0,true);
+					
 				// On envoie bonjour au serveur de l'hôte distant
 				channel.send(buffBonjour, remote);
 				// On dit au serveur d'attendre une réponse du client de l'hôte distant

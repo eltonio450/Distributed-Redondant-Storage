@@ -25,7 +25,7 @@ public class taskWarnHostChanged implements Runnable {
 	public void run() {
 		// Utilitaires.out("-------------task warn host changed--------------------");
 		prevenirHostChanged(ID);
-		Utilitaires.out("La je préviens les autres pour "+ID);
+
 		Donnees.getHostedPaquet(ID).unlock();
 	}
 
@@ -84,22 +84,22 @@ public class taskWarnHostChanged implements Runnable {
 				Utilitaires.out(Utilitaires.buffToString(buffer2));
 				clientSocket.write(buffer);
 				buffer.clear();
-				//Utilitaires.out("Test 235");
+				// Utilitaires.out("Test 235");
 				clientSocket.read(buffer);
-				//Utilitaires.out("Test 236");
+				// Utilitaires.out("Test 236");
 				buffer.flip();
 				String response = Utilitaires.buffToString(buffer);
 
 				if (response.equals(Message.OK)) {
-					String s = Global.MYSELF.toString() + " " +id + " " + placeToModify + " " + Message.END_ENVOI;
+					String s = Global.MYSELF.toString() + " " + id + " " + placeToModify + " " + Message.END_ENVOI;
 					// buffer.flip();
 					buffer = Utilitaires.stringToBuffer(s);
 					clientSocket.write(buffer);
 
-					//Utilitaires.out("Test 237");
+					// Utilitaires.out("Test 237");
 				}
-				//Utilitaires.out("Test 238");
-				//Donnees.getHostedPaquet(id).unlock();
+				// Utilitaires.out("Test 238");
+				// Donnees.getHostedPaquet(id).unlock();
 				clientSocket.close();
 
 			}
@@ -109,7 +109,6 @@ public class taskWarnHostChanged implements Runnable {
 			finally {
 				scan.close();
 			}
-			
 
 		}
 	}

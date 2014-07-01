@@ -39,46 +39,40 @@ public class taskLockPacket implements Runnable {
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
 
 		try {
-			
+			//Utilitaires.out("Très RAS tout ça 2",0,true);
 			s.write(b);
 
-			
+			//Utilitaires.out("Très RAS tout ça 2",0,true);
 			b.clear();
 			s.read(b);
 			b.flip();
+			//Utilitaires.out("Très RAS tout ça 3",0,true);
 			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
 			String chaine = Utilitaires.buffToString(b);
-			Utilitaires.out("Le lock est demandé sur "+chaine,4,true);
+			//Utilitaires.out("Le lock est demandé sur "+chaine,4,true);
 			Scanner scan = new Scanner(chaine);
 			id = scan.next();
 			power = Integer.parseInt(scan.next());
-			
-			//Utilitaires.out("Le lock est demandé sur "+id+ " "+power,4,true);
-			// Etape 3 : effectuer le lock si c'est possible.
+			//Utilitaires.out("Très RAS tout ça 4",0,true);
 			b.clear();
-			//Utilitaires.out("Test 1");
-			if (Donnees.getHostedPaquet(id)!=null){
-				//Utilitaires.out("Test 2");
-				if(!Donnees.getHostedPaquet(id).lockLogique){
-					Donnees.getHostedPaquet(id).lock();
+
+		
+				if(Donnees.securedLock(id)){
+					
 					b = Utilitaires.stringToBuffer(Message.OK);
 					s.write(b);
+
 				
 				}
 				else{
-					Utilitaires.out("Mais il est déjà locké !.",4,true);
+	
 					b = Utilitaires.stringToBuffer(Message.FAIL);
 					s.write(b);
 					
 				}
 			
 				
-			}
-			else {
-				Utilitaires.out("Je refuse de donner le lock.",4,true);
-				b = Utilitaires.stringToBuffer(Message.FAIL);
-				s.write(b);
-			}
+		
 
 			s.close();
 			scan.close();

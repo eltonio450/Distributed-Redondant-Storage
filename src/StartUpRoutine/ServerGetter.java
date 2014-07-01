@@ -33,6 +33,7 @@ public class ServerGetter {
 			while (continuer) {
 				
 				liste = Utilitaires.getAFullMessage(Message.END_ENVOI, clientSocket);
+				Utilitaires.out("Fréquence 5 : " + liste);
 				
 				Scanner sc = new Scanner (liste);
 				while (sc.hasNext()) {
