@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.LinkedList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -62,7 +61,8 @@ public class ClientPR extends Thread{
 			if (System.currentTimeMillis() - lastTime > Global.SLEEPTIME) {
 				try {
 					// On envoie bonjour au serveur de l'hôte distant
-					channel.send(buffBonjour, remote);
+					// TODO A CHANGER
+					channel.send(buffBonjour, new InetSocketAddress("127.0.0.1", remote.getPort()));
 					// On dit au serveur d'attendre une réponse du client de l'hôte distant
 					Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 					buffBonjour.position(0);

@@ -98,8 +98,6 @@ public class Utilitaires {
 	}
 	
 	public static void out(String s){
-		if (s.contains("Socket opened")) return;
-		if (s.contains("Asking")) return;
 		System.out.println("Serveur "+ Global.TCP_PORT+ " : " + s);
 	}
 	

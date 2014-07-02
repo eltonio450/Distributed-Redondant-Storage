@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 
 import GestionnaireMort.deathVerifier;
-import Stockage.Donnees;
 import Stockage.Machine;
 import Utilitaires.Global;
 import Utilitaires.Slaver;
@@ -44,11 +43,8 @@ public class ServerPR extends Thread{
 	}
 
 	public void run () {
-		Utilitaires.out("UDP Server on port " + Global.SERVERPRPORT);
+		System.err.println("UDP Server on " + Global.MYSELF.ipAdresse +":" + Global.SERVERPRPORT);
 		while (true) {
-			LinkedList<Machine> l = Donnees.getAllServeurs();
-			for (Machine m : l)
-				Utilitaires.out(m.toString(), 6, true);
 			try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
 				receivedMessage.flip(); 
@@ -56,7 +52,6 @@ public class ServerPR extends Thread{
 				try {
 					traiter (Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 
 				receivedMessage.clear();
@@ -121,7 +116,7 @@ public class ServerPR extends Thread{
 		while (!dead.isEmpty()) {
 			InetSocketAddress toCheck = dead.removeFirst().sender;
 
-			Slaver.giveTask(new deathVerifier(new Machine(toCheck.getAddress().getHostAddress(), toCheck.getPort()-1)), 10);
+			Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
 	}
 }
