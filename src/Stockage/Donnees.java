@@ -256,23 +256,24 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			if (!filling) {
-				Utilitaires.out("Removing");
+				Utilitaires.out("Badoum " + allServeur.contains(m));
+				printAllServeur();
 				if(!allServeur.remove(m))
 					return;
-				Utilitaires.out("Removing2");
+				Utilitaires.out("BadoumBadoum");
 			}
 			else {
 				synchronized (toRemove) {
 					toRemove.add(m);
-				Utilitaires.out("Removing3");
+					Utilitaires.out("Removing3");
 				}
-				
+
 			}
 		}
 		finally {
 			allServeurLock.unlock();
 		}
-		
+
 		Utilitaires.out("Je suis " + Global.MYSELF + " et je lance traiteUnMort", 5, true);
 		myHostsLock.lock();
 		try {
@@ -310,13 +311,25 @@ public class Donnees {
 				}
 			}
 			while (interestServeur.contains(m)) { // il peut y avoir plusieurs
-													// occurrences
+				// occurrences
 				interestServeur.remove(m);
 				Utilitaires.out(m + " removed from interestServeur", 6, true);
 			}
 		}
 		finally {
 			interestServeurLock.unlock();
+		}
+	}
+
+	private static void printAllServeur() {
+		allServeurLock.lock();
+		try {
+			for (Machine m : allServeur) {
+				Utilitaires.out("Badoum " + m);
+			}
+		}
+		finally {
+			allServeurLock.unlock();
 		}
 	}
 
@@ -409,22 +422,6 @@ public class Donnees {
 	}
 
 	/**
-	 * Enleve une machine de la liste allServeur
-	 * 
-	 * @param m
-	 *            la machine a enlever
-	 */
-	public static void removeServer(Machine m) {
-		allServeurLock.lock();
-		try {
-			allServeur.remove(m);
-		}
-		finally {
-			allServeurLock.unlock();
-		}
-	}
-
-	/**
 	 * Regarde si toSendAsap est vide
 	 * 
 	 * @return True or False
@@ -500,7 +497,7 @@ public class Donnees {
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
-			
+
 			return temp;
 		}
 		finally {
@@ -514,7 +511,12 @@ public class Donnees {
 	 * @return LinkedList<.String> copie des identifiants des paquets de myData
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend2() {
-		return new LinkedList<String>(myData.keySet());
+		myDataLock.lock();
+		try {
+			return new LinkedList<String>(myData.keySet());
+		} finally {
+			myDataLock.unlock();
+		}
 	}
 
 	/**
@@ -720,7 +722,7 @@ public class Donnees {
 			myDataLock.unlock();
 			toSendASAPLock.unlock();
 			interestServeurLock.unlock();
-			}
+		}
 	}
 
 	public static void fillingServers(boolean flag) {
@@ -808,7 +810,7 @@ public class Donnees {
 			if (myData.containsKey(id)) {
 				if(!myData.get(id).isLocked()){
 					myData.get(id).lock();
-				return true;
+					return true;
 				}
 				else
 				{
@@ -854,16 +856,16 @@ public class Donnees {
 			myDataLock.unlock();
 		}
 	}
-	
+
 	public static void printInterestServeur(){
-	  interestServeurLock.lock();
-	  try{
-	    for(Machine m : interestServeur){
-	      Utilitaires.out("intrestServeur : " + m.toString());
-	    }
-	  }
-	  finally{
-	    interestServeurLock.unlock();
-	  }
+		interestServeurLock.lock();
+		try{
+			for(Machine m : interestServeur){
+				Utilitaires.out("intrestServeur : " + m.toString());
+			}
+		}
+		finally{
+			interestServeurLock.unlock();
+		}
 	}
 }

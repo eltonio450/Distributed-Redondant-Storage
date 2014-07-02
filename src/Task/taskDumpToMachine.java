@@ -29,12 +29,10 @@ public class taskDumpToMachine implements Runnable {
 	}
 
 	public void dump() {
-		Utilitaires.out("Entree dans la fonction DUMP");
 		boolean continuer = true;
 		while (continuer) {
 
 			for (Machine m : allServers) {
-				Utilitaires.out("Entree dans la fonction DUMP 2");
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
 
@@ -56,7 +54,6 @@ public class taskDumpToMachine implements Runnable {
 									if (socket != null) {
 
 
-										Utilitaires.out("Socket opened.", 5, true);
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
 											
 											aEnvoyer.spreadUnlock();

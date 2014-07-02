@@ -27,7 +27,7 @@ public class Message {
 		public static String OK = "OK#" ;
 		public static int TIME_TO_SLEEP_1 = 500 ; //TODO : make a reasonable choice
 		public static String SendOne = "SENDONE#" ;
-		
+		public static String SELF_WAKE_UP = "DEBOUT#";
 		//PR
 		public static String PREFIXE_BONJOUR = "PING#";
 		public static String PREFIXE_REPONSE_BONJOUR = "RPING#";

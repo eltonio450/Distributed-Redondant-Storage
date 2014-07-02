@@ -43,10 +43,10 @@ public class Main {
 
 
 
-		//Utilitaires.out("Starting UDP server.............");
-		//IniUDP.iniUDP();
-		//Utilitaires.out("Ok");
-		/*
+		/*Utilitaires.out("Starting UDP server.............");
+		IniUDP.iniUDP();
+		Utilitaires.out("Ok");
+		
 		int port = 5656 ;
 		int tailleBuffer = 100 ;
 

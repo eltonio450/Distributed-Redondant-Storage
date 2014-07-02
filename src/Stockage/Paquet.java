@@ -250,7 +250,6 @@ public class Paquet {
 	public boolean askForlock() {
 		if(lockLogique)
 		{
-			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
 			return false;
 		}
 		// isAskingTheLock = true;
@@ -276,7 +275,6 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-				Utilitaires.out("Quelqu'un d'autre est locke " + idGlobal, 5, true);
 				return false;
 
 		}
@@ -286,7 +284,6 @@ public class Paquet {
 	public boolean askForlock(int mort) {
 		if(lockLogique)
 		{
-			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
 			return false;
 		}
 		// isAskingTheLock = true;
@@ -314,7 +311,6 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-				Utilitaires.out("Quelqu'un d'autre est locke " + idGlobal, 5, true);
 				return false;
 
 		}
