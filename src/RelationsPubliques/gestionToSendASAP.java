@@ -32,6 +32,10 @@ public class gestionToSendASAP extends Thread {
 				Runnable task = new taskDumpToMachine();
 				task.run();
 			}
+			else {
+				Utilitaires.out("------------J'ai fini de vider toSendASAP------------");
+				Donnees.printAllServeur();
+			}
 		}
 
 	}

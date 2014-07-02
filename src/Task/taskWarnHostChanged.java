@@ -24,12 +24,12 @@ public class taskWarnHostChanged implements Runnable {
 
 	public void run() {
 		// Utilitaires.out("-------------task warn host changed--------------------");
-		prevenirHostChanged(ID);
-
+		int idInterne = prevenirHostChanged(ID);
+		Donnees.getHostedPaquet(ID).otherHosts.set(idInterne, Global.MYSELF) ;
 		Donnees.getHostedPaquet(ID).unlock();
 	}
 
-	public static void prevenirHostChanged(String id) {
+	public static int prevenirHostChanged(String id) {
 		// previens une machine que cette machine remplace m pour le paquet d'id
 		// Id
 		SocketChannel clientSocket;
@@ -110,6 +110,7 @@ public class taskWarnHostChanged implements Runnable {
 			}
 
 		}
+		return p.power ;
 	}
 
 }
