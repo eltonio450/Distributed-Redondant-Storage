@@ -22,7 +22,6 @@ public class ServeurTCP extends Thread {
 				SocketChannel client = serverSocket.accept();
 				
 				Global.GPRA.addRequester(new Requester(client));
-				
 			}
 		} catch (IOException e) {
 			return;

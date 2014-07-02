@@ -58,13 +58,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				aAjouter.clear();
 			}
 			lock.unlock();
-
+			
 			for (Requester r : aTraiter) {
 				try {
 					buff.clear();
 					r.socket.read(buff);
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					aEnlever.add(r);
 					e.printStackTrace();
 				}
@@ -75,22 +74,20 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				// Utilitaires.out("(TCP) from " + r.socket.socket().getPort() +
 				// " : " + r.recu, 6, false);
 
-				if (r.socket.socket().isClosed() || System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
+				if (r.socket.socket().isClosed()
+						|| System.currentTimeMillis() - r.timeIni > Global.SOCKET_TIMEOUT) {
 					try {
 						r.socket.close();
-					}
-					catch (IOException e) {
+					} catch (IOException e) {
 						// Nope, still don't care.
 					}
 					aEnlever.add(r);
-				}
-				else {
+				} else {
 
 					try {
 
 						traiter(r);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -99,8 +96,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			try {
 				Thread.sleep(5); // Evite de tourner trop à vide quand une
 									// connexion se tait.
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				// Nobody cares
 			}
 
@@ -121,8 +117,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 	public void addRequester(Requester requester) {
 		try {
 			requester.socket.configureBlocking(false);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			Utilitaires.out("Problème de changement Blocking / Non blocking");
 			return;
 		}
@@ -132,8 +127,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 		try {
 			aAjouter.add(requester);
 			c.signal();
-		}
-		finally {
+		} finally {
 			lock.unlock();
 		}
 	}
@@ -155,18 +149,19 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Message.SendOne)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket), 20);
+				Slaver.giveTask(new Task.taskServeurReceiveOnePaquet(r.socket),
+						20);
 			}
 
 			else if (token.equals(Message.AskForPaquet)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveTask(new Task.taskServeurGiveOnePaquet(r.socket), 20);
-			}
-			else if (token.equals(Message.GiveMeMyPaquet)) {
+			} else if (token.equals(Message.GiveMeMyPaquet)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				Slaver.giveTask(new Task.taskServeurCopyPaquetToOwner(r.socket), 20);
+				Slaver.giveTask(
+						new Task.taskServeurCopyPaquetToOwner(r.socket), 20);
 			}
 
 			else if (token.equals(Message.IS_DEAD)) {
@@ -176,8 +171,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					if (scan.hasNext()) {
 						try {
 							port = Integer.parseInt(scan.next());
-						}
-						catch (Exception e) {
+						} catch (Exception e) {
 							// Parsing exception
 							// The number following the IP Adress is wrong
 							// Remove the requester (won't get any better
@@ -191,10 +185,12 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 						if (scan.hasNext()) {
 							// Alors le numéro de port était bien fini
 							// On peut agir
-							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip, port), 1);
+							Slaver.giveUrgentTask(new Task.taskReactToDeath(ip,
+									port), 1);
 							aEnlever.add(r);
 							r.socket.close();
-							Utilitaires.out("Just learned that " + ip + ":" + port + " is dead>", 5, true);
+							Utilitaires.out("Just learned that " + ip + ":"
+									+ port + " is dead>", 5, true);
 							scan.close();
 							return;
 						}
@@ -209,8 +205,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					if (scan.hasNext()) {
 						try {
 							port = Integer.parseInt(scan.next());
-						}
-						catch (Exception e) {
+						} catch (Exception e) {
 							// Parsing exception
 							// The number following the IP Adress is wrong
 							// Remove the requester (won't get any better
@@ -233,11 +228,11 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 					}
 				}
 			}
-
+			
 			else if (token.equals(Message.DEMANDE_PAQUET)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-
+				
 				Slaver.giveTask(new Task.taskSendRequestedPaquet(r.socket), 10);
 			}
 
@@ -265,29 +260,23 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new taskLockPacket(r.socket), 2);
-			}
-			else if (token.equals(Message.ASK_FOR_UNLOCK)) {
+			} else if (token.equals(Message.ASK_FOR_UNLOCK)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
 				Slaver.giveUrgentTask(new taskUnlockPacket(r.socket), 2);
-			}
-			else if (token.isEmpty()) {
+			} else if (token.isEmpty()) {
 				// Utilitaires.out("Chaine vide.", 5, true);
 
-			}
-			else {
+			} else {
 				Utilitaires.out("Chaine non analysée : " + token.toString(), 5, true);
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			aEnlever.add(r);
 			scan.close();
 			return;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// Catch parsing exception etc.
-		}
-		finally {
+		} finally {
 			scan.close();
 		}
 	}

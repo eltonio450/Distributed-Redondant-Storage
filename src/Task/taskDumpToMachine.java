@@ -45,9 +45,9 @@ public class taskDumpToMachine implements Runnable {
 						for (String s : toSendASAP) {
 						}
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
-						Utilitaires.out("ACK 0");
+
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("ACK 2");
+
 							SocketChannel socket = null;
 							
 							if (aEnvoyer.askForlock()) {
@@ -57,9 +57,8 @@ public class taskDumpToMachine implements Runnable {
 
 
 										Utilitaires.out("Socket opened.", 5, true);
-										Utilitaires.out("Temp 1");
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
-											Utilitaires.out("Temp 10");
+											
 											aEnvoyer.spreadUnlock();
 											
 											Donnees.putNewPaquet(aEnvoyer);
@@ -87,16 +86,16 @@ public class taskDumpToMachine implements Runnable {
 
 							else {
 								Donnees.putNewPaquet(aEnvoyer);
-								Utilitaires.out("ACK 1");
+
 								aEnvoyer.spreadUnlock();
 							}
 
 							
 						}
 						else if (aEnvoyer != null) {
-							Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé : il était locké.", 1, true);
+							Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé : lock non obtenu.", 1, true);
 							Donnees.putNewPaquet(aEnvoyer);
-							//Donnees.securedUnlock(aEnvoyer.idGlobal);
+							Donnees.securedUnlock(aEnvoyer.idGlobal);
 
 						}
 
@@ -159,15 +158,14 @@ public class taskDumpToMachine implements Runnable {
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
 
-			Utilitaires.out("Temp 2");
+
 			if (!s.equals(Message.DEMANDE_ID)) {
 				Utilitaires.out("Didnt answer with DEMANDE ID", 5, true);
 				Utilitaires.out("Message was : " + s, 5, true);
 				return false;
 			}
-			
 
-			else {Utilitaires.out("Temp 3");
+			else {
 				//Utilitaires.out("Envoi de l'ID pour l'échange...  " + aEnvoyer.idGlobal, 1, true);
 				buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal);
 				clientSocket.write(buffer);
@@ -175,13 +173,13 @@ public class taskDumpToMachine implements Runnable {
 				clientSocket.read(buffer);
 				buffer.flip();
 				s = Utilitaires.buffToString(buffer);
-				Utilitaires.out("Temp 4");
+				
 				if (s.equals(Message.REPONSE_EXCHANGE)) {
 					aEnvoyer.envoyerPaquetReellement(clientSocket);
-					Utilitaires.out("Temp 5");
+
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						Utilitaires.out("Temp 11");
+						
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -221,11 +219,9 @@ public class taskDumpToMachine implements Runnable {
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI);
 			clientSocket.write(buffer);
 			buffer.clear();
-			Utilitaires.out("Temp 7");
 			clientSocket.read(buffer);
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			Utilitaires.out("Temp 8");
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
 			
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
@@ -244,7 +240,7 @@ public class taskDumpToMachine implements Runnable {
 				return false;
 			}
 			else {
-				Utilitaires.out("Temp 9");
+
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 

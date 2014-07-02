@@ -9,11 +9,9 @@ public class SlaveThread extends Thread{
 		Runnable r = null;
 
 		while (true) {
-			try {Utilitaires.out("BOCK "+ tasks.size());
+			try {
 				r = tasks.take();
-				Utilitaires.out("BOCK 2 "+ tasks.size());
 				r.run();
-				Utilitaires.out("BOCK 3 "+ tasks.size());
 			} catch (Exception e) {
 				Utilitaires.out("Exception in SlaverThread. Task was " + r.getClass());
 				e.printStackTrace();
@@ -23,14 +21,7 @@ public class SlaveThread extends Thread{
 	}
 
 	public boolean doThat(Runnable r, int estimatedLoad) {
-		try{
-			Utilitaires.out("Dans Slave Thread 1");
-			tasks.add(r);
-			Utilitaires.out("Dans Slave Thread 2 "+ tasks.size());
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		tasks.add(r);
 		return true;
 	}
 
