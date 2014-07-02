@@ -256,7 +256,6 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			if (!filling) {
-				printAllServeur();
 				Utilitaires.out("Badoum1");
 				if(!allServeur.remove(m))
 					return;
@@ -297,11 +296,11 @@ public class Donnees {
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 						if (m == p.otherHosts.get(i)) {
 							if (p.power == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoumboum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoumboum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 						}
