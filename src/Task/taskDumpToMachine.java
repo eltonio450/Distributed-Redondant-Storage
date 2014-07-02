@@ -31,8 +31,10 @@ public class taskDumpToMachine implements Runnable {
 	public void dump() {
 		boolean continuer = true;
 		while (continuer) {
-
-			for (Machine m : allServers) {
+			int nbrMachines = allServers.size() ;
+			Machine m ;
+			for (int j = 0 ; j < nbrMachines ; j++) {
+				m = Donnees.chooseMachine() ;
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
 

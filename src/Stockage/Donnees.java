@@ -253,6 +253,11 @@ public class Donnees {
 	 *            La machine qui est morte
 	 */
 	public static void traiteUnMort(Machine m) {
+		try {
+			Thread.sleep((int)(Math.random()*(double)500) + 500) ;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		allServeurLock.lock();
 		try {
 			if (!filling) {
@@ -268,6 +273,11 @@ public class Donnees {
 					Utilitaires.out("Badoum-1");
 				}
 
+			}
+			try {
+				Thread.sleep(300) ;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		finally {
@@ -287,6 +297,12 @@ public class Donnees {
 			myHostsLock.unlock();
 		}
 		interestServeurLock.lock();
+		myDataLock.lock();
+		try {
+			Thread.sleep(300) ;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		try {
 			Utilitaires.out("Badoum4");
 			printInterestServeur();
@@ -294,15 +310,17 @@ public class Donnees {
 				interestServeur.remove(m);
 				Utilitaires.out("Badoum5");
 				for (Paquet p : myData.values()) {
+					Utilitaires.out("Badoum6");
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
-						if (m == p.otherHosts.get(i)) {
+						if (m.equals(p.otherHosts.get(i))) {
+							Utilitaires.out("Badoum7");
 							if (p.power == 0) {
 								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
-								(new taskRetablirPaquets(p, i)).run();
+								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
 							}
 							else if (p.power == 1 && i == 0) {
 								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
-								(new taskRetablirPaquets(p, i)).run();
+								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
 							}
 						}
 					}
@@ -315,6 +333,7 @@ public class Donnees {
 			}
 		}
 		finally {
+			myDataLock.unlock();
 			interestServeurLock.unlock();
 		}
 	}
@@ -635,7 +654,7 @@ public class Donnees {
 			myHostsLock.lock();
 			try {
 				Machine host = myHosts.get(id);
-				(new taskGiveMeMyPaquet(id, host)).run();
+				Slaver.giveTask(new taskGiveMeMyPaquet(id, host), 10);
 			}
 			finally {
 				myHostsLock.unlock();

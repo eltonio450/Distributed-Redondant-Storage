@@ -23,6 +23,7 @@ public class taskSendRequestedPaquet implements Runnable {
       // Etape 1 : définir de quel paquet l'autre a besoin : il faut envoyer OK en premier.
       ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
       s.write(b);
+      Utilitaires.out("SendRequested, j ai envoye OK");
       b = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH);
       b.clear();
       s.read(b);
@@ -31,10 +32,11 @@ public class taskSendRequestedPaquet implements Runnable {
 
       // Etape 2 : on envoit le paquet
       Paquet p = Donnees.getHostedPaquet(id);
+      Donnees.printMyData();
       if (p != null) {
         p.fichier.transferTo(0, Global.PAQUET_SIZE, s);
       } else {
-        Utilitaires.out("Erreur, je n'ai pas le paquet !!");
+        Utilitaires.out("Erreur, je n'ai pas le paquet !! " + id);
       }
     } catch (IOException e) {
         e.printStackTrace();

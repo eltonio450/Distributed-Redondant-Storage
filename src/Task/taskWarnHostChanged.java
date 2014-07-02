@@ -74,6 +74,8 @@ public class taskWarnHostChanged implements Runnable {
 				InetSocketAddress local = new InetSocketAddress(0);
 				clientSocket.bind(local);
 				InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
+				
+				Utilitaires.out("jessaye de me connect a : " + m.ipAdresse + "-" + m.port);
 				if (!clientSocket.connect(remote))
 					Utilitaires.out("Ca a foiré !");
 

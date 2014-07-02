@@ -46,9 +46,6 @@ public class ServerPR extends Thread{
 	public void run () {
 		Utilitaires.out("UDP Server on port " + Global.SERVERPRPORT);
 		while (true) {
-			LinkedList<Machine> l = Donnees.getAllServeurs();
-			for (Machine m : l)
-				Utilitaires.out(m.toString(), 6, true);
 			try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
 				receivedMessage.flip(); 

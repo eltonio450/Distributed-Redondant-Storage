@@ -232,7 +232,6 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Message.DEMANDE_PAQUET)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
-				
 				Slaver.giveTask(new Task.taskSendRequestedPaquet(r.socket), 10);
 			}
 
