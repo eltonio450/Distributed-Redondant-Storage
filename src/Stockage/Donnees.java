@@ -256,7 +256,7 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			if (!filling) {
-				Utilitaires.out("Badoum " + allServeur.contains(m));
+				Utilitaires.out("FUCK3 " + m);
 				printAllServeur();
 				if(!allServeur.remove(m))
 					return;

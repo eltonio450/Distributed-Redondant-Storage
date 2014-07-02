@@ -189,8 +189,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 									port), 1);
 							aEnlever.add(r);
 							r.socket.close();
-							Utilitaires.out("Just learned that " + ip + ":"
-									+ port + " is dead>", 5, true);
+							Utilitaires.out("FUCK2 Just learned that " + ip + ":"
+									+ port + " is dead", 5, true);
 							scan.close();
 							return;
 						}
