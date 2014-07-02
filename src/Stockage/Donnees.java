@@ -256,6 +256,7 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			if (!filling) {
+				printAllServeur();
 				Utilitaires.out("Badoum1");
 				if(!allServeur.remove(m))
 					return;
@@ -296,11 +297,11 @@ public class Donnees {
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 						if (m == p.otherHosts.get(i)) {
 							if (p.power == 0) {
-								Utilitaires.out("Badoumboum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Badoumboum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 						}
@@ -318,7 +319,7 @@ public class Donnees {
 		}
 	}
 
-	private static void printAllServeur() {
+	public static void printAllServeur() {
 		allServeurLock.lock();
 		try {
 			for (Machine m : allServeur) {
@@ -590,7 +591,7 @@ public class Donnees {
 		myDataLock.lock();
 		try {
 			if (myData.containsKey(id)) {
-				return myData.remove(id);
+				return myData.get(id);
 			}
 			else {
 				return null;
@@ -616,7 +617,9 @@ public class Donnees {
 		// Utilitaires.out("Ou lui ?");
 		myDataLock.lock();
 		try {
-			myData.put(p.idGlobal, p);
+			if(!myData.containsKey(p.idGlobal)){
+				myData.put(p.idGlobal, p);	
+			}
 		}
 		finally {
 			myDataLock.unlock();
