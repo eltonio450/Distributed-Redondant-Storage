@@ -15,8 +15,8 @@ public class Global {
 	
 	// Relations Publiques
 
-	public static long TIMEOUT = 20000;
-	public static int SLEEPTIME = 3000;
+	public static long TIMEOUT = 3000;
+	public static int SLEEPTIME = 10000;
 
 	public static int NOMBRESOUSPAQUETS = 5;
 	public static int NOMBRESOUSPAQUETSSIGNIFICATIFS = 4;
@@ -60,7 +60,6 @@ public class Global {
 	public static  RelationsPubliques.ClientPR clientPR;
 	public static TCPConnections.ServeurTCP serveurTCP;
 	public static TCPConnections.GeneralPurposeRequestAnalyzer GPRA;
-
 	
 	public static void debug(int i)
 	{

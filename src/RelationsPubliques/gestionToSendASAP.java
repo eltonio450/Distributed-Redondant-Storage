@@ -19,20 +19,20 @@ public class gestionToSendASAP extends Thread {
 			Donnees.toSendASAPLock.unlock();*/
 			try {
 
-				Thread.sleep((long)(Math.abs(Math.random()) * 10000));
+				Thread.sleep((long)(Math.abs(Math.random()) * 4000));
 				//Utilitaires.out("Répartition des paquets", 2, true);
 
 			}
 			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if(!Donnees.toSendAsapEmpty())
 			{
+				Utilitaires.out("New taskDumpToMachine", 6, true);
 				Runnable task = new taskDumpToMachine();
 				task.run();
-			}
-			else {
-				Utilitaires.out("------------J'ai fini de vider toSendASAP------------");
-				Donnees.printAllServeur();
+				Utilitaires.out("Completed taskDumpToMachine", 6, true);
 			}
 		}
 

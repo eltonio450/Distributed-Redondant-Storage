@@ -53,7 +53,9 @@ public class taskUnlockPacket implements Runnable {
 
 
 			b.clear();
-			
+			if(!Donnees.getHostedPaquet(id).isLocked()){
+				Utilitaires.out("BBBBBBBBBBBBFDDDDDDDDDDDDDDD",5,true);
+			}
 			Donnees.securedUnlock(id);
 
 

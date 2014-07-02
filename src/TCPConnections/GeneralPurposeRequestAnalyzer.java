@@ -189,8 +189,8 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 									port), 1);
 							aEnlever.add(r);
 							r.socket.close();
-							Utilitaires.out("Bladiboulga just learned that " + ip + ":"
-									+ port + " is dead", 5, true);
+							Utilitaires.out("Just learned that " + ip + ":"
+									+ port + " is dead>", 5, true);
 							scan.close();
 							return;
 						}
@@ -232,6 +232,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 			else if (token.equals(Message.DEMANDE_PAQUET)) {
 				r.socket.configureBlocking(true);
 				aEnlever.add(r);
+				
 				Slaver.giveTask(new Task.taskSendRequestedPaquet(r.socket), 10);
 			}
 

@@ -168,6 +168,11 @@ public class Donnees {
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			String testId = newId + (a * Global.NOMBRESOUSPAQUETS + i);
 			if (myData.containsKey(testId)) {
+				
+				if(!myData.get(testId).isLocked())
+				{
+					Utilitaires.out("AAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRGGGGGGGGGGGGGGGGGGGG",3,true);
+				}
 				res.add(testId);
 			}
 		}
@@ -184,11 +189,11 @@ public class Donnees {
 	 */
 	public static void receptionPaquet(Paquet p) {
 		// Utilitaires.out("-------------Reception paquet--------------------");
-		p.lock();
+		Donnees.securedLock(p.idGlobal);
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			if (i != p.power) {
 				addInterestServeur(p.otherHosts.get(i));
-				Utilitaires.out(p.otherHosts.get(i) + " added to interestServeur", 6, true);
+				//Utilitaires.out(p.otherHosts.get(i) + " added to interestServeur", 6, true);
 			}
 		}
 		putNewPaquet(p);
@@ -212,7 +217,7 @@ public class Donnees {
 	 *            Le nouvel hote
 	 */
 	public static void changeHostForPaquet(String Id, int place, Machine newHost) {
-
+		
 		// Utilitaires.out("Voyons voir ça...");
 		myDataLock.lock();
 		// Utilitaires.out("Humm");
@@ -223,13 +228,17 @@ public class Donnees {
 			// Utilitaires.out("Humm3");
 			for (String s : paquets) {
 				// Utilitaires.out("Humm4");
+				if(!myData.get(s).isLocked())
+				{
+					Utilitaires.out("AAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRGGGGGGGGGGGGGGGGGGGG",1,true);
+				}
 				Machine toRemove = myData.get(s).otherHosts.get(place);
 				interestServeur.remove(toRemove);
 				myData.get(s).otherHosts.set(place, newHost);
 
 				interestServeur.add(newHost);
-				Utilitaires.out(newHost + " replaced " + toRemove + " in interestServeur", 6, true);
-				myData.get(s).unlock();
+				//Utilitaires.out(newHost + " replaced " + toRemove + " in interestServeur", 6, true);
+				
 			}
 
 		}
@@ -253,43 +262,33 @@ public class Donnees {
 	 *            La machine qui est morte
 	 */
 	public static void traiteUnMort(Machine m) {
-		try {
-			Thread.sleep((int)(Math.random()*(double)500) + 500) ;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		allServeurLock.lock();
 		try {
 			if (!filling) {
-				printAllServeur();
-				Utilitaires.out("Badoum1");
+				Utilitaires.out("Removing");
 				if(!allServeur.remove(m))
 					return;
-				Utilitaires.out("Badoum2");
+				Utilitaires.out("Removing2");
 			}
 			else {
 				synchronized (toRemove) {
 					toRemove.add(m);
-					Utilitaires.out("Badoum-1");
+				Utilitaires.out("Removing3");
 				}
-
-			}
-			try {
-				Thread.sleep(300) ;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		finally {
 			allServeurLock.unlock();
 		}
-
+		
+		Utilitaires.out("Je suis " + Global.MYSELF + " et je lance traiteUnMort", 5, true);
 		myHostsLock.lock();
 		try {
 			for (String id : myHosts.keySet()) {
 				if (myHosts.get(id) == m) {
-					Utilitaires.out("Badoum3");
 					myHosts.remove(id);
+					Utilitaires.out("4");
 				}
 			}
 		}
@@ -297,56 +296,36 @@ public class Donnees {
 			myHostsLock.unlock();
 		}
 		interestServeurLock.lock();
-		myDataLock.lock();
 		try {
-			Thread.sleep(300) ;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		try {
-			Utilitaires.out("Badoum4");
+			Utilitaires.out("5");
 			printInterestServeur();
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
-				Utilitaires.out("Badoum5");
+				Utilitaires.out("6");
 				for (Paquet p : myData.values()) {
-					Utilitaires.out("Badoum6");
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
-						if (m.equals(p.otherHosts.get(i))) {
-							Utilitaires.out("Badoum7");
+						Utilitaires.out("7");
+						if (m == p.otherHosts.get(i)) {
 							if (p.power == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
-								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								(new taskRetablirPaquets(p, i)).run();
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
-								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								(new taskRetablirPaquets(p, i)).run();
 							}
 						}
 					}
 				}
 			}
 			while (interestServeur.contains(m)) { // il peut y avoir plusieurs
-				// occurrences
+													// occurrences
 				interestServeur.remove(m);
 				Utilitaires.out(m + " removed from interestServeur", 6, true);
 			}
 		}
 		finally {
-			myDataLock.unlock();
 			interestServeurLock.unlock();
-		}
-	}
-
-	public static void printAllServeur() {
-		allServeurLock.lock();
-		try {
-			for (Machine m : allServeur) {
-				Utilitaires.out("Badoum " + m);
-			}
-		}
-		finally {
-			allServeurLock.unlock();
 		}
 	}
 
@@ -439,6 +418,22 @@ public class Donnees {
 	}
 
 	/**
+	 * Enleve une machine de la liste allServeur
+	 * 
+	 * @param m
+	 *            la machine a enlever
+	 */
+	public static void removeServer(Machine m) {
+		allServeurLock.lock();
+		try {
+			allServeur.remove(m);
+		}
+		finally {
+			allServeurLock.unlock();
+		}
+	}
+
+	/**
 	 * Regarde si toSendAsap est vide
 	 * 
 	 * @return True or False
@@ -514,7 +509,7 @@ public class Donnees {
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
-
+			
 			return temp;
 		}
 		finally {
@@ -528,12 +523,7 @@ public class Donnees {
 	 * @return LinkedList<.String> copie des identifiants des paquets de myData
 	 */
 	public static LinkedList<String> chooseManyPaquetToSend2() {
-		myDataLock.lock();
-		try {
-			return new LinkedList<String>(myData.keySet());
-		} finally {
-			myDataLock.unlock();
-		}
+		return new LinkedList<String>(myData.keySet());
 	}
 
 	/**
@@ -546,7 +536,7 @@ public class Donnees {
 		interestServeurLock.lock();
 		try {
 			interestServeur.add(m);
-			Utilitaires.out(m + " added to interestServeur", 6, true);
+			//Utilitaires.out(m + " added to interestServeur", 6, true);
 		}
 		finally {
 			interestServeurLock.unlock();
@@ -610,7 +600,7 @@ public class Donnees {
 		myDataLock.lock();
 		try {
 			if (myData.containsKey(id)) {
-				return myData.get(id);
+				return myData.remove(id);
 			}
 			else {
 				return null;
@@ -636,9 +626,8 @@ public class Donnees {
 		// Utilitaires.out("Ou lui ?");
 		myDataLock.lock();
 		try {
-			if(!myData.containsKey(p.idGlobal)){
-				myData.put(p.idGlobal, p);	
-			}
+			myData.put(p.idGlobal, p);
+			p.lock();
 		}
 		finally {
 			myDataLock.unlock();
@@ -654,7 +643,7 @@ public class Donnees {
 			myHostsLock.lock();
 			try {
 				Machine host = myHosts.get(id);
-				Slaver.giveTask(new taskGiveMeMyPaquet(id, host), 10);
+				(new taskGiveMeMyPaquet(id, host)).run();
 			}
 			finally {
 				myHostsLock.unlock();
@@ -741,7 +730,7 @@ public class Donnees {
 			myDataLock.unlock();
 			toSendASAPLock.unlock();
 			interestServeurLock.unlock();
-		}
+			}
 	}
 
 	public static void fillingServers(boolean flag) {
@@ -837,7 +826,7 @@ public class Donnees {
 				}
 			}
 			else {
-
+				Utilitaires.out("Je n'ai pas ce paquet : " +id,1,true);
 				return false;
 			}
 
@@ -875,16 +864,16 @@ public class Donnees {
 			myDataLock.unlock();
 		}
 	}
-
+	
 	public static void printInterestServeur(){
-		interestServeurLock.lock();
-		try{
-			for(Machine m : interestServeur){
-				Utilitaires.out("intrestServeur : " + m.toString());
-			}
-		}
-		finally{
-			interestServeurLock.unlock();
-		}
+	  interestServeurLock.lock();
+	  try{
+	    for(Machine m : interestServeur){
+	      Utilitaires.out("intrestServeur : " + m.toString());
+	    }
+	  }
+	  finally{
+	    interestServeurLock.unlock();
+	  }
 	}
 }
