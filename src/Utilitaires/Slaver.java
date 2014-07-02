@@ -10,7 +10,7 @@ package Utilitaires;
  */
 
 public class Slaver {
-	static final int NB_SLOWSLAVES = 100;
+	static final int NB_SLOWSLAVES = 5;
 	static final int NB_FASTSLAVES = 20;
 	static int indexSlow, indexFast;
 	static SlaveThread [] slowSlaves, fastSlaves;
@@ -33,10 +33,12 @@ public class Slaver {
 	
 	public static final void giveTask (Runnable r, int estimatedLoad) {
 		slowSlaves[(indexSlow++) % NB_SLOWSLAVES].doThat(r, estimatedLoad);
+		
 	}
 	
 	public static final void giveUrgentTask(Runnable r, int estimatedLoad) {
-		slowSlaves[(indexFast++) % NB_FASTSLAVES].doThat(r, estimatedLoad);
+		Utilitaires.out("Go : " + (indexFast));
+		fastSlaves[(indexFast++) % NB_FASTSLAVES].doThat(r, estimatedLoad);
 
 	}
 }

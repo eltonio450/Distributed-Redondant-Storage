@@ -28,25 +28,26 @@ public class taskLockPacket implements Runnable {
 
 	public taskLockPacket(SocketChannel socket) {
 		s = socket;
+		Utilitaires.out("ACK 53");
 		
 	}
 
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
-
+		Utilitaires.out("Très RAS tout ça 1",0,true);
 		String id;
 		int power;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
 
 		try {
-			//Utilitaires.out("Très RAS tout ça 2",0,true);
+			Utilitaires.out("Très RAS tout ça 2",0,true);
 			s.write(b);
 
-			//Utilitaires.out("Très RAS tout ça 2",0,true);
+			Utilitaires.out("Très RAS tout ça 2",0,true);
 			b.clear();
 			s.read(b);
 			b.flip();
-			//Utilitaires.out("Très RAS tout ça 3",0,true);
+			Utilitaires.out("Très RAS tout ça 3",0,true);
 			//temp = Utilitaires.getAFullMessage(Message.END_ENVOI, s);
 			String chaine = Utilitaires.buffToString(b);
 			//Utilitaires.out("Le lock est demandé sur "+chaine,4,true);

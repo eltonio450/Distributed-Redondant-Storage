@@ -248,12 +248,13 @@ public class Paquet {
 	 */
 
 	public boolean askForlock() {
+		Utilitaires.out("Entrée dans lock");
 		if(lockLogique)
 		{
 			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
 			return false;
 		}
-		// isAskingTheLock = true;
+
 		int resultat = 0;
 		Integer i = 0;
 		// int j = idGlobal-idInterne;
@@ -263,27 +264,31 @@ public class Paquet {
 			if (i != idInterne && resultat == 0) {
 			  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
-				spreadUnlockLock.lock();
-				toUnlock.add(i);
-				spreadUnlockLock.unlock();
+				if(resultat == 0)
+				{
+					spreadUnlockLock.lock();
+					toUnlock.add(i);
+					spreadUnlockLock.unlock();
+				}
 			}
 			i++;
 		}
+		Utilitaires.out("Sortie de lock");
 		switch (resultat) {
 
 			case 0:
-				//unlock();
-				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
 				Utilitaires.out("Quelqu'un d'autre est locke " + idGlobal, 5, true);
 				return false;
 
 		}
+		
 
 	}
 	
 	public boolean askForlock(int mort) {
+		
 		if(lockLogique)
 		{
 			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
@@ -336,6 +341,7 @@ public class Paquet {
 	 */
 
 	public int sendAskForLock(Machine m, String idGlobal, int power) {
+		Utilitaires.out("Entrée dans sendAskForLock");
 		// SocketChannel clientSocket;
 		try {
 			SocketChannel clientSocket = SocketChannel.open();
@@ -349,27 +355,27 @@ public class Paquet {
 
 			clientSocket.connect(remote);
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_LOCK);
-			//Utilitaires.out("ASK 1",0,true);
+
 			clientSocket.write(buffer);
 			buffer.clear();
-			//Utilitaires.out("ASK 2",0,true);
+
 			clientSocket.read(buffer);
 			buffer.flip();
 
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)) {
-				//Utilitaires.out("ASK 3",0,true);
-				// Utilitaires.out("Test 4", 6, true);
+
+				
 				buffer.clear();
 				buffer = Utilitaires.stringToBuffer(idGlobal + " " + idInterne);
 				clientSocket.write(buffer);
 
 				buffer.clear();
-				//Utilitaires.out("ASK 4",0,true);
+
 				clientSocket.read(buffer);
-				//Utilitaires.out("ASK 5",0,true);
+
 				clientSocket.close();
 				buffer.flip();
-
+				Utilitaires.out("Srotie de sendAskForLock");
 				if (Utilitaires.buffToString(buffer).equals(Message.OK))
 					return 0;
 

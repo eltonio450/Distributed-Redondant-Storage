@@ -257,22 +257,22 @@ public class Donnees {
 		try {
 			if (!filling) {
 				Utilitaires.out("Removing");
-				if(!allServeur.remove(m))
+				if (!allServeur.remove(m))
 					return;
 				Utilitaires.out("Removing2");
 			}
 			else {
 				synchronized (toRemove) {
 					toRemove.add(m);
-				Utilitaires.out("Removing3");
+					Utilitaires.out("Removing3");
 				}
-				
+
 			}
 		}
 		finally {
 			allServeurLock.unlock();
 		}
-		
+
 		Utilitaires.out("Je suis " + Global.MYSELF + " et je lance traiteUnMort", 5, true);
 		myHostsLock.lock();
 		try {
@@ -500,7 +500,7 @@ public class Donnees {
 		try {
 			LinkedList<String> temp = new LinkedList<String>();
 			temp.addAll(toSendASAP);
-			
+
 			return temp;
 		}
 		finally {
@@ -603,13 +603,11 @@ public class Donnees {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Ajoute ce paquet a myData.
-	 * Gere la concurrence
-=======
+	 * <<<<<<< HEAD Ajoute ce paquet a myData. Gere la concurrence =======
 	 * Ajoute ce paquet � myData. Gere la concurrence
 	 * 
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+	 * >>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+	 * 
 	 * @param p
 	 *            Le paquet
 	 */
@@ -696,11 +694,9 @@ public class Donnees {
 	 * interestServeur.
 	 * 
 	 * @param p
-<<<<<<< HEAD
-	 *       Le paquet a supprimer
-=======
-	 *            Le paquet � supprimer
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
+	 *            <<<<<<< HEAD Le paquet a supprimer ======= Le paquet �
+	 *            supprimer >>>>>>> branch 'master' of
+	 *            https://github.com/eltonio450/modal.git
 	 */
 	public static void removePaquet(Paquet p) {
 		myDataLock.lock();
@@ -720,7 +716,7 @@ public class Donnees {
 			myDataLock.unlock();
 			toSendASAPLock.unlock();
 			interestServeurLock.unlock();
-			}
+		}
 	}
 
 	public static void fillingServers(boolean flag) {
@@ -759,7 +755,7 @@ public class Donnees {
 	public static void waitForSomethingInToSendASAP() {
 		try {
 			String p = toSendASAP.take();
-			Utilitaires.out("Paquet dans to send ASAP : "+p);
+			Utilitaires.out("Paquet dans to send ASAP : " + p);
 			toSendASAP.put(p);
 		}
 		catch (InterruptedException e) {
@@ -786,32 +782,17 @@ public class Donnees {
 
 	}
 
-	public static void printUnlockedInMyData() {
-		Utilitaires.out("Pour la machine " + Global.MYSELF.toString());
-		myDataLock.lock();
-		try {
-			for (Paquet p : myData.values()) {
-				if (!p.lockLogique)
-					Utilitaires.out("Paquet : " + p.idGlobal);
-			}
-		}
-		finally {
-			myDataLock.unlock();
-		}
 
-	}
 
 	public static boolean securedLock(String id) {
 		myDataLock.lock();
-		Paquet temp = null;
 		try {
 			if (myData.containsKey(id)) {
-				if(!myData.get(id).isLocked()){
+				if (!myData.get(id).isLocked()) {
 					myData.get(id).lock();
-				return true;
+					return true;
 				}
-				else
-				{
+				else {
 					return false;
 				}
 			}

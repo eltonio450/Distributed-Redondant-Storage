@@ -28,11 +28,12 @@ public class taskUnlockPacket implements Runnable {
 
 	public taskUnlockPacket(SocketChannel socket) {
 		s = socket;
+		Utilitaires.out("ACK 53");
 	}
 
 	public void run() {
 		// Etape 1 : renvoyer le message d'ACK
-
+		Utilitaires.out("Très RAS tout ça 10",0,true);
 		String temp;
 		String id;
 		ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
