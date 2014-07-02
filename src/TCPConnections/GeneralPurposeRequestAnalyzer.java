@@ -189,7 +189,7 @@ public class GeneralPurposeRequestAnalyzer extends Thread {
 									port), 1);
 							aEnlever.add(r);
 							r.socket.close();
-							Utilitaires.out("just learned that " + ip + ":"
+							Utilitaires.out("Bladiboulga just learned that " + ip + ":"
 									+ port + " is dead", 5, true);
 							scan.close();
 							return;

@@ -46,7 +46,6 @@ public class test1 {
           try {
             Thread.sleep(500);
           } catch (InterruptedException e) {
-            e.printStackTrace();
           }
           Paquet aEnvoyer = new Paquet(1,Global.MYSELF) ;
           aEnvoyer.changeOwner(new Machine("localhost",5656));
@@ -65,7 +64,6 @@ public class test1 {
           try {
             Thread.sleep(500);
           } catch (InterruptedException e) {
-            e.printStackTrace();
           }
           Runnable task2 = new taskDumpToMachine() ;
           task2.run();

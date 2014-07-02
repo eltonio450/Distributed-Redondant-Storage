@@ -78,7 +78,6 @@ public class taskDumpToMachine implements Runnable {
 									}
 									catch (IOException e) {
 										Utilitaires.out("Erreur dans la fermeture de la socket pour échange de fichier.");
-										e.printStackTrace();
 									}
 								}
 							}
@@ -135,13 +134,11 @@ public class taskDumpToMachine implements Runnable {
 		catch (ConnectException e) {
 			Donnees.printServerList();
 			Utilitaires.out("Poblème avec " + correspondant.toString());
-			e.printStackTrace();
 			return null;
 		}
 
 		catch (IOException e) {
 			Utilitaires.out("Problème dans l'initialisation de la socket pour échanger un paquet avec " + correspondant.port);
-			e.printStackTrace();
 			return null;
 		}
 
@@ -197,7 +194,6 @@ public class taskDumpToMachine implements Runnable {
 		}
 		catch (IOException e) {
 			Utilitaires.out("Exception levée avec la machine " + clientSocket.socket().getPort());
-			e.printStackTrace();
 			return false;
 		}
 		finally {
@@ -205,8 +201,6 @@ public class taskDumpToMachine implements Runnable {
 				clientSocket.close();
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
@@ -252,7 +246,6 @@ public class taskDumpToMachine implements Runnable {
 			}
 		}
 		catch (IOException e) {
-			e.printStackTrace();
 			return false;
 		}
 		finally {
@@ -260,7 +253,6 @@ public class taskDumpToMachine implements Runnable {
 				clientSocket.close();
 			}
 			catch (IOException e) {
-
 			}
 
 		}
