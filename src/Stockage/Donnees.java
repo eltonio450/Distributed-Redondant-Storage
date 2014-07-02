@@ -256,16 +256,16 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			if (!filling) {
-				Utilitaires.out("FUCK3 " + m);
 				printAllServeur();
+				Utilitaires.out("Badoum1");
 				if(!allServeur.remove(m))
 					return;
-				Utilitaires.out("BadoumBadoum");
+				Utilitaires.out("Badoum2");
 			}
 			else {
 				synchronized (toRemove) {
 					toRemove.add(m);
-					Utilitaires.out("Removing3");
+					Utilitaires.out("Badoum-1");
 				}
 
 			}
@@ -274,13 +274,12 @@ public class Donnees {
 			allServeurLock.unlock();
 		}
 
-		Utilitaires.out("Je suis " + Global.MYSELF + " et je lance traiteUnMort", 5, true);
 		myHostsLock.lock();
 		try {
 			for (String id : myHosts.keySet()) {
 				if (myHosts.get(id) == m) {
+					Utilitaires.out("Badoum3");
 					myHosts.remove(id);
-					Utilitaires.out("4");
 				}
 			}
 		}
@@ -289,21 +288,20 @@ public class Donnees {
 		}
 		interestServeurLock.lock();
 		try {
-			Utilitaires.out("5");
+			Utilitaires.out("Badoum4");
 			printInterestServeur();
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
-				Utilitaires.out("6");
+				Utilitaires.out("Badoum5");
 				for (Paquet p : myData.values()) {
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
-						Utilitaires.out("7");
 						if (m == p.otherHosts.get(i)) {
 							if (p.power == 0) {
-								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								(new taskRetablirPaquets(p, i)).run();
 							}
 						}

@@ -25,7 +25,6 @@ public class deathVerifier implements Runnable {
 		if (mort) {
 			LinkedList<Machine> liste = Donnees.getAllServeurs();
 			liste.add(Global.MYSELF);
-			Utilitaires.out("FUCK " + m.ipAdresse);
 			RelationsPubliques.BroadcastAll.broadcastTCP(Message.IS_DEAD + " " + m.ipAdresse + " " + m.port + " #", liste);
 		}
 	}
