@@ -77,6 +77,10 @@ public class taskDumpToMachine implements Runnable {
 
 										}
 									}
+									else
+									{
+										aEnvoyer.spreadTotalUnlock();
+									}
 								}
 								finally {
 									try {

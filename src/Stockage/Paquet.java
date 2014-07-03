@@ -112,7 +112,7 @@ public class Paquet {
 	}
 
 	public String pathOnDisk() {
-		return Global.PATHTODATA + owner.toString() + "-" + idInterne + ".txt";
+		return Global.PATHTODATA + owner.toString() + "-" + idMachine + ".txt";
 	}
 
 	public void putPower(int p) {
