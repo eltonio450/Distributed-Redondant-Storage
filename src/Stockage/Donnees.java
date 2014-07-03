@@ -472,6 +472,7 @@ public class Donnees {
 	 *            L'identifiant du paquet a ajouter
 	 */
 	public static void addPaquetToSendAsap(String id) {
+		
 		toSendASAPLock.lock();
 		try {
 			toSendASAP.add(id);
@@ -481,7 +482,7 @@ public class Donnees {
 			toSendASAPLock.unlock();
 		}
 		// for(String s : toSendASAP)
-		// Utilitaires.out("Paquet dans toSendASAP : " + s);
+		Utilitaires.out("Paquet dans toSendASAP : " + id);
 	}
 
 	/**

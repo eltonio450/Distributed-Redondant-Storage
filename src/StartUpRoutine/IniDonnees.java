@@ -32,6 +32,7 @@ public class IniDonnees {
 		//Utilitaires.out(System.getProperty("user.dir").toString());
 		try {
 			myOwnFile = FileChannel.open(FileSystems.getDefault().getPath(Global.PATHTOMYDATA), StandardOpenOption.READ, StandardOpenOption.CREATE);
+			
 			Donnees.longueur = myOwnFile.size();
 			Utilitaires.out("Longueur des données :" +Donnees.longueur);
 

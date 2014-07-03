@@ -119,7 +119,7 @@ public class taskRetablirPaquets implements Runnable {
 		}
 		frere.remettrePositionZero();
 		b[reconstruit.idInterne].clear();
-		b[reconstruit.idInterne].limit(102);
+		//b[reconstruit.idInterne].limit(102);
 		
 		for (int j = 0; j < Global.PAQUET_SIZE; j++) {
 			//
@@ -130,31 +130,36 @@ public class taskRetablirPaquets implements Runnable {
 					newByte %= 256;
 					
 				}
-				b[numeroMort].put(j,(byte) newByte);
-				Utilitaires.out("New byte : " + newByte + " Position cas 2 : " + b[numeroMort].limit());}
+				b[numeroMort].put((byte) newByte);
+				//Utilitaires.out("New byte : " + newByte + " Position cas 2 : " + b[numeroMort].limit());}
 				//b[numeroMort].position((b[numeroMort].position()+1));}
+			}
 			else {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 					if (i != numeroMort)
 						newByte += (int) b[i].get(j);
 				}
 				newByte = (((b[Global.NOMBRESOUSPAQUETS - 1].get(j) - newByte) % 256)+256)%256;
-				Utilitaires.out("New byte : " + newByte + " Position : " + b[numeroMort].limit() + "Buffer cap :" + b[numeroMort].capacity()+ "J " +j);
+				//Utilitaires.out("New byte : " + newByte + " Position : "+ j + " Poisition reelle : " + b[numeroMort].position());
 				
-				b[numeroMort].put(j,(byte) newByte);
-				//b[numeroMort].position((b[numeroMort].position()+1));
+				b[numeroMort].put((byte) newByte);
+				
 			}
 
 			
 
 		}
-		b[reconstruit.idInterne].flip();
+	
 		try {
-			Utilitaires.out("Fichier reconstruit : " + reconstruit.idGlobal);
+			Utilitaires.out("Fichier reconstruit premier : " + reconstruit.idGlobal);
+			
+			b[numeroMort].flip();
+			reconstruit.remettrePositionZero();
 			reconstruit.fichier.write(b[numeroMort]);
 			b[numeroMort].flip();
-			Utilitaires.out("Buffer size" + b[numeroMort].position()+ " Buffer cap :" + b[numeroMort].capacity());
+			//Utilitaires.out("Buffer size" + b[numeroMort].position()+ " Buffer cap :" + b[numeroMort].capacity());
 			reconstruit.remettrePositionZero();
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -162,7 +167,15 @@ public class taskRetablirPaquets implements Runnable {
 		reconstruit.putOtherHosts(frere.otherHosts);
 		reconstruit.otherHosts.set(numeroMort, Global.MYSELF);
 		Donnees.receptionPaquet(reconstruit);
+		Utilitaires.out("Fichier reconstruit : " + reconstruit.idGlobal);
+		try {
+			Thread.sleep(5000);
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Donnees.addPaquetToSendAsap(reconstruit.idGlobal);
-		Utilitaires.out("Fichier reconstruit 2 ! " + reconstruit.idGlobal);
+		
 	}
 }
