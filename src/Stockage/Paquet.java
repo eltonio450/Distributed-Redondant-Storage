@@ -1,12 +1,12 @@
 package Stockage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.channels.spi.AbstractInterruptibleChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class Paquet {
 	}
 
 	public static Paquet createPaquetFromBuffer(SocketChannel socket) throws IOException {
-		
+
 		String[] t = new String[1];
 		t[0] = Message.END_ENVOI;
 		// Utilitaires.out("Test 1",6,true);
@@ -183,12 +183,12 @@ public class Paquet {
 		// Utilitaires.out("Paquet recu: " + msg) ;
 		Scanner scan = new Scanner(msg);
 
-		
+
 		int id = scan.nextInt();
-		
+
 		String IpAdresse = scan.next();
 		int port = scan.nextInt();
-		
+
 		// Utilitaires.out(id + " - " + IpAdresse + " - " + port) ;
 		Machine owner = new Machine(IpAdresse, port);
 		// Utilitaires.out("Test 2",6,true);
@@ -208,7 +208,7 @@ public class Paquet {
 	}
 
 	public static Paquet recoitPaquetReellement(SocketChannel s) throws IOException {
-		
+
 		Paquet p = createPaquetFromBuffer(s);
 
 		p.isUsed.lock();
@@ -230,10 +230,15 @@ public class Paquet {
 		// TODO : v�rifier que cette suppression fonctionne bien et ensuite
 		// l'utiliser
 		// ie pour l'instant on ne supprime rien du disque
-		/*
-		 * isUsed.lock(); try{ File f = new File(pathOnDisk) ; f.delete() ; }
-		 * finally{ isUsed.unlock(); }
-		 */
+		isUsed.lock();
+		try{ 
+			File f = new File(pathOnDisk()) ;
+			f.delete() ; 
+			Utilitaires.out("Successfully deleted " + pathOnDisk(), 1, true);
+		} catch (Exception e) {
+			Utilitaires.out("Tried to remove a paquet not on disk :/", 1, true);
+		}
+		finally{ isUsed.unlock(); }
 	}
 
 	/**
@@ -247,7 +252,7 @@ public class Paquet {
 	 */
 
 	public boolean askForlock() {
-		
+
 		if(lockLogique)
 		{
 			return false;
@@ -259,9 +264,9 @@ public class Paquet {
 		// int j = idGlobal-idInterne;
 		//Utilitaires.out("Demande de lock formulée par " + idGlobal, 5, true);
 		while (i < Global.NOMBRESOUSPAQUETS) {
-		  
+
 			if (i != idInterne && resultat == 0) {
-			 // Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+				// Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 				spreadUnlockLock.lock();
 				toUnlock.add(i);
@@ -271,18 +276,18 @@ public class Paquet {
 		}
 		switch (resultat) {
 
-			case 0:
-				//unlock();
-				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
-				return true;
-			default:
-				spreadUnlock();
-				return false;
+		case 0:
+			//unlock();
+			//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+			return true;
+		default:
+			spreadUnlock();
+			return false;
 
 		}
 
 	}
-	
+
 	public boolean askForlock(int mort) {
 		lock();
 		if(lockLogique)
@@ -298,7 +303,7 @@ public class Paquet {
 
 			if (i != idInterne && resultat == 0) {
 				if (i != mort) {
-				//  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+					//  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 					spreadUnlockLock.lock();
 					toUnlock.add(i);
@@ -309,11 +314,11 @@ public class Paquet {
 		}
 		switch (resultat) {
 
-			case 0:
-				spreadUnlock();
-				return true;
-			default:
-				return false;
+		case 0:
+			spreadUnlock();
+			return true;
+		default:
+			return false;
 
 		}
 
@@ -394,14 +399,14 @@ public class Paquet {
 
 	public void lock() {
 		//Utilitaires.out("Lock du paquet : " + idGlobal,5,true);
-		
+
 		lockLogique = true;
 
 	}
 
 	public void unlock() {
 		//Utilitaires.out("Unlock du paquet : " + idGlobal,5,true);
-		
+
 		lockLogique = false;
 		//Donnees.printMyData();
 	}
@@ -436,7 +441,7 @@ public class Paquet {
 			spreadUnlockLock.unlock();
 			unlock();
 			//Donnees.printMyData();
-			
+
 		}
 	}
 
@@ -450,10 +455,10 @@ public class Paquet {
 	}
 
 	public int askForUnlock(Machine m, String idGlobal) {
-		
+
 		try(SocketChannel clientSocket = SocketChannel.open()) {
 			//Utilitaires.out("UNLOCK 0");
-			
+
 			// Etape 1 : Initialisation de la connexion
 			//Utilitaires.out("Envoi de la demande de unlock pour " + idGlobal, 6, true);
 			InetSocketAddress local = new InetSocketAddress(0);
@@ -466,18 +471,18 @@ public class Paquet {
 			// Etape 2 : Envoie du pré-Lock
 
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_UNLOCK);
-			
+
 			//Utilitaires.out("UNLOCK 1");
 			clientSocket.write(buffer);
 			buffer.clear();
-			
+
 			clientSocket.read(buffer);
 			//Utilitaires.out("UNLOCK 3");
 			buffer.flip();
-			
+
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)) {
 				buffer = Utilitaires.stringToBuffer(idGlobal);
-				
+
 				clientSocket.write(buffer);
 				buffer.clear();
 				clientSocket.read(buffer);
@@ -497,7 +502,7 @@ public class Paquet {
 			e.printStackTrace();
 			return 3;
 		}
-		
+
 	}
 
 	public boolean isLocked() {
