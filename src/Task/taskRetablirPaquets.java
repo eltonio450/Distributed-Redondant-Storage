@@ -131,7 +131,7 @@ public class taskRetablirPaquets implements Runnable {
 					
 				}
 				b[numeroMort].put(j,(byte) newByte);
-				Utilitaires.out("New byte : " + newByte + " Position cas 2 : " + b[numeroMort].position());}
+				Utilitaires.out("New byte : " + newByte + " Position cas 2 : " + b[numeroMort].limit());}
 				//b[numeroMort].position((b[numeroMort].position()+1));}
 			else {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
@@ -139,14 +139,16 @@ public class taskRetablirPaquets implements Runnable {
 						newByte += (int) b[i].get(j);
 				}
 				newByte = (((b[Global.NOMBRESOUSPAQUETS - 1].get(j) - newByte) % 256)+256)%256;
-				Utilitaires.out("New byte : " + newByte + " Position : " + b[numeroMort].position() + "Buffer cap :" + b[numeroMort].capacity()+ "J " +j);
+				Utilitaires.out("New byte : " + newByte + " Position : " + b[numeroMort].limit() + "Buffer cap :" + b[numeroMort].capacity()+ "J " +j);
+				
 				b[numeroMort].put(j,(byte) newByte);
 				//b[numeroMort].position((b[numeroMort].position()+1));
 			}
 
-			b[reconstruit.idInterne].flip();
+			
 
 		}
+		b[reconstruit.idInterne].flip();
 		try {
 			Utilitaires.out("Fichier reconstruit : " + reconstruit.idGlobal);
 			reconstruit.fichier.write(b[numeroMort]);
