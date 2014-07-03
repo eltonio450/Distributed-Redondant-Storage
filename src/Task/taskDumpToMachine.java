@@ -20,11 +20,12 @@ public class taskDumpToMachine implements Runnable {
 	LinkedList<String> toSendASAP;
 	public taskDumpToMachine() {
 		allServers = Donnees.getAllServeurs();
+		Utilitaires.out("BBBBBBBBBBBBB",1,true);
 		
 	}
 
 	public void run() {
-		
+		Utilitaires.out("AAAAAAAA",1,true);
 		dump();
 	}
 
@@ -32,11 +33,17 @@ public class taskDumpToMachine implements Runnable {
 		boolean continuer = true;
 		while (continuer) {
 			int nbrMachines = allServers.size() ;
+			if (nbrMachines == 0) {
+				continuer = false ;
+			}
 			Machine m ;
+			Utilitaires.out("CCCCCCCCCCCCC " + nbrMachines,1,true);
 			for (int j = 0 ; j < nbrMachines ; j++) {
 				m = Donnees.chooseMachine() ;
+				
+				Utilitaires.out("DDDDDDDDDDd",1,true);
 			//for( Machine m : allServers) {	
-				if (m != Global.MYSELF) {
+				if (m != Global.MYSELF && m != null) {
 					// Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;

@@ -373,13 +373,21 @@ public class Donnees {
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
+		Utilitaires.out("choose machine Bouhlouhlouh");
 		allServeurLock.lock();
 		try {
+			Utilitaires.out("choose machine ???");
+			if(allServeur.size()!=0){
 			int n = (int) (Math.random() * (double) allServeur.size());
 
 			Machine m = allServeur.get(n);
 			Utilitaires.out("I choose : " + n + " " + m.toString());
 			return m;
+			}
+			else
+			{
+				return null;
+			}
 		}
 		finally {
 			allServeurLock.unlock();
