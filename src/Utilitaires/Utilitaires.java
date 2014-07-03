@@ -98,7 +98,7 @@ public class Utilitaires {
 	}
 	
 	public static void out(String s){
-		System.err.println("Serveur "+ Global.TCP_PORT+ " : " + s);
+		System.out.println("Serveur "+ Global.TCP_PORT+ " : " + s);
 	}
 	
 	public static void out(String s,int color,boolean bold){
@@ -144,7 +144,7 @@ public class Utilitaires {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.err.print(sortie);
+		System.out.print(sortie);
 	}
 	
 	public void outDem (String s, int color, boolean bold) {
@@ -192,5 +192,4 @@ public class Utilitaires {
 		}
 		System.out.print(sortie);
 	}
-
 }
