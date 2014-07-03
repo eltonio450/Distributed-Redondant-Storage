@@ -3,11 +3,11 @@
 import os
 import time
 import socket
-nombreDeServeur = 10
+nombreDeServeur = 8
 i = 0
 
 ip = socket.gethostbyname(socket.gethostname())
-
+ip =  "127.0.0.1"
 try:
     print(ip)
     #os.system("killall java")

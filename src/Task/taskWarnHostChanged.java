@@ -26,7 +26,7 @@ public class taskWarnHostChanged implements Runnable {
 		// Utilitaires.out("-------------task warn host changed--------------------");
 		int idInterne = prevenirHostChanged(ID);
 		Donnees.getHostedPaquet(ID).otherHosts.set(idInterne, Global.MYSELF) ;
-		Donnees.getHostedPaquet(ID).unlock();
+		Donnees.securedUnlock(ID);
 	}
 
 	public static int prevenirHostChanged(String id) {
@@ -75,14 +75,14 @@ public class taskWarnHostChanged implements Runnable {
 				clientSocket.bind(local);
 				InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
 				
-				Utilitaires.out("jessaye de me connect a : " + m.ipAdresse + "-" + m.port);
+				//Utilitaires.out("jessaye de me connect a : " + m.ipAdresse + "-" + m.port);
 				if (!clientSocket.connect(remote))
 					Utilitaires.out("Ca a foiré !");
 
 				// message
 				ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
-				ByteBuffer buffer2 = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
-				Utilitaires.out(Utilitaires.buffToString(buffer2));
+				//ByteBuffer buffer2 = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
+				//Utilitaires.out(Utilitaires.buffToString(buffer2));
 				clientSocket.write(buffer);
 				buffer.clear();
 

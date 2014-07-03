@@ -188,7 +188,7 @@ public class Donnees {
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			if (i != p.power) {
 				addInterestServeur(p.otherHosts.get(i));
-				Utilitaires.out(p.otherHosts.get(i) + " added to interestServeur", 6, true);
+				//Utilitaires.out(p.otherHosts.get(i) + " added to interestServeur", 6, true);
 			}
 		}
 		putNewPaquet(p);
@@ -315,12 +315,16 @@ public class Donnees {
 						if (m.equals(p.otherHosts.get(i))) {
 							//Utilitaires.out("Badoum7");
 							if (p.power == 0) {
-								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.owner.toString()+"-"+(p.idMachine-p.idInterne+i), 5, true);
 								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
+								Utilitaires.out("Je suis " + Global.MYSELF + " et j'ai fini la reconstruction pour " +p.owner.toString()+"-"+(p.idMachine-p.idInterne+i) , 5, true);
+								
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.owner.toString()+"-"+(p.idMachine-p.idInterne+i), 5, true);
 								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
+								Utilitaires.out("Je suis " + Global.MYSELF + " et j'ai fini la reconstruction pour " +p.owner.toString()+"-"+(p.idMachine-p.idInterne+i) , 5, true);
+								
 							}
 						}
 					}
@@ -329,7 +333,7 @@ public class Donnees {
 			while (interestServeur.contains(m)) { // il peut y avoir plusieurs
 				// occurrences
 				interestServeur.remove(m);
-				Utilitaires.out(m + " removed from interestServeur", 6, true);
+				//Utilitaires.out(m + " removed from interestServeur", 6, true);
 			}
 		}
 		finally {
@@ -342,7 +346,7 @@ public class Donnees {
 		allServeurLock.lock();
 		try {
 			for (Machine m : allServeur) {
-				Utilitaires.out("Badoum " + m);
+				//Utilitaires.out("Badoum " + m);
 			}
 		}
 		finally {
@@ -373,15 +377,15 @@ public class Donnees {
 	 * @return une machine de allServeur
 	 */
 	public static Machine chooseMachine() {
-		Utilitaires.out("choose machine Bouhlouhlouh");
+		//Utilitaires.out("choose machine Bouhlouhlouh");
 		allServeurLock.lock();
 		try {
-			Utilitaires.out("choose machine ???");
+			//Utilitaires.out("choose machine ???");
 			if(allServeur.size()!=0){
 			int n = (int) (Math.random() * (double) allServeur.size());
 
 			Machine m = allServeur.get(n);
-			Utilitaires.out("I choose : " + n + " " + m.toString());
+			//Utilitaires.out("I choose : " + n + " " + m.toString());
 			return m;
 			}
 			else

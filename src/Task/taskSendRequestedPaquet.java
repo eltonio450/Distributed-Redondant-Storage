@@ -27,14 +27,17 @@ public class taskSendRequestedPaquet implements Runnable {
       b = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH);
       b.clear();
       s.read(b);
+      
       b.flip();
       String id = Utilitaires.buffToString(b);
-
+      Utilitaires.out("J'ai recu que vous vouliez : "+ id);
       // Etape 2 : on envoit le paquet
       Paquet p = Donnees.getHostedPaquet(id);
       Donnees.printMyData();
       if (p != null) {
-        p.fichier.transferFrom(s, Global.PAQUET_SIZE, 0);
+    	  Utilitaires.out("Début de transfert " + id);
+        p.fichier.transferTo(0, Global.PAQUET_SIZE, s);
+        Utilitaires.out("Fin de transfert " + id);
       } else {
         Utilitaires.out("Erreur, je n'ai pas le paquet !! " + id);
       }

@@ -182,7 +182,7 @@ public class taskDumpToMachine implements Runnable {
 
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						
+						aEnvoyer.deleteData();
 						aEnvoyer.removePaquet();
 						return true;
 					}

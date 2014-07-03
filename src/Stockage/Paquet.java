@@ -289,11 +289,12 @@ public class Paquet {
 	}
 
 	public boolean askForlock(int mort) {
-		lock();
+		
 		if(lockLogique)
 		{
 			return false;
 		}
+		lock();
 		// isAskingTheLock = true;
 		int resultat = 0;
 		Integer i = 0;
