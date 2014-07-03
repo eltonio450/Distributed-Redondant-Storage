@@ -34,7 +34,7 @@ public class taskSendRequestedPaquet implements Runnable {
       Paquet p = Donnees.getHostedPaquet(id);
       Donnees.printMyData();
       if (p != null) {
-        p.fichier.transferTo(0, Global.PAQUET_SIZE, s);
+        p.fichier.transferFrom(s, Global.PAQUET_SIZE, 0);
       } else {
         Utilitaires.out("Erreur, je n'ai pas le paquet !! " + id);
       }

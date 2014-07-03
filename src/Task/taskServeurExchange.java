@@ -87,18 +87,16 @@ public class taskServeurExchange implements Runnable {
 					}
 
 					else {
+						aEnvoyer.spreadTotalUnlock();
 						
-						Donnees.putNewPaquet(aEnvoyer);
-						aEnvoyer.spreadUnlock();
+						
 						
 						aEnvoyer = null;
 					}
 
 				}
 				else if (aEnvoyer != null) {
-					Donnees.putNewPaquet(aEnvoyer);
-
-					aEnvoyer.spreadUnlock();
+					
 					aEnvoyer = null;
 				}
 			}
@@ -121,16 +119,13 @@ public class taskServeurExchange implements Runnable {
 							ok = true;
 						}
 						else {
-							Donnees.putNewPaquet(aEnvoyer);
-							aEnvoyer.spreadUnlock();
+							aEnvoyer.spreadTotalUnlock();
 							aEnvoyer = null;
 						}
 					}
 
 					else if (aEnvoyer != null) {
-						Donnees.putNewPaquet(aEnvoyer);
-
-						aEnvoyer.spreadUnlock();
+						
 						aEnvoyer = null;
 					}
 				}

@@ -94,8 +94,7 @@ public class taskRetablirPaquets implements Runnable {
 
 					// Etage 4 : recevoir le paquet dans le buffer
 					b[i].clear();
-					while (b[i].position() != Global.PAQUET_SIZE)
-						clientSocket[i].read(b[i]);
+					clientSocket[i].read(b[i]);
 					b[i].flip();
 
 					clientSocket[i].close();
@@ -138,6 +137,7 @@ public class taskRetablirPaquets implements Runnable {
 
 		}
 		try {
+			Utilitaires.out("Fichier reconstruit : ");
 			reconstruit.fichier.write(b[numeroMort]);
 			reconstruit.remettrePositionZero();
 		} catch (IOException e) {

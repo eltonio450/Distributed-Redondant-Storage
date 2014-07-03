@@ -214,7 +214,6 @@ public class Paquet {
 		p.isUsed.lock();
 		try {
 			p.fichier.transferFrom(s, 0, Global.PAQUET_SIZE);
-			// Utilitaires.out("J'ai bien reçu le corps", 1, true);
 		}
 		finally {
 			p.isUsed.unlock();
@@ -248,10 +247,12 @@ public class Paquet {
 	 */
 
 	public boolean askForlock() {
+		
 		if(lockLogique)
 		{
 			return false;
 		}
+		lock();
 		// isAskingTheLock = true;
 		int resultat = 0;
 		Integer i = 0;
@@ -260,7 +261,7 @@ public class Paquet {
 		while (i < Global.NOMBRESOUSPAQUETS) {
 		  
 			if (i != idInterne && resultat == 0) {
-			  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+			 // Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 				spreadUnlockLock.lock();
 				toUnlock.add(i);
@@ -275,6 +276,7 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
+				spreadUnlock();
 				return false;
 
 		}
@@ -282,6 +284,7 @@ public class Paquet {
 	}
 	
 	public boolean askForlock(int mort) {
+		lock();
 		if(lockLogique)
 		{
 			return false;
@@ -295,7 +298,7 @@ public class Paquet {
 
 			if (i != idInterne && resultat == 0) {
 				if (i != mort) {
-				  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+				//  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
 					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 					spreadUnlockLock.lock();
 					toUnlock.add(i);
@@ -307,8 +310,7 @@ public class Paquet {
 		switch (resultat) {
 
 			case 0:
-				//unlock();
-				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
+				spreadUnlock();
 				return true;
 			default:
 				return false;
@@ -432,6 +434,7 @@ public class Paquet {
 			//Utilitaires.out("Le unlock a réussi 2");
 			toUnlock.clear();
 			spreadUnlockLock.unlock();
+			unlock();
 			//Donnees.printMyData();
 			
 		}

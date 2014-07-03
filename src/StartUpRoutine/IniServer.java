@@ -25,10 +25,12 @@ public class IniServer {
 		try {
 			ip = InetAddress.getLocalHost().getHostAddress().toString();
 		}
+		
 		catch (UnknownHostException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		ip = "127.0.0.1";
 		Utilitaires.out("Votre IP est : " + ip);
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints the help content");

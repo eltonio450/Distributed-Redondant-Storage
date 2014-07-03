@@ -20,12 +20,12 @@ public class taskDumpToMachine implements Runnable {
 	LinkedList<String> toSendASAP;
 	public taskDumpToMachine() {
 		allServers = Donnees.getAllServeurs();
-		Utilitaires.out("BBBBBBBBBBBBB",1,true);
+
 		
 	}
 
 	public void run() {
-		Utilitaires.out("AAAAAAAA",1,true);
+
 		dump();
 	}
 
@@ -53,7 +53,7 @@ public class taskDumpToMachine implements Runnable {
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-
+							//Donnees.printMyData();
 							SocketChannel socket = null;
 							
 							if (aEnvoyer.askForlock()) {
@@ -64,9 +64,9 @@ public class taskDumpToMachine implements Runnable {
 
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
 											
-											aEnvoyer.spreadUnlock();
+											aEnvoyer.spreadTotalUnlock();
 											
-											Donnees.putNewPaquet(aEnvoyer);
+											
 											
 											//Donnees.printMyData();
 
@@ -89,17 +89,14 @@ public class taskDumpToMachine implements Runnable {
 							}
 
 							else {
-								Donnees.putNewPaquet(aEnvoyer);
-
-								aEnvoyer.spreadUnlock();
+								
 							}
 
 							
 						}
 						else if (aEnvoyer != null) {
 							Utilitaires.out("Paquet " + aEnvoyer.idGlobal + " NON envoyé : lock non obtenu.", 1, true);
-							Donnees.putNewPaquet(aEnvoyer);
-							Donnees.securedUnlock(aEnvoyer.idGlobal);
+							
 
 						}
 

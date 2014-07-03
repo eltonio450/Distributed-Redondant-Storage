@@ -228,7 +228,7 @@ public class Donnees {
 				myData.get(s).otherHosts.set(place, newHost);
 
 				interestServeur.add(newHost);
-				Utilitaires.out(newHost + " replaced " + toRemove + " in interestServeur", 6, true);
+				//Utilitaires.out(newHost + " replaced " + toRemove + " in interestServeur", 6, true);
 				myData.get(s).unlock();
 			}
 
@@ -262,15 +262,15 @@ public class Donnees {
 		try {
 			if (!filling) {
 				printAllServeur();
-				Utilitaires.out("Badoum1");
+				//Utilitaires.out("Badoum1");
 				if(!allServeur.remove(m))
 					return;
-				Utilitaires.out("Badoum2");
+				//Utilitaires.out("Badoum2");
 			}
 			else {
 				synchronized (toRemove) {
 					toRemove.add(m);
-					Utilitaires.out("Badoum-1");
+					//Utilitaires.out("Badoum-1");
 				}
 
 			}
@@ -288,7 +288,7 @@ public class Donnees {
 		try {
 			for (String id : myHosts.keySet()) {
 				if (myHosts.get(id) == m) {
-					Utilitaires.out("Badoum3");
+					//Utilitaires.out("Badoum3");
 					myHosts.remove(id);
 				}
 			}
@@ -304,22 +304,22 @@ public class Donnees {
 			e.printStackTrace();
 		}
 		try {
-			Utilitaires.out("Badoum4");
+			//Utilitaires.out("Badoum4");
 			printInterestServeur();
 			if (interestServeur.contains(m)) {
 				interestServeur.remove(m);
-				Utilitaires.out("Badoum5");
+				//Utilitaires.out("Badoum5");
 				for (Paquet p : myData.values()) {
-					Utilitaires.out("Badoum6");
+					//Utilitaires.out("Badoum6");
 					for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 						if (m.equals(p.otherHosts.get(i))) {
-							Utilitaires.out("Badoum7");
+							//Utilitaires.out("Badoum7");
 							if (p.power == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
 							}
 							else if (p.power == 1 && i == 0) {
-								Utilitaires.out("Badoum Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
+								Utilitaires.out("Je suis " + Global.MYSELF + " et je lance reconstruction pour " + p.idGlobal, 5, true);
 								Slaver.giveTask(new taskRetablirPaquets(p, i), 20) ;
 							}
 						}
