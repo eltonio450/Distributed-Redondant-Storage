@@ -19,7 +19,7 @@ public class gestionToSendASAP extends Thread {
 			Donnees.toSendASAPLock.unlock();*/
 			try {
 
-				Thread.sleep((long)(Math.abs(Math.random()) * 10000));
+				Thread.sleep((int)(Math.abs(Math.random()) * (double) 10000));
 				//Utilitaires.out("Répartition des paquets", 2, true);
 
 			}

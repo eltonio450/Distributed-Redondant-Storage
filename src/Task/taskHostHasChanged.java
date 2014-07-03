@@ -50,6 +50,8 @@ public class taskHostHasChanged implements Runnable {
 			  Donnees.addHost(Id, newHost) ;
 			}
 			
+			Utilitaires.out("TaskHostHasChanged fini");
+			
 			socket.close();
 			scan.close();
 		}
