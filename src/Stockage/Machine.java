@@ -18,7 +18,7 @@ public class Machine {
 	}
 
 	public Machine(InetSocketAddress m) {
-		this.ipAdresse = m.getHostName();
+		this.ipAdresse = m.getAddress().getHostAddress();
 		this.port = m.getPort();
 	}
 	
