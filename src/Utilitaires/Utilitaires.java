@@ -2,7 +2,10 @@ package Utilitaires;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardOpenOption;
 import java.util.Scanner;
 
 public class Utilitaires {
@@ -99,6 +102,14 @@ public class Utilitaires {
 	
 	public static void out(String s){
 		System.out.println("Serveur "+ Global.TCP_PORT+ " : " + s);
+	}
+	
+	
+	//TODO
+	public static void infoPaquets(){
+		//FileChannel fichier = FileChannel.open(FileSystems.getDefault().getPath(pathOnDisk()), StandardOpenOption.READ, StandardOpenOption.WRITE,
+		//		StandardOpenOption.CREATE);
+		//return null;
 	}
 	
 	public static void out(String s,int color,boolean bold){

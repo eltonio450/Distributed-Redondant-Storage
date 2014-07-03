@@ -3,7 +3,7 @@
 import os
 import time
 import socket
-nombreDeServeur = 10
+nombreDeServeur = 7
 i = 0
 
 ip = socket.gethostbyname(socket.gethostname())
