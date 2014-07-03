@@ -98,10 +98,56 @@ public class Utilitaires {
 	}
 	
 	public static void out(String s){
-		System.out.println("Serveur "+ Global.TCP_PORT+ " : " + s);
+		System.err.println("Serveur "+ Global.TCP_PORT+ " : " + s);
 	}
 	
 	public static void out(String s,int color,boolean bold){
+		String sortie ="";
+		sortie+="\033[";
+		if(bold)
+			sortie+="1;";
+		switch(color){
+			case 0:
+				sortie+="30";
+				break;
+			case 1:
+				sortie+="31";
+				break;
+			case 2:
+				sortie+="32";
+				break;
+			case 3:
+				sortie+="33";
+				break;
+			case 4:
+				sortie+="34";
+				break;
+			case 5:
+				sortie+="35";
+				break;
+			case 6:
+				sortie+="36";
+				break;
+			case 7:
+				sortie+="37";
+				break;
+				
+				
+		}
+		sortie+="mServeur "+ Global.TCP_PORT+ " : " + s +"\033[0m\n";
+		
+			
+		try {
+			Thread.sleep((int) Math.abs(Math.random()*20));
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.err.print(sortie);
+	}
+	
+	public void outDem (String s, int color, boolean bold) {
 		String sortie ="";
 		sortie+="\033[";
 		if(bold)
