@@ -122,23 +122,25 @@ public class taskRetablirPaquets implements Runnable {
 			e1.printStackTrace();
 		}
 		frere.remettrePositionZero();
-
+		b[reconstruit.idInterne].clear();
 		for (int j = 0; j < Global.PAQUET_SIZE; j++) {
-			b[reconstruit.idInterne].clear();
+			//
 
 			if (numeroMort >= Global.NOMBRESOUSPAQUETSSIGNIFICATIFS) {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++){
 					newByte += (int) b[i].get(j);
-				newByte %= 256;
-				b[numeroMort].put((byte) newByte);}
+				newByte %= 256;}
+				b[numeroMort].put((byte) newByte);
+				Utilitaires.out("Position cas 2" + b[numeroMort].position());
 			} else {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 					if (i != numeroMort)
-						newByte += (int) b[i].get(j);
+						newByte += (int) b[i].get(j);}
 					newByte = (b[Global.NOMBRESOUSPAQUETSSIGNIFICATIFS - 1].get(j) - newByte) % 256;
 					b[numeroMort].put((byte) newByte);
+					Utilitaires.out("Position " + b[numeroMort].position());
 
-				}
+				
 				
 			}
 
