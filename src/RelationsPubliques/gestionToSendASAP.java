@@ -21,13 +21,18 @@ public class gestionToSendASAP extends Thread {
 
 				Thread.sleep((long)(Math.abs(Math.random()) * 10000));
 				//Utilitaires.out("Répartition des paquets", 2, true);
+				Utilitaires.out("ZZZZZZZZZZZZZZZZZZZ",1,true);
 
 			}
 			catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			if(!Donnees.toSendAsapEmpty())
 			{
+				Utilitaires.out("XXXXXXXXXXXX",1,true);
 				Runnable task = new taskDumpToMachine();
+				
+				Utilitaires.out("OOOOOOOOOO",1,true);
 				task.run();
 			}
 			else {
