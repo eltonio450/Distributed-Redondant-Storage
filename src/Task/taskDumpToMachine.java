@@ -35,18 +35,19 @@ public class taskDumpToMachine implements Runnable {
 			Machine m ;
 			for (int j = 0 ; j < nbrMachines ; j++) {
 				m = Donnees.chooseMachine() ;
-			//for( Machine m : allServers) {	
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
 
 					boolean changeMachine = false;
 					toSendASAP = Donnees.chooseManyPaquetToSend1();
 					while (!toSendASAP.isEmpty() && !changeMachine) {
-						Utilitaires.out("1");
+
+						for (String s : toSendASAP) {
+						}
 						Paquet aEnvoyer = Donnees.removeTemporarlyPaquet(toSendASAP.poll());
 
 						if (aEnvoyer != null && !aEnvoyer.lockLogique) {
-							Utilitaires.out("2");
+
 							SocketChannel socket = null;
 							
 							if (aEnvoyer.askForlock()) {
@@ -54,9 +55,9 @@ public class taskDumpToMachine implements Runnable {
 									socket = init(m);
 									if (socket != null) {
 
-										Utilitaires.out("3");
+
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
-											Utilitaires.out("4");
+											
 											aEnvoyer.spreadUnlock();
 											
 											Donnees.putNewPaquet(aEnvoyer);
@@ -152,7 +153,7 @@ public class taskDumpToMachine implements Runnable {
 			clientSocket.read(buffer);
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			Utilitaires.out("eNVOI1");
+
 
 			if (!s.equals(Message.DEMANDE_ID)) {
 				Utilitaires.out("Didnt answer with DEMANDE ID", 5, true);
@@ -161,7 +162,7 @@ public class taskDumpToMachine implements Runnable {
 			}
 
 			else {
-				Utilitaires.out("Envoi de l'ID pour l'échange...  " + aEnvoyer.idGlobal, 1, true);
+				//Utilitaires.out("Envoi de l'ID pour l'échange...  " + aEnvoyer.idGlobal, 1, true);
 				buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal);
 				clientSocket.write(buffer);
 				buffer.clear();
@@ -171,10 +172,10 @@ public class taskDumpToMachine implements Runnable {
 				
 				if (s.equals(Message.REPONSE_EXCHANGE)) {
 					aEnvoyer.envoyerPaquetReellement(clientSocket);
-					Utilitaires.out("eNVOI2");
+
 					// la ligne suivant n'a pas l'air de terminer...
 					if (recoitPaquet(clientSocket)) {
-						Utilitaires.out("eNVOI3");
+						
 						aEnvoyer.removePaquet();
 						return true;
 					}
@@ -185,7 +186,7 @@ public class taskDumpToMachine implements Runnable {
 				}
 
 				else {
-					Utilitaires.out("eNVOI4");
+					
 					return false;
 				}
 			}
@@ -206,23 +207,15 @@ public class taskDumpToMachine implements Runnable {
 
 	public boolean recoitPaquet(SocketChannel clientSocket) {
 		try {
-			Utilitaires.out("Recoi0");
 			// Utilitaires.out("Test 1");
 			// say I have finished, what Paquet do you want to send to me ?
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.END_ENVOI);
 			clientSocket.write(buffer);
-			Utilitaires.out("Recoi001");
 			buffer.clear();
 			clientSocket.read(buffer);
-			Utilitaires.out("Recoi002");
 			buffer.flip();
 			String s = Utilitaires.buffToString(buffer);
-			
-			Utilitaires.out("Recoi1");
-			
 			while (!Donnees.acceptePaquet(s) && !s.equals(Message.ANNULE_ENVOI)) {
-				
-				Utilitaires.out("Recoi2");
 			
 				buffer = Utilitaires.stringToBuffer(Message.DO_NOT_ACCEPT);
 				clientSocket.write(buffer);
@@ -240,7 +233,7 @@ public class taskDumpToMachine implements Runnable {
 				return false;
 			}
 			else {
-				Utilitaires.out("Recoi3");
+
 				buffer = Utilitaires.stringToBuffer(Message.REPONSE_EXCHANGE);
 				clientSocket.write(buffer);
 

@@ -116,7 +116,7 @@ public class ServerPR extends Thread{
 		while (!dead.isEmpty()) {
 			InetSocketAddress toCheck = dead.removeFirst().sender;
 
-			Slaver.giveTask(new deathVerifier(new Machine(toCheck.getAddress().getHostAddress(), toCheck.getPort()-1)), 10);
+			Slaver.giveTask(new deathVerifier(new Machine(new InetSocketAddress(toCheck.getAddress(), toCheck.getPort()-1))), 10);
 		}
 	}
 }

@@ -11,7 +11,7 @@ package Utilitaires;
 
 public class Slaver {
 	static final int NB_SLOWSLAVES = 100;
-	static final int NB_FASTSLAVES = 50;
+	static final int NB_FASTSLAVES = 20;
 	static int indexSlow, indexFast;
 	static SlaveThread [] slowSlaves, fastSlaves;
 	

@@ -1,12 +1,12 @@
 package Stockage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.AbstractInterruptibleChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import Utilitaires.Global;
 import Utilitaires.Message;
 import Utilitaires.Utilitaires;
-
 
 /**
  * Cette classe represente un paquet
@@ -232,10 +231,10 @@ public class Paquet {
 		// TODO : v�rifier que cette suppression fonctionne bien et ensuite
 		// l'utiliser
 		// ie pour l'instant on ne supprime rien du disque
-/*
-		  isUsed.lock(); try{ File f = new File(pathOnDisk()) ; f.delete() ; }
-		  finally{ isUsed.unlock(); }
-*/
+		/*
+		 * isUsed.lock(); try{ File f = new File(pathOnDisk) ; f.delete() ; }
+		 * finally{ isUsed.unlock(); }
+		 */
 	}
 
 	/**
