@@ -38,6 +38,16 @@ public class taskRetablirPaquets implements Runnable {
 
 		this.reconstruit = new Paquet(frere.idMachine - frere.idInterne
 				+ numeroMort, frere.owner);
+		try{
+			for(int i = 0 ; i< Global.NOMBRESOUSPAQUETS;i++){
+				if(i != numeroMort){
+					clientSocket[i] = SocketChannel.open() ;
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 
 	}
 
@@ -71,13 +81,14 @@ public class taskRetablirPaquets implements Runnable {
 					ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
 					buffer.clear() ;
 					clientSocket[i].read(buffer) ;
+					buffer.flip() ;
 					if(!Utilitaires.buffToString(buffer).equals(Message.OK)) {
 					  Utilitaires.out("Erreur reconstruction paquet ");
 					}
 
 					// Etape 3 : Envoyer le numero du paquet
 					clientSocket[i].write(Utilitaires
-							.stringToBuffer(frere.otherHosts.get(i).toString()
+							.stringToBuffer(frere.owner.toString()
 									+ "-"
 									+ (frere.idMachine - frere.idInterne + i)));
 

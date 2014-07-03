@@ -19,24 +19,20 @@ public class gestionToSendASAP extends Thread {
 			Donnees.toSendASAPLock.unlock();*/
 			try {
 
-<<<<<<< HEAD
 				Thread.sleep((int)(Math.abs(Math.random()) * (double) 10000));
-=======
-				Thread.sleep((long)(Math.abs(Math.random()) * 4000));
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 				//Utilitaires.out("Répartition des paquets", 2, true);
 
 			}
 			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			if(!Donnees.toSendAsapEmpty())
 			{
-				Utilitaires.out("New taskDumpToMachine", 6, true);
 				Runnable task = new taskDumpToMachine();
 				task.run();
-				Utilitaires.out("Completed taskDumpToMachine", 6, true);
+			}
+			else {
+				Utilitaires.out("------------J'ai fini de vider toSendASAP------------");
+				Donnees.printAllServeur();
 			}
 		}
 

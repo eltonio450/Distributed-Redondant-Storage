@@ -24,14 +24,12 @@ public class taskWarnHostChanged implements Runnable {
 
 	public void run() {
 		// Utilitaires.out("-------------task warn host changed--------------------");
-		prevenirHostChanged(ID);
-		Donnees.getHostedPaquet(ID).otherHosts.set(Donnees.getHostedPaquet(ID).idInterne,Global.MYSELF);
-		if(!Donnees.getHostedPaquet(ID).isLocked())
-			Utilitaires.out("Fatal Error",1,true);
-		Donnees.getHostedPaquet(ID).spreadTotalUnlock();
+		int idInterne = prevenirHostChanged(ID);
+		Donnees.getHostedPaquet(ID).otherHosts.set(idInterne, Global.MYSELF) ;
+		Donnees.getHostedPaquet(ID).unlock();
 	}
 
-	public static void prevenirHostChanged(String id) {
+	public static int prevenirHostChanged(String id) {
 		// previens une machine que cette machine remplace m pour le paquet d'id
 		// Id
 		SocketChannel clientSocket;
@@ -40,17 +38,17 @@ public class taskWarnHostChanged implements Runnable {
 
 		LinkedList<String> table = new LinkedList<String>();
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
-			//if (i != placeToModify) {
+			if (i != placeToModify) {
 				Machine m = p.otherHosts.get(i);
 				if (!table.contains(m.toString())) {
 					table.add(m.toString());
 				}
-			//}
-
-			//if (!table.contains(p.owner.toString())) {
-				table.add(p.owner.toString());
-			//}
-
+			}
+			else {
+				if (!table.contains(p.owner.toString())) {
+					table.add(p.owner.toString());
+				}
+			}
 		}
 		while (!table.isEmpty()) {
 			String s2 = table.poll();
@@ -58,19 +56,33 @@ public class taskWarnHostChanged implements Runnable {
 			scan.useDelimiter("-");
 			Machine m = new Machine(scan.next(), scan.nextInt());
 
-	
+			/*
+			 * HashSet<Machine> listeM = new HashSet<Machine>(); for (int i = 0;
+			 * i < 5; i++) {
+			 * 
+			 * if (i != placeToModify) {
+			 * 
+			 * listeM.add(p.otherHosts.get(i)); // Utilitaires.out("Place : " +
+			 * placeToModify + " "+ // m.toString()); } else {
+			 * listeM.add(p.owner); } } for (Machine m : listeM) {
+			 * Utilitaires.out("C'est pour m : " +m.toString()); }
+			 */
+
 			try {
 				clientSocket = SocketChannel.open();
 				// init connection
 				InetSocketAddress local = new InetSocketAddress(0);
 				clientSocket.bind(local);
 				InetSocketAddress remote = new InetSocketAddress(m.ipAdresse, m.port);
+				
+				Utilitaires.out("jessaye de me connect a : " + m.ipAdresse + "-" + m.port);
 				if (!clientSocket.connect(remote))
 					Utilitaires.out("Ca a foiré !");
 
 				// message
 				ByteBuffer buffer = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
-				
+				ByteBuffer buffer2 = Utilitaires.stringToBuffer(Message.HOST_CHANGED);
+				Utilitaires.out(Utilitaires.buffToString(buffer2));
 				clientSocket.write(buffer);
 				buffer.clear();
 
@@ -100,8 +112,7 @@ public class taskWarnHostChanged implements Runnable {
 			}
 
 		}
-		
+		return p.power ;
 	}
-	
 
 }

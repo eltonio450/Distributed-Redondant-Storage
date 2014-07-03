@@ -2,8 +2,6 @@ package RelationsPubliques;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.LinkedList;
@@ -13,9 +11,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import GestionnaireMort.deathVerifier;
 import Stockage.Machine;
 import Utilitaires.Global;
-import Utilitaires.Message;
 import Utilitaires.Slaver;
 import Utilitaires.Utilitaires;
+import Utilitaires.Message;
 /**
  * 
  * @author Simon
@@ -45,24 +43,15 @@ public class ServerPR extends Thread{
 	}
 
 	public void run () {
-		Utilitaires.out("UDP Server on port " + Global.SERVERPRPORT);
-		try {
-			channel.socket().setSoTimeout(Global.SLEEPTIME);
-		} catch (SocketException e1) {
-			e1.printStackTrace();
-			System.exit(-5);
-		}
+		System.err.println("UDP Server on " + Global.MYSELF.ipAdresse +":" + Global.SERVERPRPORT);
 		while (true) {
 			try {
-				try {
 				sender = (InetSocketAddress) channel.receive(receivedMessage);
-				} catch (SocketTimeoutException e) {}
 				receivedMessage.flip(); 
 
 				try {
 					traiter (Utilitaires.buffToString(receivedMessage), sender);
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 
 				receivedMessage.clear();

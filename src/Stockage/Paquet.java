@@ -174,35 +174,35 @@ public class Paquet {
 		
 		String[] t = new String[1];
 		t[0] = Message.END_ENVOI;
-
+		// Utilitaires.out("Test 1",6,true);
+		//Utilitaires.out("Fréquence 1",1,true);
 		String msg = "";
 		msg = Utilitaires.getAFullMessage(t, socket);
 
+		//Utilitaires.out("Fréquence 7 : "+ msg);
 
+		// Utilitaires.out("Paquet recu: " + msg) ;
 		Scanner scan = new Scanner(msg);
-		Utilitaires.out("Ici : " + msg,3,true);
+
 		
 		int id = scan.nextInt();
 		
 		String IpAdresse = scan.next();
 		int port = scan.nextInt();
 		
-		
+		// Utilitaires.out(id + " - " + IpAdresse + " - " + port) ;
 		Machine owner = new Machine(IpAdresse, port);
-		Paquet paq = new Paquet(id, owner);
+		// Utilitaires.out("Test 2",6,true);
 		ArrayList<Machine> hosts = new ArrayList<Machine>(Global.NOMBRESOUSPAQUETS);
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
+			// Utilitaires.out("Test 3",6,true);
 			String ip = scan.next();
 			int p = scan.nextInt();
-			paq.otherHosts.add(i, new Machine(ip, p));
-			
-		}
-		for(int j=0;j<Global.NOMBRESOUSPAQUETS;j++){
-			Utilitaires.out("Paquet " + j + " : " +paq.otherHosts.get(j).toString(),3,true);
+			hosts.add(i, new Machine(ip, p));
 		}
 		// Utilitaires.out("Test 4",6,true);
-		
-		//paq.putOtherHosts(hosts);
+		Paquet paq = new Paquet(id, owner);
+		paq.putOtherHosts(hosts);
 
 		scan.close();
 		return paq;
@@ -251,7 +251,6 @@ public class Paquet {
 	public boolean askForlock() {
 		if(lockLogique)
 		{
-			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
 			return false;
 		}
 		// isAskingTheLock = true;
@@ -262,10 +261,8 @@ public class Paquet {
 		while (i < Global.NOMBRESOUSPAQUETS) {
 		  
 			if (i != idInterne && resultat == 0) {
-			  //Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
-				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), idMachine - idInterne + i);
-				if(resultat!=0)
-					Utilitaires.out("Quelqu'un d'autre est locke pour "+idGlobal + ". C'est "+i+ " sur " + otherHosts.get(i).toString(), 5, true);
+			  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+				resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 				spreadUnlockLock.lock();
 				toUnlock.add(i);
 				spreadUnlockLock.unlock();
@@ -279,7 +276,6 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-				
 				return false;
 
 		}
@@ -289,7 +285,6 @@ public class Paquet {
 	public boolean askForlock(int mort) {
 		if(lockLogique)
 		{
-			Utilitaires.out("Nope, je suis locke " + idGlobal, 5, true);
 			return false;
 		}
 		// isAskingTheLock = true;
@@ -301,8 +296,8 @@ public class Paquet {
 
 			if (i != idInterne && resultat == 0) {
 				if (i != mort) {
-				  //Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
-					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), idMachine - idInterne + i);
+				  Utilitaires.out("Asking lock to : " + otherHosts.get(i).toString() );
+					resultat = sendAskForLock(otherHosts.get(i), owner.toString() + "-" + (idMachine - idInterne + i), this.idInterne);
 					spreadUnlockLock.lock();
 					toUnlock.add(i);
 					spreadUnlockLock.unlock();
@@ -317,7 +312,6 @@ public class Paquet {
 				//Utilitaires.out("La demande de lock formulée par " + idGlobal + " a réussi.", 5, true);
 				return true;
 			default:
-				Utilitaires.out("Quelqu'un d'autre est locke v2 " + idGlobal, 5, true);
 				return false;
 
 		}
@@ -338,7 +332,7 @@ public class Paquet {
 	 * 
 	 */
 
-	public int sendAskForLock(Machine m, String idGlobalAEnvoyer, int power) {
+	public int sendAskForLock(Machine m, String idGlobal, int power) {
 		// SocketChannel clientSocket;
 		try {
 			SocketChannel clientSocket = SocketChannel.open();
@@ -360,16 +354,16 @@ public class Paquet {
 			buffer.flip();
 
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)) {
-				
+				//Utilitaires.out("ASK 3",0,true);
+				// Utilitaires.out("Test 4", 6, true);
 				buffer.clear();
-				Utilitaires.out("Demande : " + idGlobalAEnvoyer + " " + power);
-				buffer = Utilitaires.stringToBuffer(idGlobalAEnvoyer + " " + power);
+				buffer = Utilitaires.stringToBuffer(idGlobal + " " + idInterne);
 				clientSocket.write(buffer);
 
 				buffer.clear();
-				
+				//Utilitaires.out("ASK 4",0,true);
 				clientSocket.read(buffer);
-				
+				//Utilitaires.out("ASK 5",0,true);
 				clientSocket.close();
 				buffer.flip();
 
@@ -437,7 +431,6 @@ public class Paquet {
 		}
 		finally {
 			//Utilitaires.out("Le unlock a réussi 2");
-			unlock();
 			toUnlock.clear();
 			spreadUnlockLock.unlock();
 			//Donnees.printMyData();
@@ -447,7 +440,6 @@ public class Paquet {
 
 	public void spreadTotalUnlock() {
 		spreadUnlockLock.lock();
-		toUnlock.clear();
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++)
 			toUnlock.add(i);
 		toUnlock.remove((Integer.valueOf(idInterne)));
@@ -473,12 +465,12 @@ public class Paquet {
 
 			ByteBuffer buffer = Utilitaires.stringToBuffer(Message.ASK_FOR_UNLOCK);
 			
-
+			//Utilitaires.out("UNLOCK 1");
 			clientSocket.write(buffer);
 			buffer.clear();
 			
 			clientSocket.read(buffer);
-
+			//Utilitaires.out("UNLOCK 3");
 			buffer.flip();
 			
 			if (Utilitaires.buffToString(buffer).equals(Message.OK)) {
@@ -519,13 +511,4 @@ public class Paquet {
 			e.printStackTrace();
 		}
 	}
-	
-	public String getInfos(){
-		String res = "";
-		if(isLocked()){
-			
-		}
-		return null;
-	}
-	
 }

@@ -37,6 +37,6 @@ public class Slaver {
 	
 	public static final void giveUrgentTask(Runnable r, int estimatedLoad) {
 		fastSlaves[(indexFast++) % NB_FASTSLAVES].doThat(r, estimatedLoad);
-
+		//Utilitaires.out("Tache : " + r.getClass(), 1, true);
 	}
 }

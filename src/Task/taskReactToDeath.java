@@ -1,5 +1,7 @@
 package Task;
 
+import Utilitaires.Utilitaires;
+
 public class taskReactToDeath implements Runnable {
 	String ip;
 	int port;

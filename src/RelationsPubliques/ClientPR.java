@@ -18,6 +18,7 @@ public class ClientPR extends Thread{
 
 	private DatagramChannel channel;
 	private ByteBuffer buffBonjour;
+	private ByteBuffer buffDebout;
 	private LinkedList<Message> toSend;
 	private LinkedList<Message> toAdd;
 	private long lastTime;
@@ -31,6 +32,7 @@ public class ClientPR extends Thread{
 		this.channel.socket().bind(new InetSocketAddress(Global.CLIENTPRPORT));
 		this.channel.socket().setSoTimeout(0);
 		this.buffBonjour = Utilitaires.stringToBuffer(Message.PREFIXE_BONJOUR);
+		this.buffDebout = Utilitaires.stringToBuffer(Message.SELF_WAKE_UP);
 		this.toSend = new LinkedList<Message> ();
 		this.toAdd = new LinkedList<Message> ();
 		this.lastTime = 0;
@@ -59,7 +61,8 @@ public class ClientPR extends Thread{
 			if (System.currentTimeMillis() - lastTime > Global.SLEEPTIME) {
 				try {
 					// On envoie bonjour au serveur de l'hôte distant
-					channel.send(buffBonjour, remote);
+					// TODO A CHANGER
+					channel.send(buffBonjour, new InetSocketAddress("127.0.0.1", remote.getPort()));
 					// On dit au serveur d'attendre une réponse du client de l'hôte distant
 					Global.serverPR.expectMessage(new ExpectedMessage(Message.PREFIXE_REPONSE_BONJOUR, new InetSocketAddress(remote.getHostName(), remote.getPort()-1), System.currentTimeMillis() + Global.TIMEOUT));
 					buffBonjour.position(0);
@@ -68,6 +71,18 @@ public class ClientPR extends Thread{
 					deathVerifier.verifyDeath(new Stockage.Machine(remote));
 				}
 			}
+
+
+			// Réveille le serveur si personne d'autre ne lui parle
+			try{
+				buffDebout.position(0);
+				channel.send(buffDebout, new InetSocketAddress("127.0.0.1", Global.SERVERPRPORT));
+			}catch(Exception e){
+				Utilitaires.out("Impossible d'envoyer DEBOUT#", 1, true);
+				e.printStackTrace();
+			}
+
+
 
 			// Envoie ce qu'on lui a demandé d'envoyer
 			lock.lock();

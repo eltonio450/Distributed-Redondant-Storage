@@ -29,20 +29,13 @@ public class taskDumpToMachine implements Runnable {
 	}
 
 	public void dump() {
-		//Utilitaires.out("Entree dans la fonction DUMP");
 		boolean continuer = true;
 		while (continuer) {
-<<<<<<< HEAD
 			int nbrMachines = allServers.size() ;
 			Machine m ;
 			for (int j = 0 ; j < nbrMachines ; j++) {
 				m = Donnees.chooseMachine() ;
 			//for( Machine m : allServers) {	
-=======
-
-			for (Machine m : allServers) {
-				//Utilitaires.out("Entree dans la fonction DUMP 2");
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 				if (m != Global.MYSELF) {
 					// Utilitaires.out("I choose machine " + m.toString());
 
@@ -61,21 +54,12 @@ public class taskDumpToMachine implements Runnable {
 									socket = init(m);
 									if (socket != null) {
 
-<<<<<<< HEAD
 										Utilitaires.out("3");
-=======
-
-										Utilitaires.out("Socket opened.", 5, true);
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 										if (!envoiePaquet(aEnvoyer, m, socket)) {
-<<<<<<< HEAD
 											Utilitaires.out("4");
-=======
-											Donnees.putNewPaquet(aEnvoyer);
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 											aEnvoyer.spreadUnlock();
 											
-											
+											Donnees.putNewPaquet(aEnvoyer);
 											
 											//Donnees.printMyData();
 
@@ -93,7 +77,6 @@ public class taskDumpToMachine implements Runnable {
 									}
 									catch (IOException e) {
 										Utilitaires.out("Erreur dans la fermeture de la socket pour échange de fichier.");
-										e.printStackTrace();
 									}
 								}
 							}
@@ -150,13 +133,11 @@ public class taskDumpToMachine implements Runnable {
 		catch (ConnectException e) {
 			Donnees.printServerList();
 			Utilitaires.out("Poblème avec " + correspondant.toString());
-			e.printStackTrace();
 			return null;
 		}
 
 		catch (IOException e) {
 			Utilitaires.out("Problème dans l'initialisation de la socket pour échanger un paquet avec " + correspondant.port);
-			e.printStackTrace();
 			return null;
 		}
 
@@ -180,11 +161,7 @@ public class taskDumpToMachine implements Runnable {
 			}
 
 			else {
-<<<<<<< HEAD
 				Utilitaires.out("Envoi de l'ID pour l'échange...  " + aEnvoyer.idGlobal, 1, true);
-=======
-				
->>>>>>> branch 'master' of https://github.com/eltonio450/modal.git
 				buffer = Utilitaires.stringToBuffer(aEnvoyer.idGlobal);
 				clientSocket.write(buffer);
 				buffer.clear();
@@ -216,7 +193,6 @@ public class taskDumpToMachine implements Runnable {
 		}
 		catch (IOException e) {
 			Utilitaires.out("Exception levée avec la machine " + clientSocket.socket().getPort());
-			e.printStackTrace();
 			return false;
 		}
 		finally {
@@ -224,8 +200,6 @@ public class taskDumpToMachine implements Runnable {
 				clientSocket.close();
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
@@ -279,7 +253,6 @@ public class taskDumpToMachine implements Runnable {
 			}
 		}
 		catch (IOException e) {
-			e.printStackTrace();
 			return false;
 		}
 		finally {
@@ -287,7 +260,6 @@ public class taskDumpToMachine implements Runnable {
 				clientSocket.close();
 			}
 			catch (IOException e) {
-
 			}
 
 		}

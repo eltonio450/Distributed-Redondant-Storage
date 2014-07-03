@@ -45,10 +45,6 @@ public class taskHostHasChanged implements Runnable {
 			String Id = scan.next() ;
 			int place = scan.nextInt() ;
 			Machine newHost = new Machine(machine) ;
-			if(Donnees.getHostedPaquet(Id)!=null &&Donnees.getHostedPaquet(Id).isLocked())
-			{
-				Utilitaires.out("AAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRGGGGGGGGGGGGGGGGGGGG",2,true);
-			}
 			Donnees.changeHostForPaquet(Id, place, newHost);
 			if(Donnees.myOwnData.contains(Id)){  //nous ne sommes pas le propri�taire du paquet
 			  Donnees.addHost(Id, newHost) ;

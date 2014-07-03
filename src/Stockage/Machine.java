@@ -36,7 +36,7 @@ public class Machine {
 	
 	public boolean equals (Object o) {
 		Machine m = (Machine) o;
-		return m.ipAdresse.equals(ipAdresse) && m.port == port;
+		return m.ipAdresse.equals(this.ipAdresse) && m.port == this.port;
 	}
 	
   public static Machine otherMachineFromSocket(SocketChannel s){
