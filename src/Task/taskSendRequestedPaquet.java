@@ -23,7 +23,6 @@ public class taskSendRequestedPaquet implements Runnable {
       // Etape 1 : définir de quel paquet l'autre a besoin : il faut envoyer OK en premier.
       ByteBuffer b = Utilitaires.stringToBuffer(Message.OK);
       s.write(b);
-      Utilitaires.out("SendRequested, j ai envoye OK");
       b = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH);
       b.clear();
       s.read(b);

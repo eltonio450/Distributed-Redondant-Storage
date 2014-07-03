@@ -56,18 +56,18 @@ public class taskRetablirPaquets implements Runnable {
 
 		// Etape 1: se connecter sur les autres paquets et récupérer le buffer
 		// correspond.
-		Utilitaires.out("Bouh 1");
+
 		
 		while (!frere.askForlock(numeroMort)) {
 			try {
 				Thread.sleep(1000);
-				Utilitaires.out("Bouh 2");
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 		}
-		Utilitaires.out("Bouh 3");
+
 		for (int i = 0; i < Global.NOMBRESOUSPAQUETS; i++) {
 			if (i != numeroMort && i != frere.idInterne) {
 				try {
@@ -77,7 +77,7 @@ public class taskRetablirPaquets implements Runnable {
 							frere.otherHosts.get(i).ipAdresse,
 							frere.otherHosts.get(i).port);
 					clientSocket[i].connect(remote);
-					Utilitaires.out("Bouh 4");
+
 					clientSocket[i].write(Utilitaires
 							.stringToBuffer(Message.DEMANDE_PAQUET));
 
@@ -85,13 +85,13 @@ public class taskRetablirPaquets implements Runnable {
 					// bien nous envoyer le paquet
 					ByteBuffer buffer = ByteBuffer.allocateDirect(Message.BUFFER_LENGTH) ;
 					buffer.clear() ;
-					Utilitaires.out("Bouh 5");
+
 					clientSocket[i].read(buffer) ;
 					buffer.flip() ;
 					if(!Utilitaires.buffToString(buffer).equals(Message.OK)) {
 					  Utilitaires.out("Erreur reconstruction paquet ");
 					}
-					Utilitaires.out("Bouh 6");
+
 					// Etape 3 : Envoyer le numero du paquet
 					clientSocket[i].write(Utilitaires
 							.stringToBuffer(frere.owner.toString()
@@ -100,16 +100,16 @@ public class taskRetablirPaquets implements Runnable {
 
 					// Etage 4 : recevoir le paquet dans le buffer
 					b[i].clear();
-					Utilitaires.out("Bouh 6.5");
+
 					clientSocket[i].read(b[i]);
 					b[i].flip();
-					Utilitaires.out("Bouh 7");
+
 
 					clientSocket[i].close();
 					// Etape 5 : remercier
 					// nan en fait on s'en fout
 					// clientSocket[i].write(Utilitaires.stringToBuffer(Message.OK));
-					Utilitaires.out("Bouh 8");
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -127,26 +127,28 @@ public class taskRetablirPaquets implements Runnable {
 			b[reconstruit.idInterne].clear();
 
 			if (numeroMort >= Global.NOMBRESOUSPAQUETSSIGNIFICATIFS) {
-				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++)
+				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++){
 					newByte += (int) b[i].get(j);
 				newByte %= 256;
-				b[numeroMort].put((byte) newByte);
+				b[numeroMort].put((byte) newByte);}
 			} else {
 				for (int i = 0; i < Global.NOMBRESOUSPAQUETSSIGNIFICATIFS; i++) {
 					if (i != numeroMort)
 						newByte += (int) b[i].get(j);
+					newByte = (b[Global.NOMBRESOUSPAQUETSSIGNIFICATIFS - 1].get(j) - newByte) % 256;
+					b[numeroMort].put((byte) newByte);
 
 				}
-				newByte = (b[Global.NOMBRESOUSPAQUETSSIGNIFICATIFS - 1].get(j) - newByte) % 256;
-				b[numeroMort].put((byte) newByte);
+				
 			}
 
 			b[reconstruit.idInterne].flip();
 
 		}
 		try {
-			Utilitaires.out("Fichier reconstruit : ");
+			Utilitaires.out("Fichier reconstruit : "+reconstruit.idGlobal);
 			reconstruit.fichier.write(b[numeroMort]);
+			;
 			reconstruit.remettrePositionZero();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -155,5 +157,6 @@ public class taskRetablirPaquets implements Runnable {
 		reconstruit.otherHosts.set(numeroMort, Global.MYSELF) ;
 		Donnees.receptionPaquet(reconstruit);
 		Donnees.addPaquetToSendAsap(reconstruit.idGlobal);
+		Utilitaires.out("Fichier reconstruit 2 ! "+reconstruit.idGlobal);
 	}
 }
